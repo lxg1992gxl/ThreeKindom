@@ -17,6 +17,23 @@ public class WarringStatesGame {
      */
     static boolean isCardPlacementWellFormed(String cardPlacement) {
         // FIXME Task 2: determine whether a card placement is well-formed
+        char[] chunks = cardPlacement.toCharArray();
+
+        if (cardPlacement.length()!=3){
+            return false;
+        }
+
+        else {
+            //check for first character
+            //check for second character
+            //check for third character
+            if(chunks[2]<'A' & chunks[2]>'Z'){
+                //check in right range and also number possibilities
+                //
+            }
+        }
+
+
         return false;
     }
 
