@@ -35,6 +35,11 @@ public class Viewer extends Application {
      */
     void makePlacement(String placement) {
         // FIXME Task 4: implement the simple placement viewer
+
+        //display correct thing, somewhere
+        //correct place
+        //correct orientation
+
     }
 
     /**
@@ -73,3 +78,6 @@ public class Viewer extends Application {
         primaryStage.show();
     }
 }
+
+
+//note re characters- - Qu Yuan 屈原 appears as King Ai, based on the pictures in the setup.png example
