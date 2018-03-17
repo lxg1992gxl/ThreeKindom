@@ -16,32 +16,32 @@ public class WarringStatesGame {
      * @return true if the card placement is well-formed
      */
     static boolean isCardPlacementWellFormed(String cardPlacement) {
-        // FIXME Task 2: determine whether a card placement is well-formed
         char[] chunks = cardPlacement.toCharArray();
 
-        if (cardPlacement.length()!=3){
-            return false;
+        if (chunks.length!=3){
+             return false;
         }
 
         else {
             //check for first character
             if(chunks[0]>='a' & chunks[0]<='g'){
-
                 //check for second character
-                if((chunks[1]-chunks[0]<= -40) & (chunks[1]-chunks[0]>=-49)){//FIXME check what range should be 9-a -- 0-a? a== 97, 9 ==57
+                if((chunks[1]+chunks[0]<= 152) & (chunks[1]>=48)){
                     //check for third character
-                    if((chunks[2]>='A' & chunks[2]<='Z')|(chunks[2]>=0 & chunks[2]<=9)){
+                    if((chunks[2]>='A' & chunks[2]<='Z')|(chunks[2]>='0' & chunks[2]<='9')){
                         //check in right range and also number possibilities
                         return true;
                     }
-                    else {return false;}
+                    else {
+                        return false;
+                    }
                 }
                 else {return false;} //if second not in range
             }
 
             else if (chunks[0]=='z'){
                 if(chunks[1]=='9'){
-                    if((chunks[2]>='A' & chunks[2]<='Z')|(chunks[2]>=0 & chunks[2]<=9)){
+                    if((chunks[2]>='A' & chunks[2]<='Z')|(chunks[2]>='0' & chunks[2]<='9')){
                         //check in right range and also number possibilities
                         return true;
                     }
