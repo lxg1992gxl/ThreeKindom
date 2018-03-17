@@ -25,16 +25,39 @@ public class WarringStatesGame {
 
         else {
             //check for first character
-            //check for second character
-            //check for third character
-            if(chunks[2]<'A' & chunks[2]>'Z'){
-                //check in right range and also number possibilities
-                //
+            if(chunks[0]>='a' & chunks[0]<='g'){
+
+                //check for second character
+                if((chunks[1]-chunks[0]<= -40) & (chunks[1]-chunks[0]>=-49)){//FIXME check what range should be 9-a -- 0-a? a== 97, 9 ==57
+                    //check for third character
+                    if((chunks[2]>='A' & chunks[2]<='Z')|(chunks[2]>=0 & chunks[2]<=9)){
+                        //check in right range and also number possibilities
+                        return true;
+                    }
+                    else {return false;}
+                }
+                else {return false;} //if second not in range
             }
+
+            else if (chunks[0]=='z'){
+                if(chunks[1]=='9'){
+                    if((chunks[2]>='A' & chunks[2]<='Z')|(chunks[2]>=0 & chunks[2]<=9)){
+                        //check in right range and also number possibilities
+                        return true;
+                    }
+                    else {return false;} //if third is not in range
+                }
+                else{ //if second is not in range
+                    return false;
+                }
+            }
+
+            else { //if first character is not in range
+                return false;
+            }
+
         }
 
-
-        return false;
     }
 
     /**
