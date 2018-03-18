@@ -6,7 +6,7 @@ Honesty and integrity are of utmost importance. These goals are *not* at odds wi
 
 Please read the ANU's [official position](http://academichonesty.anu.edu.au/) on academic honesty. If you have any questions, please ask me.
 
-Carefully review the [statement of originality](originality.md) which you must complete.  Edit that statement and update it as you complete each state of the assignment, ensuring that when you complete each stage, a truthful statement is committed and pushed to your repo.
+For each deliverable, please carefully review the statement of originality which you must complete.  As you complete each stage of the assignment, edit the corresponding statement of originality, ensuring that a truthful statement is committed and pushed to your repo.
 
 ## Purpose
 
