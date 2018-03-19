@@ -45,7 +45,7 @@ public class CardPlacementWellFormed {
                 String lower = placement.toLowerCase();
                 assertFalse("Simple card placement string '" + lower + "', has lower case location, but passed", WarringStatesGame.isCardPlacementWellFormed(lower));
             }
-            assertTrue("Simple card placement string '" + upper + "' failed, but should have passed", WarringStatesGame.isCardPlacementWellFormed(placement));
+            assertTrue("Simple card placement string '" + placement + "' failed, but should have passed", WarringStatesGame.isCardPlacementWellFormed(placement));
         }
     }
 

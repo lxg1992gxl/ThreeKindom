@@ -1,5 +1,8 @@
 package comp1110.ass2;
 
+
+import java.util.Arrays;
+
 /**
  * This class provides the text interface for the Warring States game
  */
@@ -67,12 +70,88 @@ public class WarringStatesGame {
      * - no card appears more than once in the placement
      * - no location contains more than one card
      *
-     * @param placement A string describing a placement of one or more cards
+     /* @param placement A string describing a placement of one or more cards
      * @return true if the placement is well-formed
      */
+
     static boolean isPlacementWellFormed(String placement) {
-        // FIXME Task 3: determine whether a placement is well-formed
-        return false;
+        //Firstly, empty and null string
+        if ( placement == null| placement == ""){
+            return false;
+        }
+        else { // 3*N format and each atom is well-formed  *第一、第二条完成*
+            char[] chunks = placement.toCharArray();
+
+            for (int i = 0; i < chunks.length/3; i++) {
+                if (chunks[3*i] >= 'a' & chunks[3*i] <= 'g') {
+                    //check for second character
+                    if ((chunks[3*i + 1] <= '7') & (chunks[3*i + 1] >= '0')) {
+                        //check for third character
+                        if ((chunks[3*i + 2] >= 'A' & chunks[3*i + 2] <= 'Z') | (chunks[3*i + 2] >= '0' & chunks[3*i + 2] <= '9')) {
+                            //check in right range and also number possibilities
+                            //return true;
+                            //Duplication check
+                            //No same card
+                           break;
+
+                        } else {
+                            return false;
+                        }
+                    } else { //if second is not in range
+                        return false;
+                    }
+                } else if (chunks[3*i] == 'z'&chunks[3*i + 1] == '9') {
+                        if ((chunks[3*i + 2] >= 'A' & chunks[3*i + 2] <= 'Z') | (chunks[3*i + 2] >= '0' & chunks[3*i + 2] <= '9')) {
+                            break;
+                            //return true; //check in right range and also number possibilities
+                        } else { //if third is not in range
+                            return false;
+                        }
+
+                } else { //if first character is not in range
+                    return false;
+                }
+            }return true;
+            /*String [] arrcard = new String[36];
+            String [] arrposi = new String[36];
+
+            for (int j = 0; j<placement.length()/3; j++){
+                arrcard [j] = placement.substring(j*3,j*3+2);
+                arrposi [j] = placement.substring(j*3+2,j*3+3);
+            }
+            Arrays.sort(arrcard);
+            Arrays.sort(arrposi);
+            for (int k = 0; k<placement.length()/3;k++){
+                if (arrcard[k]==arrcard[k+1]|arrposi[k]==arrposi[k+1]){
+                    return false;
+                }else{
+                    return true;
+                }
+            }*/
+
+            /*for (int j = 0; j < chunks.length/3; j++){
+                for (int k = j + 1; k < chunks.length/3; k++){
+                    if (chunks[j * 3]==chunks[k * 3] & chunks[j * 3 +1]==chunks[k * 3 +1]){
+                        return false;
+                    }
+                    else{ //No same location
+                        for (int m = 0; m < chunks.length/3; m++){
+                            for (int n = 0; n < chunks.length/3; n++){
+                                if (chunks[3*m + 2] == chunks[3*n + 2]){
+                                    return true;
+                                }else {
+                                    return true;
+                                }
+
+                            }
+                        }
+
+                    }
+
+                }
+            }*/
+        }
+    //return false;
     }
 
     /**
