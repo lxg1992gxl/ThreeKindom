@@ -82,6 +82,11 @@ public class WarringStatesGame {
         else { // 3*N format and each atom is well-formed  *第一、第二条完成*
             char[] chunks = placement.toCharArray();
 
+            //checks for incomplete placement strings
+            if (chunks.length%3 != 0){
+                return false;
+            }
+
             for (int i = 0; i < chunks.length/3; i++) {
                 if (chunks[3*i] >= 'a' & chunks[3*i] <= 'g') {
                     //check for second character
