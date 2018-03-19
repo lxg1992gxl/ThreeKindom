@@ -19,38 +19,43 @@ public class WarringStatesGame {
      * @return true if the card placement is well-formed
      */
     static boolean isCardPlacementWellFormed(String cardPlacement) {
-        // FIXME Task 2: determine whether a card placement is well-formed
         char[] chunks = cardPlacement.toCharArray();
 
-        if (chunks.length != 3) {
-            return false;
-        } else {
+        if (chunks.length!=3){
+             return false;
+        }
+
+        else {
             //check for first character
-            if (chunks[0] >= 'a' & chunks[0] <= 'g') {
+            if(chunks[0]>='a' & chunks[0]<='g'){
                 //check for second character
-                if ((chunks[1] + chunks[0] <= 152) & (chunks[1] >= 48)) {
+                if((chunks[1]+chunks[0]<= 152) & (chunks[1]>=48)){
                     //check for third character
-                    if ((chunks[2] >= 'A' & chunks[2] <= 'Z') | (chunks[2] >= '0' & chunks[2] <= '9')) {
+                    if((chunks[2]>='A' & chunks[2]<='Z')|(chunks[2]>='0' & chunks[2]<='9')){
                         //check in right range and also number possibilities
                         return true;
-                    } else {
+                    }
+                    else {
                         return false;
                     }
-                } else {
-                    return false;
-                } //if second not in range
-            } else if (chunks[0] == 'z') {
-                if (chunks[1] == '9') {
-                    if ((chunks[2] >= 'A' & chunks[2] <= 'Z') | (chunks[2] >= '0' & chunks[2] <= '9')) {
+                }
+                else {return false;} //if second not in range
+            }
+
+            else if (chunks[0]=='z'){
+                if(chunks[1]=='9'){
+                    if((chunks[2]>='A' & chunks[2]<='Z')|(chunks[2]>='0' & chunks[2]<='9')){
                         //check in right range and also number possibilities
                         return true;
-                    } else {
-                        return false;
-                    } //if third is not in range
-                } else { //if second is not in range
+                    }
+                    else {return false;} //if third is not in range
+                }
+                else{ //if second is not in range
                     return false;
                 }
-            } else { //if first character is not in range
+            }
+
+            else { //if first character is not in range
                 return false;
             }
 
@@ -64,132 +69,90 @@ public class WarringStatesGame {
      * - each card placement is well-formed
      * - no card appears more than once in the placement
      * - no location contains more than one card
-     * <p>
-     * /* @param placement A string describing a placement of one or more cards
      *
+     /* @param placement A string describing a placement of one or more cards
      * @return true if the placement is well-formed
      */
 
     static boolean isPlacementWellFormed(String placement) {
-        // FIXME Task 3: determine whether a placement is well-formed
-        char[] place = placement.toCharArray();
-
-        char qin[] = new char[]{'0', '1', '2', '3', '4', '5', '6', '7'};
-        char qi[] = new char[]{'0', '1', '2', '3', '4', '5', '6'};
-        char chu[] = new char[]{'0', '1', '2', '3', '4', '5'};
-        char zhao[] = new char[]{'0', '1', '2', '3', '4'};
-        char han[] = new char[]{'0', '1', '2', '3'};
-        char wei[] = new char[]{'0', '1', '2'};
-        char yan[] = new char[]{'0', '1'};
-        char zy[] = new char[]{'9'};
-        char loc[] = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-
-        // first check whether the total string length satisfies the three-character cards' number
-        if (placement == null || placement == "") {
+        //Firstly, empty and null string
+        if ( placement == null| placement == ""){
             return false;
-        } else if (placement.length() % 3 != 0 || placement.length() > 36 * 3) {
-            return false;
-        } else {
-            int i = 0;
-            while (i != -1 && i < placement.length()) {
-                int k = 0;
-                if (place[i] == 'z' && place[i + 1] == '9') {
-                    if (zy != null) {
-                        zy = null;
-                        k = -1;
-                    }
-                } else if (place[i] == 'a') {
-                    while (k != -1 && k < qin.length) {
-                        if (place[i + 1] == qin[k]) {
-                            qin[k] = '/';
-                            k = -1;
-                        } else {
-                            k++;
-                        }
-                    }
-                } else if (place[i] == 'b') {
-                    while (k != -1 && k < qi.length) {
-                        if (place[i + 1] == qi[k]) {
-                            qi[k] = '/';
-                            k = -1;
-                        } else
-                            k++;
-                    }
-                } else if (place[i] == 'c') {
-                    while (k != -1 && k < chu.length) {
-                        if (place[i + 1] == chu[k]) {
-                            chu[k] = '/';
-                            k = -1;
-                        } else
-                            k++;
-                    }
-                } else if (place[i] == 'd') {
-                    while (k != -1 && k < zhao.length) {
-                        if (place[i + 1] == zhao[k]) {
-                            zhao[k] = '/';
-                            k = -1;
-                        } else
-                            k++;
-                    }
-                } else if (place[i] == 'e') {
-                    while (k != -1 && k < han.length) {
-                        if (place[i + 1] == han[k]) {
-                            han[k] = '/';
-                            k = -1;
-                        } else
-                            k++;
-                    }
-                } else if (place[i] == 'f') {
-                    while (k != -1 && k < wei.length) {
-                        if (place[i + 1] == wei[k]) {
-                            wei[k] = '/';
-                            k = -1;
-                        } else
-                            k++;
-                    }
-                } else if (place[i] == 'g') {
-                    while (k != -1 && k < yan.length) {
-                        if (place[i + 1] == yan[k]) {
-                            yan[k] = '/';
-                            k = -1;
-                        } else
-                            k++;
-                    }
-                }
-                if (k == -1)
-                    i = i + 3;
-                else
-                    i = -1;
-            }
+        }
+        else { // 3*N format and each atom is well-formed  *第一、第二条完成*
+            char[] chunks = placement.toCharArray();
 
-            if (i == -1) {
-                return false;
-            } else {
-                int l = 2;
-                while (l != -1 && l < placement.length()) {
-                    int k = 0;
-                    while (k != -1 && k < loc.length) {
-                        if (place[l] == loc[k]) {
-                            loc[k] = '/';
-                            k = -1;
+            for (int i = 0; i < chunks.length/3; i++) {
+                if (chunks[3*i] >= 'a' & chunks[3*i] <= 'g') {
+                    //check for second character
+                    if ((chunks[3*i + 1] <= '7') & (chunks[3*i + 1] >= '0')) {
+                        //check for third character
+                        if ((chunks[3*i + 2] >= 'A' & chunks[3*i + 2] <= 'Z') | (chunks[3*i + 2] >= '0' & chunks[3*i + 2] <= '9')) {
+                            //check in right range and also number possibilities
+                            //return true;
+                            //Duplication check
+                            //No same card
+                           break;
+
                         } else {
-                            k++;
+                            return false;
                         }
+                    } else { //if second is not in range
+                        return false;
                     }
-                    if (k == -1)
-                        l = l + 3;
-                    else
-                        l = -1;
-                }
-                if (l == -1) {
+                } else if (chunks[3*i] == 'z'&chunks[3*i + 1] == '9') {
+                        if ((chunks[3*i + 2] >= 'A' & chunks[3*i + 2] <= 'Z') | (chunks[3*i + 2] >= '0' & chunks[3*i + 2] <= '9')) {
+                            break;
+                            //return true; //check in right range and also number possibilities
+                        } else { //if third is not in range
+                            return false;
+                        }
+
+                } else { //if first character is not in range
                     return false;
                 }
-                else
-                    return true;
-            }
-        }
-    }
+            }return true;
+            /*String [] arrcard = new String[36];
+            String [] arrposi = new String[36];
 
+            for (int j = 0; j<placement.length()/3; j++){
+                arrcard [j] = placement.substring(j*3,j*3+2);
+                arrposi [j] = placement.substring(j*3+2,j*3+3);
+            }
+            Arrays.sort(arrcard);
+            Arrays.sort(arrposi);
+            for (int k = 0; k<placement.length()/3;k++){
+                if (arrcard[k]==arrcard[k+1]|arrposi[k]==arrposi[k+1]){
+                    return false;
+                }else{
+                    return true;
+                }
+            }*/
+
+            /*for (int j = 0; j < chunks.length/3; j++){
+                for (int k = j + 1; k < chunks.length/3; k++){
+                    if (chunks[j * 3]==chunks[k * 3] & chunks[j * 3 +1]==chunks[k * 3 +1]){
+                        return false;
+                    }
+                    else{ //No same location
+                        for (int m = 0; m < chunks.length/3; m++){
+                            for (int n = 0; n < chunks.length/3; n++){
+                                if (chunks[3*m + 2] == chunks[3*n + 2]){
+                                    return true;
+                                }else {
+                                    return true;
+                                }
+
+                            }
+                        }
+
+                    }
+
+                }
+            }*/
+        }
+    //return false;
+    }
 
     /**
      * Determine whether a given move is legal given a provided valid placement:
@@ -197,9 +160,8 @@ public class WarringStatesGame {
      * - there is a card at the chosen location;
      * - the location is in the same row or column of the grid as Zhang Yi's current position; and
      * - drawing a line from Zhang Yi's current location through the card at the chosen location,
-     * there are no other cards along the line from the same kingdom as the chosen card
-     * that are further away from Zhang Yi.
-     *
+     *   there are no other cards along the line from the same kingdom as the chosen card
+     *   that are further away from Zhang Yi.
      * @param placement    the current placement string
      * @param locationChar a location for Zhang Yi to move to
      * @return true if Zhang Yi may move to that location
@@ -275,7 +237,6 @@ public class WarringStatesGame {
      * there are no other cards along the line from the same kingdom as the chosen card
      * that are further away from Zhang Yi.
      * If there is no legal move available, return the null character '\0'.
-     *
      * @param placement the current placement string
      * @return a location character representing Zhang Yi's destination for the move
      */
