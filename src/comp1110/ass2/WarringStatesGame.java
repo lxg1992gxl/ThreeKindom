@@ -19,7 +19,7 @@ public class WarringStatesGame {
      * @return true if the card placement is well-formed
      */
     static boolean isCardPlacementWellFormed(String cardPlacement) {
-        // FIXME Task 2: determine whether a card placement is well-formed
+        //Task 2: determine whether a card placement is well-formed
 
         char[] chunks = cardPlacement.toCharArray();
 
@@ -72,8 +72,9 @@ public class WarringStatesGame {
      */
 
     static boolean isPlacementWellFormed(String placement) {
-        // FIXME Task 3: determine whether a placement is well-formed
+        //Task 3: determine whether a placement is well-formed
 
+        //Construct the possible number index in each different country group
         char qin[] = new char[]{'0', '1', '2', '3', '4', '5', '6', '7'};
         char qi[] = new char[]{'0', '1', '2', '3', '4', '5', '6'};
         char chu[] = new char[]{'0', '1', '2', '3', '4', '5'};
@@ -84,13 +85,19 @@ public class WarringStatesGame {
         char zy[] = new char[]{'9'};
         char loc[] = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
+        // Some initial check : whether the string is empty OR have more elements (>36) than possible OR have not only three-digit expression
         if (placement == null || placement == "" || placement.length() % 3 != 0 || placement.length() > 36 * 3) {
             return false;
         } else {
             char[] place = placement.toCharArray();
 
+            // Check each three characters by arranging them into different country groups (7 countries and Zhangyi)
+            //* use i to control the whole three-character taken loop (if one set of three characters gets the requirements, go to the next three)
+            //* and check whether the 1st character is in the country representation range
             int i = 0;
             while (i != -1 && i < placement.length()) {
+                //* use k to check whether 2nd character is defined in this 'country' group range
+                //* and ensure no defined card appears more than once
                 int k = 0;
                 if (place[i] == 'z' && place[i + 1] == '9') {
                     if (zy != null) {
@@ -161,9 +168,12 @@ public class WarringStatesGame {
                     i = -1;
             }
 
+            //* if the cards' check if fine, go to the location check
             if (i == -1) {
                 return false;
             } else {
+                // check whether the 3rd character is in the location representative range
+                // and ensure no location contains more than one card
                 int l = 2;
                 while (l != -1 && l < placement.length()) {
                     int k = 0;
