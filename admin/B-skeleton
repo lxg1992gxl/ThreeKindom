@@ -35,7 +35,7 @@ Given a move and the current board, first get the card ID at the goal position,
 and then get the 1st element of the got card ID. 
 Through the 3rd element of the placement, find cards between Zhang Yi and the goal position. 
 Check the 1st element of these cards -- whether they have the same country representative. 
-If yes, return the supporters ID 
+If yes, return the supporters ID
  (i.e. 1st and 2nd element from corresponding part of the initial board placement string).
  
 p.s. the method to get the 1st, 2nd and 3rd element from the “board setup” string can be the same as loop used in Task3.
@@ -86,3 +86,48 @@ When the game ends, use if-else statement --
 first check whether there exists someone appears highest numbers on the getFlags arrays (represented in Task 8). 
 If two people have same number of flags in this case, 
 check the player ID in “Qin” array – the player is the winner.
+
+***************************************
+
+The flow of playing (and about what data in and out while playing)
+
+Before the game start (preparations)
+1. Generate a string represent all the seven kingdom supporters and Zhang Yi. (e.g, f1Az9Bc4De1Ea4Gb4If2J...)
+    i: Should be randomly arranged 3*36 characters, but generate it follow the rules of Task2.
+2. Check the placement well-formed. (Maybe by run Task 3 for once)
+3. Make sure how many players in game.
+    i: We should give an input box before the game start, and give the result to param "numPlayers".
+    ii: This number may also cause different width of score board on the right side of GUI.
+4. GUI should have a placement input box to get player decision at the bottom. (seems already have in Viewer.java)
+    i: Send this placement to param "placement" and will be used afterwords.
+
+Game start
+During the  player's turn(this area can be a loop)
+
+1. Input (send it to param "locationChar")
+2. Check "isMoveLegal"
+    i:  If illegal, tell player need try again(show something on GUI?);
+    ii: If legal, then continue;
+3. Check "getSupporters" to figure out what play got.
+    i: May need a array to store the supporters each "playerId" have.
+4. Check "getFlags" to update the array containing the player ID who controls each kingdom.
+    i: May need a function to renew if a player own maximum supporters in that country. We can say that country "belongs" to "playerId".
+5. Run "generateMove" to return a char indicate the destination of Zhang Yi this turn.
+6. Check if game is over.
+    i: If "generateMove" return null, end the game in some way.
+7. GUI operations
+    i: Eliminate all the cards (Supporters) which Zhang gathered.
+    ii: Move this card to score board, upper the name of current player.
+    iii: Move card Zhang Yi to its destination.
+    iv: (If necessary) Change 7 kingdoms' flag to the maximum supporters players.
+    v:: Allow next player to input next placement.(If game is over, then skip this line)
+
+End of this game
+When no further legal move can be made.
+
+1. Show a notice to player, like " No legal move available, game over".
+2. Check who win the game, output the "playerId".
+3. Show a notice to player, can be "Congratulations! playerId win the game!"
+4. (If necessary) To whom wants to confirm everyone's score,
+    try to show score board clearly, at least don't block it with these characters.
+5. (If necessary) Set a "Restart" button to start a new game.

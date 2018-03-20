@@ -66,7 +66,7 @@ public class WarringStatesGame {
      * - no card appears more than once in the placement
      * - no location contains more than one card
      * <p>
-     * /* @param placement A string describing a placement of one or more cards
+     * * @param placement A string describing a placement of one or more cards
      *
      * @return true if the placement is well-formed
      */
