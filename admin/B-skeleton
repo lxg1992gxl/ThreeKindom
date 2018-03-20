@@ -1,0 +1,88 @@
+[Program File] WarringStatesGame:
+
+(Task 2 -- finished) isCardPlaceWellFormed: 
+use if-statement to check whether each position of the three-character placement string is in the correct range. 
+(directly use ">, <, >=, …" to compare each other)
+
+
+(Task 3 -- finished) isPlacementWellFormed: 
+can construct each possible character index from different country. 
+Use loop to check each set of three characters in the whole string. 
+Once a person or a position appears, delete it from the initial constructed array, 
+so that we ensure no duplicate at the same time.
+
+
+(Task 5) isMoveLegal:
+Try construct a “relationship” among “char” positions in the same line and “char” positions in the same row,
+to make the comparison among cards in these positions more easily.
+
+First check if Zhang Yi (only focusing on the 3rd element) and the chosen goal position is in the same line. 
+Then, get the card code (2 characters) on the given move position. 
+Find the 1st element of the code (representing the country) 
+and check whether any further card in the same line has the same 1st code. 
+If yes, return “false”.
+
+
+(Task 6) isMoveSequenceValid:
+Linked it with Task5. 
+From the initial setup board, check whether each move in the moveSequence is valid itself. 
+Use loop to go through all moves and update the current board at the same time. 
+
+
+(Task 7) getSupporters:
+Similar to some of the Task5 work. 
+Given a move and the current board, first get the card ID at the goal position, 
+and then get the 1st element of the got card ID. 
+Through the 3rd element of the placement, find cards between Zhang Yi and the goal position. 
+Check the 1st element of these cards -- whether they have the same country representative. 
+If yes, return the supporters ID 
+ (i.e. 1st and 2nd element from corresponding part of the initial board placement string).
+ 
+p.s. the method to get the 1st, 2nd and 3rd element from the “board setup” string can be the same as loop used in Task3.
+
+
+(Task 8) getFlags:
+The whole large function will be a loop, and how many moves will turn back to a loop depends on the number of players. 
+Player ID will be the return value of this loop function.
+
+Because once one person gets a chess from the board, the player can keep it until the end of the game. 
+We need to construct another array (int p1 =  new int[7]) for each player, 
+representing the current chess they have for each country.
+
+After each move, get the 1st element to see which country the card belongs. 
+Add the number of card we get into the corresponding players array into the corresponding position 
+(e.g. if Qi, p1[1] = … if Zhao, p1[3] = …) 
+Compare the numbers of the same position (i.e. flags from the same country) among different players’ array, 
+and if the updated number is (one of) the largest, 
+the player ID will be updated to the corresponding country array.
+
+Keep this update operation until the left “moveSequence” length becomes 0.
+
+
+(Task 10) generateMove:	
+The most standard way is to check all moves one after another: 
+(1) still left on the board; 
+(2) are on the same row or column as card “Zhang Yi” (-- 4 directions). 
+Check whether each move is valid (according to the requirements) 
+using several functions we constructed in earlier tasks.
+
+
+[Program File] Viewer:
+
+(Task 4) makePlacement:
+Mostly use JavaFX knowledge, can referred to corresponding lecture codes.
+
+
+[Program File] Game:
+
+(Task 9 – basic working game & Task 11 – computer opponent & Task 12 – good computer opponent):
+
+For the whole assignment structure, 
+check whether there is no any other possible cards covered in Zhang Yi’s row and column 
+is actually the first thing we need to check at the very beginning. 
+Thus to save further useless check for the special “game end” situation.
+
+When the game ends, use if-else statement -- 
+first check whether there exists someone appears highest numbers on the getFlags arrays (represented in Task 8). 
+If two people have same number of flags in this case, 
+check the player ID in “Qin” array – the player is the winner.
