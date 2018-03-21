@@ -7,3 +7,4 @@ We declare that the work we have submitted for Stage B of this assignment and al
 *  ....
 
 Signed: Siying(Kathleen) Qian (u6099927), 
+    Lyu(Oliver) Xiaoguang   (u6464313)
