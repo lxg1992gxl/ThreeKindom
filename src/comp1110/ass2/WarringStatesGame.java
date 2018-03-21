@@ -1,8 +1,5 @@
 package comp1110.ass2;
 
-
-import java.util.Arrays;
-
 /**
  * This class provides the text interface for the Warring States game
  */
