@@ -4,6 +4,6 @@ The work toward our submission of Stage B was distributed among the group member
 
 * u6464313 33
 * u6099927 33
-* u0234567 30
+* u4671448 33
 
-Signed: Lyu(Oliver) Xiaoguang (u6464313), Siying Qian(u6099927), and Sue Black (u0234567)
+Signed: Lyu(Oliver) Xiaoguang (u6464313), Siying Qian(u6099927), and Sulenna Nicholson (u4671448)
