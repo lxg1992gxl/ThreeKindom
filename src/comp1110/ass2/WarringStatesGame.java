@@ -211,7 +211,23 @@ public class WarringStatesGame {
      */
     public static boolean isMoveLegal(String placement, char locationChar) {
         // FIXME Task 5: determine whether a given move is legal
-        return false;
+
+        //check placement valid
+        //check location char in range
+        if((locationChar >= 'A'& locationChar <= 'Z' )| (locationChar>='0' & locationChar<= '9')){
+            return true;
+        }
+
+        else {
+            return false;
+        }
+        //get Zhang yi's current location
+        //compare Z current and locationChar
+        //check for other same kingdom in line
+            //check distance inc direction
+
+
+
     }
 
     /**
