@@ -215,16 +215,30 @@ public class WarringStatesGame {
         //check placement valid
         //check location char in range
         if((locationChar >= 'A'& locationChar <= 'Z' )| (locationChar>='0' & locationChar<= '9')){
+            //get Zhang yi's current location
+            String zhangloc = placement.substring(placement.indexOf('z')+2, placement.indexOf('z')+3);
+
+            //check for card at loc
+            //location is third character of chunk
+            for(int i = 0; i<placement.length()/3; i++){
+                //i*3+2
+                //if locationChar ==
+                //if none equals?
+            }
+
+            //compare Z current and locationChar
+            //check for other same kingdom in line
+            //check distance inc direction
+
+
+
             return true;
         }
 
         else {
             return false;
         }
-        //get Zhang yi's current location
-        //compare Z current and locationChar
-        //check for other same kingdom in line
-            //check distance inc direction
+
 
 
 
