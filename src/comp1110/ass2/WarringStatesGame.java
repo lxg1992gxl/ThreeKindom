@@ -196,6 +196,34 @@ public class WarringStatesGame {
         }
     }
 
+
+    /**Compares whether two location characters are in the same row or column,
+     * assuming that locations are encoded A-Z and 0-9 for a 6x6 grid.
+     *                                     65-90  48-57
+     *
+     * @param location1
+     * @param location2
+     * @return true if the locations are in the same row or column as each other
+     *
+     */
+    public static boolean sameRowCol (char location1, char location2){
+        if(location1>= 'A'& location1 <= 'Z' ){ //normalises letter locations
+            location1-=65;
+        }
+        else {location1 -=21;} //normalises number locations
+
+        if(location2>= 'A'& location2 <= 'Z' ){ //normalises letter locations
+            location2-=65;
+        }
+        else {location2 -=21;} //normalises number locations
+
+        if(location1%6==location2%6 | location1/6==location2/6){
+            return true;
+        }
+
+        else {return false;}
+    }
+
     /**
      * Determine whether a given move is legal given a provided valid placement:
      * - the location char is in the range A .. Z or 0..9
@@ -209,6 +237,7 @@ public class WarringStatesGame {
      * @param locationChar a location for Zhang Yi to move to
      * @return true if Zhang Yi may move to that location
      */
+
     public static boolean isMoveLegal(String placement, char locationChar) {
         // FIXME Task 5: determine whether a given move is legal
 
@@ -216,17 +245,27 @@ public class WarringStatesGame {
         //check location char in range
         if((locationChar >= 'A'& locationChar <= 'Z' )| (locationChar>='0' & locationChar<= '9')){
             //get Zhang yi's current location
-            String zhangloc = placement.substring(placement.indexOf('z')+2, placement.indexOf('z')+3);
+            char zhangloc = placement.charAt(placement.indexOf('z')+2);
 
             //check for card at loc
-            //location is third character of chunk
+            String cardAtLoc = null;
             for(int i = 0; i<placement.length()/3; i++){
-                //i*3+2
-                //if locationChar ==
-                //if none equals?
+                if(locationChar==placement.charAt((i*3)+2)){
+                    cardAtLoc = placement.substring(i*3,(i*3)+3);
+                }
+            }
+
+            if(cardAtLoc==null){
+                return false;
+            }
+
+            if(!(sameRowCol(locationChar, zhangloc))){
+                System.out.println(cardAtLoc);
+                return false;
             }
 
             //compare Z current and locationChar
+
             //check for other same kingdom in line
             //check distance inc direction
 
