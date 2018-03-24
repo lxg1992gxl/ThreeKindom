@@ -257,7 +257,10 @@ public class WarringStatesGame {
      */
     static boolean isMoveSequenceValid(String setup, String moveSequence) {
         // FIXME Task 6: determine whether a placement sequence is valid
-        return false;
+        if (moveSequence.length() > 36 || moveSequence == null || moveSequence == "" || setup == null || setup == "") {
+            return false;
+        }
+        return true;
     }
 
     /**
