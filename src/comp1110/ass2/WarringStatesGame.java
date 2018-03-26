@@ -207,22 +207,37 @@ public class WarringStatesGame {
      *
      */
     public static boolean sameRowCol (char location1, char location2){
+        int loc1 = -1;
+        int loc2 = -1;
         if(location1>= 'A'& location1 <= 'Z' ){ //normalises letter locations
-            location1-=65;
+            loc1 =((int) location1);
+            loc1-=65;
+            System.out.println("location 1 is "+loc1 );
         }
-        else {location1 -=21;} //normalises number locations
+        else {
+            loc1 = (int)location1;
+            loc1 -=22;
+            System.out.println("location 1 is "+loc1 );} //normalises number locations
 
         if(location2>= 'A'& location2 <= 'Z' ){ //normalises letter locations
-            location2-=65;
+            loc2 = (int) location2;
+            loc2-=65;
+            System.out.println("location 2 is "+loc2 );
         }
-        else {location2 -=21;} //normalises number locations
+        else {
+            loc2 = (int)location2;
+            loc2 -=22;
+            System.out.println("location 2 is "+loc2 );} //normalises number locations
 
-        if(location1%6==location2%6 | location1/6==location2/6){
+        if(loc1%6==loc2%6 | loc1/6==loc2/6){
             return true;
         }
 
         else {return false;}
+
+
     }
+
 
     /**
      * Determine whether a given move is legal given a provided valid placement:
