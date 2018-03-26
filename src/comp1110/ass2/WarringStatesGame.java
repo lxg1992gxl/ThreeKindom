@@ -196,46 +196,62 @@ public class WarringStatesGame {
         }
     }
 
+    /** takes a locationChar and normalises it to use in row and column comparisons
+     * and distance methods
+     *  assuming that locations are encoded A-Z and 0-9 for a 6x6 grid.
+     *
+     * @param locationChar
+     * @return the location char normalises to an int 0-35
+     */
 
-    /**Compares whether two location characters are in the same row or column,
+
+    public static int normaliseLoc (char locationChar){
+        int result = -1;
+        if(locationChar>= 'A'& locationChar <= 'Z' ){ //normalises letter locations
+            result=((int) locationChar);
+            result-=65;
+        }
+        else { //normalises number locations
+            result = (int)locationChar;
+            result -=22;
+        }
+        return result;
+    }
+
+    /**Compares whether two location characters are in the same row,
      * assuming that locations are encoded A-Z and 0-9 for a 6x6 grid.
-     *                                     65-90  48-57
      *
      * @param location1
      * @param location2
-     * @return true if the locations are in the same row or column as each other
-     *
+     * @return true if the locations are in the same row as each other
      */
-    public static boolean sameRowCol (char location1, char location2){
-        int loc1 = -1;
-        int loc2 = -1;
-        if(location1>= 'A'& location1 <= 'Z' ){ //normalises letter locations
-            loc1 =((int) location1);
-            loc1-=65;
-            System.out.println("location 1 is "+loc1 );
-        }
-        else {
-            loc1 = (int)location1;
-            loc1 -=22;
-            System.out.println("location 1 is "+loc1 );} //normalises number locations
 
-        if(location2>= 'A'& location2 <= 'Z' ){ //normalises letter locations
-            loc2 = (int) location2;
-            loc2-=65;
-            System.out.println("location 2 is "+loc2 );
-        }
-        else {
-            loc2 = (int)location2;
-            loc2 -=22;
-            System.out.println("location 2 is "+loc2 );} //normalises number locations
+    public static boolean sameRow (char location1, char location2){
+        int loc1 = normaliseLoc(location1);
+        int loc2 = normaliseLoc(location2);
 
-        if(loc1%6==loc2%6 | loc1/6==loc2/6){
-            return true;
-        }
+        if(loc1%6==loc2%6){
+            return true;}
 
         else {return false;}
+    }
 
+    /**Compares whether two location characters are in the same column,
+     * assuming that locations are encoded A-Z and 0-9 for a 6x6 grid.
+     *
+     * @param location1
+     * @param location2
+     * @return true if the locations are in the same column as each other
+     */
 
+    public static boolean sameCol (char location1, char location2){
+        int loc1 = normaliseLoc(location1);
+        int loc2 = normaliseLoc(location2);
+
+        if(loc1/6==loc2/6){
+            return true;}
+
+        else {return false;}
     }
 
 
@@ -274,12 +290,11 @@ public class WarringStatesGame {
                 return false;
             }
 
-            if(!(sameRowCol(locationChar, zhangloc))){
+            if(!(sameRow(locationChar, zhangloc))&!(sameCol(locationChar, zhangloc))){
                 System.out.println(cardAtLoc);
                 return false;
             }
-
-            //compare Z current and locationChar
+            
 
             //check for other same kingdom in line
             //check distance inc direction
