@@ -196,29 +196,30 @@ public class WarringStatesGame {
         }
     }
 
-    /** takes a locationChar and normalises it to use in row and column comparisons
+    /**
+     * takes a locationChar and normalises it to use in row and column comparisons
      * and distance methods
-     *  assuming that locations are encoded A-Z and 0-9 for a 6x6 grid.
+     * assuming that locations are encoded A-Z and 0-9 for a 6x6 grid.
      *
      * @param locationChar
      * @return the location char normalises to an int 0-35
      */
 
 
-    public static int normaliseLoc (char locationChar){
+    public static int normaliseLoc(char locationChar) {
         int result = -1;
-        if(locationChar>= 'A'& locationChar <= 'Z' ){ //normalises letter locations
-            result=((int) locationChar);
-            result-=65;
-        }
-        else { //normalises number locations
-            result = (int)locationChar;
-            result -=22;
+        if (locationChar >= 'A' & locationChar <= 'Z') { //normalises letter locations
+            result = ((int) locationChar);
+            result -= 65;
+        } else { //normalises number locations
+            result = (int) locationChar;
+            result -= 22;
         }
         return result;
     }
 
-    /**Compares whether two location characters are in the same row,
+    /**
+     * Compares whether two location characters are in the same row,
      * assuming that locations are encoded A-Z and 0-9 for a 6x6 grid.
      *
      * @param location1
@@ -226,17 +227,19 @@ public class WarringStatesGame {
      * @return true if the locations are in the same row as each other
      */
 
-    public static boolean sameRow (char location1, char location2){
+    public static boolean sameRow(char location1, char location2) {
         int loc1 = normaliseLoc(location1);
         int loc2 = normaliseLoc(location2);
 
-        if(loc1%6==loc2%6){
-            return true;}
-
-        else {return false;}
+        if (loc1 % 6 == loc2 % 6) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    /**Compares whether two location characters are in the same column,
+    /**
+     * Compares whether two location characters are in the same column,
      * assuming that locations are encoded A-Z and 0-9 for a 6x6 grid.
      *
      * @param location1
@@ -244,14 +247,15 @@ public class WarringStatesGame {
      * @return true if the locations are in the same column as each other
      */
 
-    public static boolean sameCol (char location1, char location2){
+    public static boolean sameCol(char location1, char location2) {
         int loc1 = normaliseLoc(location1);
         int loc2 = normaliseLoc(location2);
 
-        if(loc1/6==loc2/6){
-            return true;}
-
-        else {return false;}
+        if (loc1 / 6 == loc2 / 6) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -274,23 +278,23 @@ public class WarringStatesGame {
 
         //check placement valid
         //check location char in range
-        if((locationChar >= 'A'& locationChar <= 'Z' )| (locationChar>='0' & locationChar<= '9')){
+        if ((locationChar >= 'A' & locationChar <= 'Z') | (locationChar >= '0' & locationChar <= '9')) {
             //get Zhang yi's current location
-            char zhangloc = placement.charAt(placement.indexOf('z')+2);
+            char zhangloc = placement.charAt(placement.indexOf('z') + 2);
 
             //check for card at loc
             String cardAtLoc = null;
-            for(int i = 0; i<placement.length()/3; i++){
-                if(locationChar==placement.charAt((i*3)+2)){
-                    cardAtLoc = placement.substring(i*3,(i*3)+3);
+            for (int i = 0; i < placement.length() / 3; i++) {
+                if (locationChar == placement.charAt((i * 3) + 2)) {
+                    cardAtLoc = placement.substring(i * 3, (i * 3) + 3);
                 }
             }
 
-            if(cardAtLoc==null){
+            if (cardAtLoc == null) {
                 return false;
             }
 
-            if(!(sameRow(locationChar, zhangloc))&!(sameCol(locationChar, zhangloc))){
+            if (!(sameRow(locationChar, zhangloc)) & !(sameCol(locationChar, zhangloc))) {
                 //System.out.println(cardAtLoc);
                 return false;
             }
@@ -302,26 +306,25 @@ public class WarringStatesGame {
             //card at loc
 
             char kingdom = cardAtLoc.charAt(0);
-            for(int i=0; i<placement.length()/3; i++){
-                if(placement.charAt(i*3)==kingdom){ //checks for other cards in same kingdom as the locationChar
+            for (int i = 0; i < placement.length() / 3; i++) {
+                if (placement.charAt(i * 3) == kingdom) { //checks for other cards in same kingdom as the locationChar
 
                     //take the chunk for that card
-                    String a = placement.substring(i*3, (i*3)+3);
+                    String a = placement.substring(i * 3, (i * 3) + 3);
                     //check for same col
 
-                    if(sameCol(zhangloc,locationChar)){
+                    if (sameCol(zhangloc, locationChar)) {
 
-                        if(sameCol(zhangloc,a.charAt(2))){
+                        if (sameCol(zhangloc, a.charAt(2))) {
 //                          //compare distances
-                            int dist = normaliseLoc(locationChar)- normaliseLoc(zhangloc);
-                            int dist2 = normaliseLoc(a.charAt(2))- normaliseLoc(zhangloc);
-                            if(dist>0){
-                                if (dist2>dist){
+                            int dist = normaliseLoc(locationChar) - normaliseLoc(zhangloc);
+                            int dist2 = normaliseLoc(a.charAt(2)) - normaliseLoc(zhangloc);
+                            if (dist > 0) {
+                                if (dist2 > dist) {
                                     return false;
                                 }
-                            }
-                            else {
-                                if(dist2<dist){
+                            } else {
+                                if (dist2 < dist) {
                                     return false;
                                 }
                             }
@@ -329,18 +332,17 @@ public class WarringStatesGame {
                         }
                     }
                     //check for same row
-                    if(sameRow(zhangloc,locationChar)){
-                        if(sameRow(locationChar,a.charAt(2))){
+                    if (sameRow(zhangloc, locationChar)) {
+                        if (sameRow(locationChar, a.charAt(2))) {
                             //compare distances
-                            int dist = normaliseLoc(locationChar)- normaliseLoc(zhangloc);
-                            int dist2 = normaliseLoc(a.charAt(2))- normaliseLoc(zhangloc);
-                            if(dist>0){
-                                if (dist2>dist){
+                            int dist = normaliseLoc(locationChar) - normaliseLoc(zhangloc);
+                            int dist2 = normaliseLoc(a.charAt(2)) - normaliseLoc(zhangloc);
+                            if (dist > 0) {
+                                if (dist2 > dist) {
                                     return false;
                                 }
-                            }
-                            else {
-                                if(dist2<dist){
+                            } else {
+                                if (dist2 < dist) {
                                     return false;
                                 }
                             }
@@ -353,13 +355,9 @@ public class WarringStatesGame {
 
 
             return true;
-        }
-
-        else { //locationChar is out of range
+        } else { //locationChar is out of range
             return false;
         }
-
-
 
 
     }
@@ -378,10 +376,29 @@ public class WarringStatesGame {
      */
     static boolean isMoveSequenceValid(String setup, String moveSequence) {
         // FIXME Task 6: determine whether a placement sequence is valid
+        // check whether has empty string or initial out of range
         if (moveSequence.length() > 36 || moveSequence == null || moveSequence == "" || setup == null || setup == "") {
             return false;
+        } else {
+            char[] move = moveSequence.toCharArray();
+
+            int i = 0;
+            while (i != -1 && i < moveSequence.length()) {
+                if (isMoveLegal(setup, move[i])) {
+                    // update setup board with the new checked move
+
+                    i++;
+                } else {
+                    // use i to record "have found an invalid move"
+                    i = -1;
+                }
+            }
+            if (i == -1) {
+                return false;
+            } else {
+                return true;
+            }
         }
-        return true;
     }
 
     /**
