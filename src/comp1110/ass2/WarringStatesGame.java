@@ -270,7 +270,7 @@ public class WarringStatesGame {
      */
 
     public static boolean isMoveLegal(String placement, char locationChar) {
-        // FIXME Task 5: determine whether a given move is legal
+        //Task 5: determine whether a given move is legal
 
         //check placement valid
         //check location char in range
@@ -291,20 +291,71 @@ public class WarringStatesGame {
             }
 
             if(!(sameRow(locationChar, zhangloc))&!(sameCol(locationChar, zhangloc))){
-                System.out.println(cardAtLoc);
+                //System.out.println(cardAtLoc);
                 return false;
             }
-            
+
 
             //check for other same kingdom in line
             //check distance inc direction
+            //if distance is less than 0, none that ar less, if distance is greater than 0, none that are greater
+            //card at loc
 
+            char kingdom = cardAtLoc.charAt(0);
+            for(int i=0; i<placement.length()/3; i++){
+                if(placement.charAt(i*3)==kingdom){ //checks for other cards in same kingdom as the locationChar
+
+                    //take the chunk for that card
+                    String a = placement.substring(i*3, (i*3)+3);
+                    //check for same col
+
+                    if(sameCol(zhangloc,locationChar)){
+
+                        if(sameCol(zhangloc,a.charAt(2))){
+//                          //compare distances
+                            int dist = normaliseLoc(locationChar)- normaliseLoc(zhangloc);
+                            int dist2 = normaliseLoc(a.charAt(2))- normaliseLoc(zhangloc);
+                            if(dist>0){
+                                if (dist2>dist){
+                                    return false;
+                                }
+                            }
+                            else {
+                                if(dist2<dist){
+                                    return false;
+                                }
+                            }
+
+                        }
+                    }
+                    //check for same row
+                    if(sameRow(zhangloc,locationChar)){
+                        if(sameRow(locationChar,a.charAt(2))){
+                            //compare distances
+                            int dist = normaliseLoc(locationChar)- normaliseLoc(zhangloc);
+                            int dist2 = normaliseLoc(a.charAt(2))- normaliseLoc(zhangloc);
+                            if(dist>0){
+                                if (dist2>dist){
+                                    return false;
+                                }
+                            }
+                            else {
+                                if(dist2<dist){
+                                    return false;
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+            }
 
 
             return true;
         }
 
-        else {
+        else { //locationChar is out of range
             return false;
         }
 
@@ -312,6 +363,7 @@ public class WarringStatesGame {
 
 
     }
+
 
     /**
      * Determine whether a move sequence is valid.
