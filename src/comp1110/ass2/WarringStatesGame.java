@@ -416,11 +416,11 @@ public class WarringStatesGame {
 
                             // find all cards between Zhangyi and the destination, delete them at the same time
                             while (k < setup.length()) {
-                                if (sameCol(loc, board[k]) && country == board[k - 2] && Math.abs(K - ZY) <= Math.abs(P - ZY)) {
+                                if (sameCol(loc, board[k]) && country == board[k - 2] && Math.abs(K - ZY) < Math.abs(P - ZY)) {
                                     board[k] = '-';
                                     board[k - 1] = '-';
                                     board[k - 2] = '-';
-                                } else if (sameRow(loc, board[k]) && country == board[k - 2] && Math.abs(K - ZY) <= Math.abs(P - ZY)) {
+                                } else if (sameRow(loc, board[k]) && country == board[k - 2] && Math.abs(K - ZY) < Math.abs(P - ZY)) {
                                     board[k] = '-';
                                     board[k - 1] = '-';
                                     board[k - 2] = '-';
