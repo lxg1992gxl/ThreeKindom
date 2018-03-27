@@ -384,7 +384,7 @@ public class WarringStatesGame {
         }
         else {
             char[] move = moveSequence.toCharArray();
-            
+
             // find ZhangYi's location
             char zyloc = setup.charAt(setup.indexOf('z') + 2);
 
@@ -397,17 +397,17 @@ public class WarringStatesGame {
                 if (isMoveLegal(setup, move[i])) {
                     // update setup board with the new checked move
                     int p = 2;
-                    int P = normaliseLoc(board[p]);
-
                     while (p != -1 && p < setup.length()) {
                         // find the setup board location same with the current move location
                         if (board[p] == move[i]) {
+                            // find the corresponding country for the card in current move location
+                            char loc = board[p];
+                            char country = board[p - 2];
+                            int P = normaliseLoc(loc);
+
                             board[p] = '-';
                             board[p - 1] = '-';
                             board[p - 2] = '-';
-
-                            // find the corresponding country for the card in current move location
-                            char country = board[p - 2];
 
                             // go through the board to find the card from same country between ZhangYi and goal location
                             int k = 2;
@@ -415,11 +415,11 @@ public class WarringStatesGame {
                             int ZY = normaliseLoc(board[zyloc]);
 
                             while (k < setup.length()) {
-                                if (sameCol(board[p], board[k]) && country == board[k - 2] && Math.abs(K - ZY) < Math.abs(P - ZY)) {
+                                if (sameCol(loc, board[k]) && country == board[k - 2] && Math.abs(K - ZY) <= Math.abs(P - ZY)) {
                                     board[k] = '-';
                                     board[k - 1] = '-';
                                     board[k - 2] = '-';
-                                } else if (sameRow(board[p], board[k]) && country == board[k - 2] && Math.abs(K - ZY) < Math.abs(P - ZY)) {
+                                } else if (sameRow(loc, board[k]) && country == board[k - 2] && Math.abs(K - ZY) <= Math.abs(P - ZY)) {
                                     board[k] = '-';
                                     board[k - 1] = '-';
                                     board[k - 2] = '-';
