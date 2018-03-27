@@ -381,8 +381,7 @@ public class WarringStatesGame {
         // check whether has empty string or initial out of range
         if (moveSequence.length() > 36 || moveSequence == null || moveSequence == "" || setup == null || setup == "") {
             return false;
-        }
-        else {
+        } else {
             char[] move = moveSequence.toCharArray();
 
             // find ZhangYi's location
@@ -394,7 +393,10 @@ public class WarringStatesGame {
 
                 char[] board = setup.toCharArray();
 
-                if (isMoveLegal(setup, move[i])) {
+                if (!isMoveLegal(setup, move[i])) {
+                    //use i to record "have found an invalid move in the sequence"
+                    i = -1;
+                } else {
                     // update setup board with the new checked move
                     int p = 2;
                     while (p != -1 && p < setup.length()) {
@@ -405,9 +407,9 @@ public class WarringStatesGame {
                             char country = board[p - 2];
                             int P = normaliseLoc(loc);
 
-                            board[p] = '-';
-                            board[p - 1] = '-';
-                            board[p - 2] = '-';
+                            board[p] = '/';
+                            board[p - 1] = '/';
+                            board[p - 2] = '/';
 
                             // go through the board to find the card from same country between ZhangYi and goal location
                             int k = 2;
@@ -417,13 +419,13 @@ public class WarringStatesGame {
                             // find all cards between Zhangyi and the destination, delete them at the same time
                             while (k < setup.length()) {
                                 if (sameCol(loc, board[k]) && country == board[k - 2] && Math.abs(K - ZY) < Math.abs(P - ZY)) {
-                                    board[k] = '-';
-                                    board[k - 1] = '-';
-                                    board[k - 2] = '-';
+                                    board[k] = '/';
+                                    board[k - 1] = '/';
+                                    board[k - 2] = '/';
                                 } else if (sameRow(loc, board[k]) && country == board[k - 2] && Math.abs(K - ZY) < Math.abs(P - ZY)) {
-                                    board[k] = '-';
-                                    board[k - 1] = '-';
-                                    board[k - 2] = '-';
+                                    board[k] = '/';
+                                    board[k - 1] = '/';
+                                    board[k - 2] = '/';
                                 }
                                 k = k + 3;
                             }
@@ -435,17 +437,14 @@ public class WarringStatesGame {
                         }
                     }
                     i++;
-                } else {
-                    // use i to record "have found an invalid move"
-                    i = -1;
                 }
             }
 
             // justify whether we check until the end of the moveSequence
-            if (i == -1) {
-                return false;
-            } else {
+            if (i != -1) {
                 return true;
+            } else {
+                return false;
             }
 
         }
