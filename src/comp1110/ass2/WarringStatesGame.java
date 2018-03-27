@@ -384,7 +384,7 @@ public class WarringStatesGame {
         }
         else {
             char[] move = moveSequence.toCharArray();
-
+            
             // find ZhangYi's location
             char zyloc = setup.charAt(setup.indexOf('z') + 2);
 
@@ -427,7 +427,7 @@ public class WarringStatesGame {
                                 k = k + 3;
                             }
 
-                            setup = Arrays.toString(board);
+                            setup = new String(board);
                             p = -1;
                         } else {
                             p = p + 3;
