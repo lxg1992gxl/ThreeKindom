@@ -379,16 +379,60 @@ public class WarringStatesGame {
         // check whether has empty string or initial out of range
         if (moveSequence.length() > 36 || moveSequence == null || moveSequence == "" || setup == null || setup == "") {
             return false;
-        } else {
+        }
+        else {
             char[] move = moveSequence.toCharArray();
+            char[] board = setup.toCharArray();
 
+            // go through every move in moveSequence one by one
             int i = 0;
             while (i != -1 && i < moveSequence.length()) {
                 if (isMoveLegal(setup, move[i])) {
                     // update setup board with the new checked move
+                    int p = 2;
+                    int P = normaliseLoc(board[p]);
 
+                    // find ZhangYi's location
+                    char zyloc = setup.charAt(setup.indexOf('z') + 2);
+                    int ZY = normaliseLoc(board[zyloc]);
+
+                    while (p != -1 && p < setup.length()) {
+                        // find the setup board location same with the current move location
+                        if (board[p] == move[i]) {
+                            board[p] = '-';
+                            board[p-1] = '-';
+                            board[p-2] = '-';
+
+                            // find the corresponding country for the card in current move location
+                            char country = board[p-2];
+
+                            // go through the board to find the card from same country between ZhangYi and goal location
+                            int k = 2;
+                            int K = normaliseLoc(board[k]);
+
+                            while (k < setup.length()) {
+                                if (sameCol(board[p], board[k]) && country == board[k-2] && Math.abs(K - ZY) < Math.abs(P - ZY)) {
+                                    board[k] = '-';
+                                    board[k-1] = '-';
+                                    board[k-2] = '-';
+                                }
+                                else if (sameRow(board[p], board[k]) && country == board[k-2] && Math.abs(K - ZY) < Math.abs(P - ZY)) {
+                                    board[k] = '-';
+                                    board[k-1] = '-';
+                                    board[k-2] = '-';
+                                }
+                                k = k + 3;
+                            }
+
+                            p = -1;
+                        }
+                        else {
+                            p = p + 3;
+                        }
+                    }
                     i++;
-                } else {
+                }
+                else {
                     // use i to record "have found an invalid move"
                     i = -1;
                 }
