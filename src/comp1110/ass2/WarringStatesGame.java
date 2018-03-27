@@ -414,6 +414,7 @@ public class WarringStatesGame {
                             int K = normaliseLoc(board[k]);
                             int ZY = normaliseLoc(board[zyloc]);
 
+                            // find all cards between Zhangyi and the destination, delete them at the same time
                             while (k < setup.length()) {
                                 if (sameCol(loc, board[k]) && country == board[k - 2] && Math.abs(K - ZY) <= Math.abs(P - ZY)) {
                                     board[k] = '-';
