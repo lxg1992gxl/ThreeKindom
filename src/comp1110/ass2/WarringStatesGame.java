@@ -384,9 +384,6 @@ public class WarringStatesGame {
         } else {
             char[] move = moveSequence.toCharArray();
 
-            // find ZhangYi's location
-            char zyloc = setup.charAt(setup.indexOf('z') + 2);
-
             // go through every move in moveSequence one by one
             int i = 0;
             while (i != -1 && i < moveSequence.length()) {
@@ -415,6 +412,8 @@ public class WarringStatesGame {
                             // go through the board to find the card from same country between ZhangYi and goal location
                             int k = 2;
                             int K = normaliseLoc(board[k]);
+                            // find ZhangYi's location
+                            char zyloc = setup.charAt(setup.indexOf('z') + 2);
                             int ZY = normaliseLoc(board[zyloc]);
 
                             // find all cards between Zhangyi and the destination, delete them at the same time
@@ -431,14 +430,11 @@ public class WarringStatesGame {
                                 k = k + 3;
                             }
 
-                            //TODO move ZY to his new position
+                            //To move ZY to his new position
                             //set old position to empty
-                            board[zyloc] = '/';
-                            board[zyloc-1] = '/';
-                            board[zyloc-2] = '/';
-                            //set new position to location of last move
-                            zyloc = move[i];
+                            board[zyloc] = move[i];
 
+                            //set new position to location of last move
 
                             setup = new String(board);
                             p = -1;
