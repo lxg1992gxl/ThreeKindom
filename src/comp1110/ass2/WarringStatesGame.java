@@ -396,6 +396,7 @@ public class WarringStatesGame {
                 if (!isMoveLegal(setup, move[i])) {
                     //use i to record "have found an invalid move in the sequence"
                     i = -1;
+
                 } else {
                     // update setup board with the new checked move
                     int p = 2;
@@ -430,12 +431,22 @@ public class WarringStatesGame {
                                 k = k + 3;
                             }
 
+                            //TODO move ZY to his new position
+                            //set old position to empty
+                            board[zyloc] = '/';
+                            board[zyloc-1] = '/';
+                            board[zyloc-2] = '/';
+                            //set new position to location of last move
+                            zyloc = move[i];
+
+
                             setup = new String(board);
                             p = -1;
                         } else {
                             p = p + 3;
                         }
                     }
+
                     i++;
                 }
             }
@@ -444,6 +455,7 @@ public class WarringStatesGame {
             if (i != -1) {
                 return true;
             } else {
+                //System.out.println(i + " invalid sequence");
                 return false;
             }
 
