@@ -365,6 +365,38 @@ public class WarringStatesGame {
     }
 
 
+    /**Updates a setup string based on execution of a move
+     *
+     * @param setup
+     * @param move
+     * @return the updated setup
+     */
+
+    public static String updateSetup(String setup, char move){
+        if(isMoveLegal(setup, move)){
+            char[] s = setup.toCharArray();
+            //remove the card at move
+            for(int i=0; i<setup.length()/3; i++){
+                if(setup.charAt(i*3+2)==move){
+                    s[i*3]='/';
+                    s[i*3+1]='/';
+                    s[i*3+2]='/';
+                }
+            }
+
+            //remove Zhang Yi from old location
+            s[setup.indexOf('z')]='/';
+            s[setup.indexOf('z')+1]='/';
+            s[setup.indexOf('z')+2]='/';
+
+            //move Zhang Yi to the move location
+            String newSetup = s.toString()+"z9"+move;
+
+            return newSetup;
+        }
+        else{return "";}
+    }
+
     /**
      * Determine whether a move sequence is valid.
      * To be valid, the move sequence must be comprised of 1..N location characters
@@ -437,7 +469,7 @@ public class WarringStatesGame {
                             board[zyloc-1] = '/';
                             board[zyloc-2] = '/';
                             //set new position to location of last move
-                            zyloc = move[i];
+                            zyloc = board[p];
 
 
                             setup = new String(board);
