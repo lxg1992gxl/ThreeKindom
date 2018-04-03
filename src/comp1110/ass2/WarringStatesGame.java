@@ -365,38 +365,6 @@ public class WarringStatesGame {
     }
 
 
-    /**Updates a setup string based on execution of a move
-     *
-     * @param setup
-     * @param move
-     * @return the updated setup
-     */
-
-    public static String updateSetup(String setup, char move){
-        if(isMoveLegal(setup, move)){
-            char[] s = setup.toCharArray();
-            //remove the card at move
-            for(int i=0; i<setup.length()/3; i++){
-                if(setup.charAt(i*3+2)==move){
-                    s[i*3]='/';
-                    s[i*3+1]='/';
-                    s[i*3+2]='/';
-                }
-            }
-
-            //remove Zhang Yi from old location
-            s[setup.indexOf('z')]='/';
-            s[setup.indexOf('z')+1]='/';
-            s[setup.indexOf('z')+2]='/';
-
-            //move Zhang Yi to the move location
-            String newSetup = s.toString()+"z9"+move;
-
-            return newSetup;
-        }
-        else{return "";}
-    }
-
     /**
      * Determine whether a move sequence is valid.
      * To be valid, the move sequence must be comprised of 1..N location characters
@@ -415,9 +383,6 @@ public class WarringStatesGame {
             return false;
         } else {
             char[] move = moveSequence.toCharArray();
-
-            // find ZhangYi's location
-            char zyloc = setup.charAt(setup.indexOf('z') + 2);
 
             // go through every move in moveSequence one by one
             int i = 0;
@@ -447,6 +412,8 @@ public class WarringStatesGame {
                             // go through the board to find the card from same country between ZhangYi and goal location
                             int k = 2;
                             int K = normaliseLoc(board[k]);
+                            // find ZhangYi's location
+                            char zyloc = setup.charAt(setup.indexOf('z') + 2);
                             int ZY = normaliseLoc(board[zyloc]);
 
                             // find all cards between Zhangyi and the destination, delete them at the same time
@@ -463,14 +430,11 @@ public class WarringStatesGame {
                                 k = k + 3;
                             }
 
-                            //TODO move ZY to his new position
+                            //To move ZY to his new position
                             //set old position to empty
-                            board[zyloc] = '/';
-                            board[zyloc-1] = '/';
-                            board[zyloc-2] = '/';
-                            //set new position to location of last move
-                            zyloc = board[p];
+                            board[zyloc] = move[i];
 
+                            //set new position to location of last move
 
                             setup = new String(board);
                             p = -1;
