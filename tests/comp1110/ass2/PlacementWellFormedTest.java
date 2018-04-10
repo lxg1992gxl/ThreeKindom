@@ -65,7 +65,7 @@ public class PlacementWellFormedTest {
     public void testBad() {
         Random r = new Random();
         for (int i = 0; i < BASE_ITERATIONS; i++) {
-            String badCard = CardPlacementWellFormed.getCardPlacementBadCard(r);
+            String badCard = CardPlacementWellFormedTest.getCardPlacementBadCard(r);
             assertFalse("Placement '" + badCard + "' is badly formed, but passed", WarringStatesGame.isPlacementWellFormed(badCard));
             String badLocation = TestUtility.getCardPlacementBadLocation(r);
             assertFalse("Placement '" + badLocation + "' is badly formed, but passed", WarringStatesGame.isPlacementWellFormed(badLocation));
