@@ -20,7 +20,7 @@ import static comp1110.ass2.TestUtility.*;
  * - the second character is numeric, and is a valid character number for that kingdom (9 for Zhang Yi)
  * - the third character is in the range A .. Z or 0..9 (location)
  */
-public class CardPlacementWellFormed {
+public class CardPlacementWellFormedTest {
     @Rule
     public Timeout globalTimeout = Timeout.millis(2000);
 
