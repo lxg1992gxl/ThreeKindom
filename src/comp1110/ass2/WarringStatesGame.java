@@ -379,7 +379,7 @@ public class WarringStatesGame {
     static boolean isMoveSequenceValid(String setup, String moveSequence) {
         // FIXME Task 6: determine whether a placement sequence is valid
         // check whether has empty string or initial out of range
-        if (moveSequence.length() > 36 || moveSequence == null || moveSequence == "" || setup == null || setup == "") {
+        if (moveSequence.length() > 36 || moveSequence == "" || setup == null || setup == "") {
             return false;
         } else {
             char[] move = moveSequence.toCharArray();
@@ -395,6 +395,10 @@ public class WarringStatesGame {
                     i = -1;
 
                 } else {
+                    // find ZhangYi's location
+                    char zyloc = setup.charAt(setup.indexOf('z') + 2);
+                    int ZY = normaliseLoc(board[zyloc]);
+
                     // update setup board with the new checked move
                     int p = 2;
                     while (p != -1 && p < setup.length()) {
@@ -405,24 +409,13 @@ public class WarringStatesGame {
                             char country = board[p - 2];
                             int P = normaliseLoc(loc);
 
-                            board[p] = '/';
-                            board[p - 1] = '/';
-                            board[p - 2] = '/';
-
                             // go through the board to find the card from same country between ZhangYi and goal location
                             int k = 2;
                             int K = normaliseLoc(board[k]);
-                            // find ZhangYi's location
-                            char zyloc = setup.charAt(setup.indexOf('z') + 2);
-                            int ZY = normaliseLoc(board[zyloc]);
 
                             // find all cards between Zhangyi and the destination, delete them at the same time
                             while (k < setup.length()) {
-                                if (sameCol(loc, board[k]) && country == board[k - 2] && Math.abs(K - ZY) < Math.abs(P - ZY)) {
-                                    board[k] = '/';
-                                    board[k - 1] = '/';
-                                    board[k - 2] = '/';
-                                } else if (sameRow(loc, board[k]) && country == board[k - 2] && Math.abs(K - ZY) < Math.abs(P - ZY)) {
+                                if ((country == board[k - 2]) && ((sameRow(loc, board[k]) || sameCol(loc, board[k]))) && ((P < K && K < ZY) || (ZY < K && K < P))) {
                                     board[k] = '/';
                                     board[k - 1] = '/';
                                     board[k - 2] = '/';
@@ -431,30 +424,32 @@ public class WarringStatesGame {
                             }
 
                             //To move ZY to his new position
+                            board[p - 1] = '9';
+                            board[p - 2] = 'z';
+
                             //set old position to empty
-                            board[zyloc] = move[i];
+                            board[zyloc] = '/';
+                            board[zyloc - 1] = '/';
+                            board[zyloc - 2] = '/';
 
-                            //set new position to location of last move
-
+                            //set new setup board
                             setup = new String(board);
                             p = -1;
+
                         } else {
                             p = p + 3;
                         }
                     }
-
-                    i++;
+                    i = i + 1;
                 }
             }
 
             // justify whether we check until the end of the moveSequence
-            if (i != -1) {
+            if (i == moveSequence.length()) {
                 return true;
             } else {
-                //System.out.println(i + " invalid sequence");
                 return false;
             }
-
         }
     }
 
