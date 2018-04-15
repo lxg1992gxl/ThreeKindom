@@ -1,6 +1,7 @@
 package comp1110.ass2;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -470,7 +471,7 @@ public class WarringStatesGame {
     public static String getSupporters(String setup, String moveSequence, int numPlayers, int playerId) {
         // FIXME Task 7: get the list of supporters for a given player after a sequence of moves
         // initialize the supporter
-        List<Character> sup = new ArrayList<>();
+        List<String> sup = new ArrayList<>();
         char[] mov = moveSequence.toCharArray();
 
         // make a loop to read all corresponding positions in the moveSequence
@@ -497,23 +498,18 @@ public class WarringStatesGame {
             // the normalised form for destination location
             int D = normaliseLoc(mov[i]);
 
-            // add supporter ID at the given destination
-            sup.add(country);
-            sup.add(sID);
-
-            // update the setup board
-            bd[setup.indexOf('z')] = '/';
-            bd[setup.indexOf('z') + 1] = '/';
-            bd[setup.indexOf('z') + 2] = '/';
-            bd[m - 2] = 'z';
-            bd[m - 1] = '9';
+            // add supporter String at the given destination
+            char[] a_arr = new char[]{country, sID};
+            String a_str = new String(a_arr);
+            sup.add(a_str);
 
             // add other supporters from the same country between ZhangYi and the destination
             for (int k = 0; k < setup.length(); k = k + 3) {
                 int K = normaliseLoc(bd[k+2]);
-                if ((country == bd[k]) && (sameRow(mov[i], bd[k+2]) || sameCol(mov[i], bd[k+2])) && ((D < K && K < ZY) || (ZY < K && K < D))) {
-                    sup.add(bd[k]);
-                    sup.add(bd[k+1]);
+                if ((bd[k] == country) && (sameRow(mov[i], bd[k+2]) || sameCol(mov[i], bd[k+2])) && ((D < K && K < ZY) || (ZY < K && K < D))) {
+                    char[] b_arr = new char[]{bd[k], bd[k+1]};
+                    String b_str = new String(b_arr);
+                    sup.add(b_str);
 
                     // update the setup board
                     bd[k] = '/';
@@ -522,16 +518,27 @@ public class WarringStatesGame {
                 }
             }
 
+            // update the setup board
+            bd[setup.indexOf('z')] = '/';
+            bd[setup.indexOf('z') + 1] = '/';
+            bd[setup.indexOf('z') + 2] = '/';
+            bd[m - 2] = 'z';
+            bd[m - 1] = '9';
+
             // have the new setup board for the next player
             setup = new String(bd);
         }
 
+        Collections.sort(sup);
+
         // transform the Character List to our required String type
-        char[] s_array = new char[sup.size()];
-        for (int m = 0; m < sup.size(); m++) {
-            s_array[m] = sup.get(m);
+        char[] s_arr = new char[2 * sup.size()];
+        for (int r = 0; r < sup.size(); r++) {
+            char[] r_arr = sup.get(r).toCharArray();
+            s_arr[2*r] = r_arr[0];
+            s_arr[2*r + 1] = r_arr[1];
         }
-        String supporter = new String (s_array);
+        String supporter = new String (s_arr);
 
         return supporter;
     }
