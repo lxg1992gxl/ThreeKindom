@@ -623,6 +623,77 @@ public class WarringStatesGame {
      */
     public static int[] getFlags(String setup, String moveSequence, int numPlayers) {
         // FIXME Task 8: determine which player controls the flag of each kingdom after a given sequence of moves
+        int[] kingdom = new int[7];
+        if (numPlayers == 2) {
+            String sup0 = getSupporters(setup, moveSequence, numPlayers, 0);
+            String sup1 = getSupporters(setup, moveSequence, numPlayers, 1);
+
+            // "Qin"
+            int m0 = 0;
+            int m1 = 0;
+            int n0 = sup0.indexOf('b');
+            int n1 = sup1.indexOf('b');
+            // d represents the double number of the corresponding country's appearance for the corresponding player
+            int d0 = n0 - m0;
+            int d1 = n1 - m1;
+
+            if (n0 == 0)
+            if (d0 > d1) {
+                kingdom[0] = 0;
+            }
+            else if (d0 < d1) {
+                kingdom[0] = 1;
+            }
+            else {
+                kingdom[0] = -1;
+            }
+
+            // "Qi"
+            m0 = n0;
+            m1 = n1;
+            n0 = sup0.indexOf('c');
+            n1 = sup1.indexOf('c');
+            // d represents the double number of the corresponding country's appearance for the corresponding player
+            int d0 = n0 - m0;
+            int d1 = n1 - m1;
+
+            if (d0 > d1) {
+                kingdom[0] = 0;
+            }
+            else if (d0 < d1) {
+                kingdom[0] = 1;
+            }
+            else {
+                kingdom[0] = -1;
+            }
+
+
+
+
+//            int a0 = 0;
+//            int a1 = 0;
+//            int b0 = 0;
+//            int b1 = 0;
+//            int c0 = 0;
+//            int c1 = 0;
+//            int d0 = 0;
+//            int d1 = 0;
+//            int e0 = 0;
+//            int e1 = 0;
+//            int f0 = 0;
+//            int f1 = 0;
+//            int g0 = 0;
+//            int g1 = 0;
+            for (int i = 0; i != -1 && i < sup0.length; i++) {
+
+                if (sup0[i] == 'a') {
+                    n0++;
+                }
+                if (sup1[i] == 'a') {
+                    n1++;
+                }
+            }
+        }
         return null;
     }
 
