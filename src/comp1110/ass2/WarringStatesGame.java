@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -469,16 +470,44 @@ public class WarringStatesGame {
     public static String getSupporters(String setup, String moveSequence, int numPlayers, int playerId) {
         // FIXME Task 7: get the list of supporters for a given player after a sequence of moves
         // initialize the supporter
-        String sup = null;
+        ArrayList<Character> sup = new ArrayList<>();
+        char[] mov = moveSequence.toCharArray();
+        char[] bd = setup.toCharArray();
+
+        // find ZhangYi's location
+        char zyloc = setup.charAt(setup.indexOf('z') + 2);
+        int ZY = normaliseLoc(zyloc);
 
         // make a loop to read all corresponding positions in the moveSequence
+        for (int i = playerId; i < moveSequence.length(); i = i + numPlayers) {
+            char country = setup.charAt(setup.indexOf(mov[i]) - 2);
+            // the normalised form for destination location
+            int D = normaliseLoc(mov[i]);
 
-        // get the destination supporter first
+            // add supporter ID at the given destination
+            sup.add(country);
+            sup.add(setup.charAt(setup.indexOf(mov[i]) - 1));
 
-            // get other supporters between ZhangYi and the destination
+            // add other supporters from the same country between ZhangYi and the destination
+            for (int k = 0; k < setup.length(); k = k + 3) {
+                int K = normaliseLoc(bd[k+2]);
+                if ((country == bd[k]) && (sameRow(mov[i], bd[k+2]) || sameCol(mov[i], bd[k+2])) && ((D < K && K < ZY) || (ZY < K && K < D))) {
+                    sup.add(bd[k]);
+                    sup.add(bd[k+1]);
+                }
+            }
 
-        // final return
-        return sup;
+        }
+
+        // transform the Character List to our required String type
+        char[] s_array = new char[sup.size()];
+        for (int m = 0; m < sup.size(); m++) {
+            s_array[m] = sup.get(m);
+        }
+        String supporter = new String (s_array);
+
+        return supporter;
+
     }
 
     /**
