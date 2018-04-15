@@ -458,14 +458,12 @@ public class WarringStatesGame {
                     }
                 }
             }
-            
             // justify whether we check until the end of the moveSequence
             if (i == -1) {
                 return false;
             } else {
                 return true;
             }
-
         }
     }
 
