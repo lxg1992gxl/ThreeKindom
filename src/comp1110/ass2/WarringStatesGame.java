@@ -475,7 +475,8 @@ public class WarringStatesGame {
         char[] mov = moveSequence.toCharArray();
 
         // make a loop to read all corresponding positions in the moveSequence
-        for (int i = playerId; i < moveSequence.length(); i = i + numPlayers) {
+        int i = 0;
+        while (i < moveSequence.length()) {
             char[] bd = setup.toCharArray();
 
             // find ZhangYi's location
@@ -498,21 +499,25 @@ public class WarringStatesGame {
             // the normalised form for destination location
             int D = normaliseLoc(mov[i]);
 
-            // add supporter String at the given destination
-            char[] a_arr = new char[]{country, sID};
-            String a_str = new String(a_arr);
-            sup.add(a_str);
-
+            // check whether it is in the playerID's loop
+            if (Math.abs(i - playerId) % numPlayers == 0) {
+                // add supporter String at the given destination
+                char[] a_arr = new char[]{country, sID};
+                String a_str = new String(a_arr);
+                sup.add(a_str);
+            }
 
             for (int k = 0; k < setup.length(); k = k + 3) {
                 int K = normaliseLoc(bd[k + 2]);
                 if (bd[k] == country) {
                     if (sameRow(mov[i], bd[k + 2]) || sameCol(mov[i], bd[k + 2])) {
                         if ((D < K && K < ZY) || (ZY < K && K < D)) {
-                            // add other supporters from the same country between ZhangYi and the destination
-                            char[] b_arr = new char[]{bd[k], bd[k + 1]};
-                            String b_str = new String(b_arr);
-                            sup.add(b_str);
+                            if (Math.abs(i - playerId) % numPlayers == 0) {
+                                // add other supporters from the same country between ZhangYi and the destination
+                                char[] b_arr = new char[]{bd[k], bd[k + 1]};
+                                String b_str = new String(b_arr);
+                                sup.add(b_str);
+                            }
 
                             // update the setup board
                             bd[k] = '/';
@@ -532,6 +537,8 @@ public class WarringStatesGame {
 
             // have the new setup board for the next player
             setup = new String(bd);
+
+            i++;
         }
 
         // Make the final supporters list in country order
