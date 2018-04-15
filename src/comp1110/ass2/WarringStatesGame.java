@@ -1,7 +1,7 @@
 package comp1110.ass2;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * This class provides the text interface for the Warring States game
@@ -470,23 +470,43 @@ public class WarringStatesGame {
     public static String getSupporters(String setup, String moveSequence, int numPlayers, int playerId) {
         // FIXME Task 7: get the list of supporters for a given player after a sequence of moves
         // initialize the supporter
-        ArrayList<Character> sup = new ArrayList<>();
+        List<Character> sup = new ArrayList<>();
         char[] mov = moveSequence.toCharArray();
-        char[] bd = setup.toCharArray();
-
-        // find ZhangYi's location
-        char zyloc = setup.charAt(setup.indexOf('z') + 2);
-        int ZY = normaliseLoc(zyloc);
 
         // make a loop to read all corresponding positions in the moveSequence
         for (int i = playerId; i < moveSequence.length(); i = i + numPlayers) {
-            char country = setup.charAt(setup.indexOf(mov[i]) - 2);
+            char[] bd = setup.toCharArray();
+
+            // find ZhangYi's location
+            char zyloc = setup.charAt(setup.indexOf('z') + 2);
+            int ZY = normaliseLoc(zyloc);
+
+            // find the destination location on setup board
+            int m = 2;
+            for (int p = 0; p != -1 && m < setup.length(); m = m + 3) {
+                if (bd[m] == mov[i]) {
+                    p = -1;
+                }
+            }
+            m = m - 3;
+
+            //find the corresponding card at destination position
+            char country = bd[m - 2];
+            char sID = bd[m - 1];
+
             // the normalised form for destination location
             int D = normaliseLoc(mov[i]);
 
             // add supporter ID at the given destination
             sup.add(country);
-            sup.add(setup.charAt(setup.indexOf(mov[i]) - 1));
+            sup.add(sID);
+
+            // update the setup board
+            bd[setup.indexOf('z')] = '/';
+            bd[setup.indexOf('z') + 1] = '/';
+            bd[setup.indexOf('z') + 2] = '/';
+            bd[m - 2] = 'z';
+            bd[m - 1] = '9';
 
             // add other supporters from the same country between ZhangYi and the destination
             for (int k = 0; k < setup.length(); k = k + 3) {
@@ -494,9 +514,16 @@ public class WarringStatesGame {
                 if ((country == bd[k]) && (sameRow(mov[i], bd[k+2]) || sameCol(mov[i], bd[k+2])) && ((D < K && K < ZY) || (ZY < K && K < D))) {
                     sup.add(bd[k]);
                     sup.add(bd[k+1]);
+
+                    // update the setup board
+                    bd[k] = '/';
+                    bd[k+1] = '/';
+                    bd[k+2] = '/';
                 }
             }
 
+            // have the new setup board for the next player
+            setup = new String(bd);
         }
 
         // transform the Character List to our required String type
@@ -507,7 +534,6 @@ public class WarringStatesGame {
         String supporter = new String (s_array);
 
         return supporter;
-
     }
 
     /**
