@@ -503,18 +503,23 @@ public class WarringStatesGame {
             String a_str = new String(a_arr);
             sup.add(a_str);
 
-            // add other supporters from the same country between ZhangYi and the destination
-            for (int k = 0; k < setup.length(); k = k + 3) {
-                int K = normaliseLoc(bd[k+2]);
-                if ((bd[k] == country) && (sameRow(mov[i], bd[k+2]) || sameCol(mov[i], bd[k+2])) && ((D < K && K < ZY) || (ZY < K && K < D))) {
-                    char[] b_arr = new char[]{bd[k], bd[k+1]};
-                    String b_str = new String(b_arr);
-                    sup.add(b_str);
 
-                    // update the setup board
-                    bd[k] = '/';
-                    bd[k+1] = '/';
-                    bd[k+2] = '/';
+            for (int k = 0; k < setup.length(); k = k + 3) {
+                int K = normaliseLoc(bd[k + 2]);
+                if (bd[k] == country) {
+                    if (sameRow(mov[i], bd[k + 2]) || sameCol(mov[i], bd[k + 2])) {
+                        if ((D < K && K < ZY) || (ZY < K && K < D)) {
+                            // add other supporters from the same country between ZhangYi and the destination
+                            char[] b_arr = new char[]{bd[k], bd[k + 1]};
+                            String b_str = new String(b_arr);
+                            sup.add(b_str);
+
+                            // update the setup board
+                            bd[k] = '/';
+                            bd[k + 1] = '/';
+                            bd[k + 2] = '/';
+                        }
+                    }
                 }
             }
 
@@ -529,6 +534,7 @@ public class WarringStatesGame {
             setup = new String(bd);
         }
 
+        // Make the final supporters list in country order
         Collections.sort(sup);
 
         // transform the Character List to our required String type
@@ -538,9 +544,8 @@ public class WarringStatesGame {
             s_arr[2*r] = r_arr[0];
             s_arr[2*r + 1] = r_arr[1];
         }
-        String supporter = new String (s_arr);
 
-        return supporter;
+        return (new String (s_arr));
     }
 
     /**
