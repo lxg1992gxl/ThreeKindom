@@ -623,412 +623,93 @@ public class WarringStatesGame {
      */
     public static int[] getFlags(String setup, String moveSequence, int numPlayers) {
         // FIXME Task 8: determine which player controls the flag of each kingdom after a given sequence of moves
+        char[] mov = moveSequence.toCharArray();
+        char[] bd = setup.toCharArray();
+
+        // initialize
         int[] kingdom = new int[7];
 
-        char[] sup0 = getSupporters(setup, moveSequence, numPlayers, 0).toCharArray();
-        char[] sup1 = getSupporters(setup, moveSequence, numPlayers, 1).toCharArray();
+        List<String> sup0 = new ArrayList<>();
+        List<String> sup1 = new ArrayList<>();
+        List<String> sup2 = new ArrayList<>();
+        List<String> sup3 = new ArrayList<>();
 
-        // Two Players' condition
-        if (numPlayers == 2) {
-            // "Qin"
-            int n0 = 0;
-            int n1 = 0;
-            for (int i = 0; i < sup0.length; i++) {
-                if (sup0[i] == 'a') {
-                    n0++;
-                }
-            }
-            for (int i = 0; i < sup1.length; i++) {
-                if (sup1[i] == 'a') {
-                    n1++;
-                }
-            }
-            if (n0 > n1) {
-                kingdom[0] = 0;
-            } else if (n0 < n1) {
-                kingdom[0] = 1;
-            } else {
-                kingdom[0] = -1;
-            }
+        // ZhangYi's initial location
+        char zyloc = setup.charAt(setup.indexOf('z') + 2);
 
-            // "Qi"
-            n0 = 0;
-            n1 = 0;
-            for (int i = 0; i < sup0.length; i++) {
-                if (sup0[i] == 'b') {
-                    n0++;
+        int i = 0;
+        while (i < moveSequence.length()) {
+
+            int ZY = normaliseLoc(zyloc);
+
+            // destination location on setup board
+            int m = 2;
+            for (int p = 0; p != -1 && m < setup.length(); m = m + 3) {
+                if (bd[m] == mov[i]) {
+                    p = -1;
                 }
             }
-            for (int i = 0; i < sup1.length; i++) {
-                if (sup1[i] == 'b') {
-                    n1++;
-                }
-            }
-            if (n0 > n1) {
-                kingdom[1] = 0;
-            } else if (n0 < n1) {
-                kingdom[1] = 1;
+            m = m - 3;
+
+            // the corresponding card at destination position
+            char country = bd[m - 2];
+            char sID = bd[m - 1];
+            int D = normaliseLoc(mov[i]);
+
+            // add supporter String at the given destination
+            char[] a_arr = new char[]{country, sID};
+            String a_str = new String(a_arr);
+            if (i % numPlayers == 0) {
+                sup0.add(a_str);
+            } else if (i % numPlayers == 1) {
+                sup1.add(a_str);
+            } else if (i % numPlayers == 2) {
+                sup2.add(a_str);
             } else {
-                kingdom[1] = -1;
+                sup3.add(a_str);
             }
 
-            // "Chu"
-            n0 = 0;
-            n1 = 0;
-            for (int i = 0; i < sup0.length; i++) {
-                if (sup0[i] == 'c') {
-                    n0++;
+            // record the number of cards collected from the same country this time
+            int number = 1;
+            for (int k = 0; k < setup.length(); k = k + 3) {
+                int K = normaliseLoc(bd[k + 2]);
+                if (bd[k] == country) {
+                    if ((sameRow(mov[i], bd[k + 2]) && sameRow(zyloc, bd[k + 2])) || (sameCol(mov[i], bd[k + 2]) && sameCol(zyloc, bd[k + 2]))) {
+                        if ((D < K && K < ZY) || (ZY < K && K < D)) {
+                            // add other supporters from the same country between ZhangYi and the destination
+                            char[] b_arr = new char[]{bd[k], bd[k + 1]};
+                            String b_str = new String(b_arr);
+
+                            if (!sup0.contains(b_str) && !sup1.contains(b_str) && !sup2.contains(b_str) && !sup3.contains(b_str)) {
+                                if (i % numPlayers == 0) {
+                                    sup0.add(b_str);
+                                    number++;
+                                } else if (i % numPlayers == 1) {
+                                    sup1.add(b_str);
+                                    number++;
+                                } else if (i % numPlayers == 2) {
+                                    sup2.add(b_str);
+                                    number++;
+                                } else {
+                                    sup3.add(b_str);
+                                    number++;
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-            for (int i = 0; i < sup1.length; i++) {
-                if (sup1[i] == 'c') {
-                    n1++;
-                }
-            }
-            if (n0 > n1) {
-                kingdom[2] = 0;
-            } else if (n0 < n1) {
-                kingdom[2] = 1;
-            } else {
-                kingdom[2] = -1;
             }
 
-            // "Zhao"
-            n0 = 0;
-            n1 = 0;
-            for (int i = 0; i < sup0.length; i++) {
-                if (sup0[i] == 'd') {
-                    n0++;
-                }
-            }
-            for (int i = 0; i < sup1.length; i++) {
-                if (sup1[i] == 'd') {
-                    n1++;
-                }
-            }
-            if (n0 > n1) {
-                kingdom[3] = 0;
-            } else if (n0 < n1) {
-                kingdom[3] = 1;
-            } else {
-                kingdom[3] = -1;
-            }
+            // compare the number of the collected cards with cards from the same country in other players' supporter list
 
-            // "Han"
-            n0 = 0;
-            n1 = 0;
-            for (int i = 0; i < sup0.length; i++) {
-                if (sup0[i] == 'e') {
-                    n0++;
-                }
-            }
-            for (int i = 0; i < sup1.length; i++) {
-                if (sup1[i] == 'e') {
-                    n1++;
-                }
-            }
-            if (n0 > n1) {
-                kingdom[4] = 0;
-            } else if (n0 < n1) {
-                kingdom[4] = 1;
-            } else {
-                kingdom[4] = -1;
-            }
+            // update kingdom array
 
-            // "Wei"
-            n0 = 0;
-            n1 = 0;
-            for (int i = 0; i < sup0.length; i++) {
-                if (sup0[i] == 'f') {
-                    n0++;
-                }
-            }
-            for (int i = 0; i < sup1.length; i++) {
-                if (sup1[i] == 'f') {
-                    n1++;
-                }
-            }
-            if (n0 > n1) {
-                kingdom[5] = 0;
-            } else if (n0 < n1) {
-                kingdom[5] = 1;
-            } else {
-                kingdom[5] = -1;
-            }
-
-            // "Yan"
-            n0 = 0;
-            n1 = 0;
-            for (int i = 0; i < sup0.length; i++) {
-                if (sup0[i] == 'g') {
-                    n0++;
-                }
-            }
-            for (int i = 0; i < sup1.length; i++) {
-                if (sup1[i] == 'g') {
-                    n1++;
-                }
-            }
-            if (n0 > n1) {
-                kingdom[6] = 0;
-            } else if (n0 < n1) {
-                kingdom[6] = 1;
-            } else {
-                kingdom[6] = -1;
-            }
+            zyloc = mov[i];
+            i++;
         }
-        // Three Players' condition
-        else if (numPlayers == 3) {
-            char[] sup2 = getSupporters(setup, moveSequence, numPlayers, 2).toCharArray();
 
-            // "Qin"
-            int n0 = 0;
-            int n1 = 0;
-            int n2 = 0;
-            for (int i = 0; i < sup0.length; i++) {
-                if (sup0[i] == 'a') {
-                    n0++;
-                }
-            }
-            for (int i = 0; i < sup1.length; i++) {
-                if (sup1[i] == 'a') {
-                    n1++;
-                }
-            }
-            for (int i = 0; i < sup2.length; i++) {
-                if (sup2[i] == 'a') {
-                    n2++;
-                }
-            }
-            if (n0 > n1 && n0 > n2) {
-                kingdom[0] = 0;
-            } else if (n1 > n0 && n1 > n2) {
-                kingdom[0] = 1;
-            } else if (n2 > n0 && n2 > n1) {
-                kingdom[0] = 2;
-            } else {
-                kingdom[0] = -1;
-            }
-
-            // "Qi"
-            n0 = 0;
-            n1 = 0;
-            n2 = 0;
-            for (int i = 0; i < sup0.length; i++) {
-                if (sup0[i] == 'b') {
-                    n0++;
-                }
-            }
-            for (int i = 0; i < sup1.length; i++) {
-                if (sup1[i] == 'b') {
-                    n1++;
-                }
-            }
-            for (int i = 0; i < sup2.length; i++) {
-                if (sup2[i] == 'b') {
-                    n2++;
-                }
-            }
-            if (n0 > n1 && n0 > n2) {
-                kingdom[1] = 0;
-            } else if (n1 > n0 && n1 > n2) {
-                kingdom[1] = 1;
-            } else if (n2 > n0 && n2 > n1) {
-                kingdom[1] = 2;
-            } else {
-                kingdom[1] = -1;
-            }
-
-            // "Chu"
-            n0 = 0;
-            n1 = 0;
-            n2 = 0;
-            for (int i = 0; i < sup0.length; i++) {
-                if (sup0[i] == 'c') {
-                    n0++;
-                }
-            }
-            for (int i = 0; i < sup1.length; i++) {
-                if (sup1[i] == 'c') {
-                    n1++;
-                }
-            }
-            for (int i = 0; i < sup2.length; i++) {
-                if (sup2[i] == 'c') {
-                    n2++;
-                }
-            }
-            if (n0 > n1 && n0 > n2) {
-                kingdom[2] = 0;
-            } else if (n1 > n0 && n1 > n2) {
-                kingdom[2] = 1;
-            } else if (n2 > n0 && n2 > n1) {
-                kingdom[2] = 2;
-            } else {
-                kingdom[2] = -1;
-            }
-
-            // "Zhao"
-            n0 = 0;
-            n1 = 0;
-            n2 = 0;
-            for (int i = 0; i < sup0.length; i++) {
-                if (sup0[i] == 'd') {
-                    n0++;
-                }
-            }
-            for (int i = 0; i < sup1.length; i++) {
-                if (sup1[i] == 'd') {
-                    n1++;
-                }
-            }
-            for (int i = 0; i < sup2.length; i++) {
-                if (sup2[i] == 'd') {
-                    n2++;
-                }
-            }
-            if (n0 > n1 && n0 > n2) {
-                kingdom[3] = 0;
-            } else if (n1 > n0 && n1 > n2) {
-                kingdom[3] = 1;
-            } else if (n2 > n0 && n2 > n1) {
-                kingdom[3] = 2;
-            } else {
-                kingdom[3] = -1;
-            }
-
-            // "Han"
-            n0 = 0;
-            n1 = 0;
-            n2 = 0;
-            for (int i = 0; i < sup0.length; i++) {
-                if (sup0[i] == 'e') {
-                    n0++;
-                }
-            }
-            for (int i = 0; i < sup1.length; i++) {
-                if (sup1[i] == 'e') {
-                    n1++;
-                }
-            }
-            for (int i = 0; i < sup2.length; i++) {
-                if (sup2[i] == 'e') {
-                    n2++;
-                }
-            }
-            if (n0 > n1 && n0 > n2) {
-                kingdom[4] = 0;
-            } else if (n1 > n0 && n1 > n2) {
-                kingdom[4] = 1;
-            } else if (n2 > n0 && n2 > n1) {
-                kingdom[4] = 2;
-            } else {
-                kingdom[4] = -1;
-            }
-
-            // "Wei"
-            n0 = 0;
-            n1 = 0;
-            n2 = 0;
-            for (int i = 0; i < sup0.length; i++) {
-                if (sup0[i] == 'f') {
-                    n0++;
-                }
-            }
-            for (int i = 0; i < sup1.length; i++) {
-                if (sup1[i] == 'f') {
-                    n1++;
-                }
-            }
-            for (int i = 0; i < sup2.length; i++) {
-                if (sup2[i] == 'f') {
-                    n2++;
-                }
-            }
-            if (n0 > n1 && n0 > n2) {
-                kingdom[5] = 0;
-            } else if (n1 > n0 && n1 > n2) {
-                kingdom[5] = 1;
-            } else if (n2 > n0 && n2 > n1) {
-                kingdom[5] = 2;
-            } else {
-                kingdom[5] = -1;
-            }
-
-            // "Yan"
-            n0 = 0;
-            n1 = 0;
-            n2 = 0;
-            for (int i = 0; i < sup0.length; i++) {
-                if (sup0[i] == 'g') {
-                    n0++;
-                }
-            }
-            for (int i = 0; i < sup1.length; i++) {
-                if (sup1[i] == 'g') {
-                    n1++;
-                }
-            }
-            for (int i = 0; i < sup2.length; i++) {
-                if (sup2[i] == 'g') {
-                    n2++;
-                }
-            }
-            if (n0 > n1 && n0 > n2) {
-                kingdom[6] = 0;
-            } else if (n1 > n0 && n1 > n2) {
-                kingdom[6] = 1;
-            } else if (n2 > n0 && n2 > n1) {
-                kingdom[6] = 2;
-            } else {
-                kingdom[6] = -1;
-            }
-        }
-        // Four Players' condition
-        else {
-            char[] sup2 = getSupporters(setup, moveSequence, numPlayers, 2).toCharArray();
-            char[] sup3 = getSupporters(setup, moveSequence, numPlayers, 3).toCharArray();
-
-            // "Qin"
-            int n0 = 0;
-            int n1 = 0;
-            int n2 = 0;
-            int n3 = 0;
-            for (int i = 0; i < sup0.length; i++) {
-                if (sup0[i] == 'a') {
-                    n0++;
-                }
-            }
-            for (int i = 0; i < sup1.length; i++) {
-                if (sup1[i] == 'a') {
-                    n1++;
-                }
-            }
-            for (int i = 0; i < sup2.length; i++) {
-                if (sup2[i] == 'a') {
-                    n2++;
-                }
-            }
-            for (int i = 0; i < sup3.length; i++) {
-                if (sup3[i] == 'a') {
-                    n3++;
-                }
-            }
-            if (n0 > n1 && n0 > n2 && n0 > n2) {
-                kingdom[0] = 0;
-            } else if (n1 > n0 && n1 > n2) {
-                kingdom[0] = 1;
-            } else if (n2 > n0 && n2 > n1) {
-                kingdom[0] = 2;
-            } else {
-                kingdom[0] = -1;
-            }
-
-
-        }
+        return kingdom;
     }
-
-}
 
     /**
      * Generate a legal move, given the provided placement string.
