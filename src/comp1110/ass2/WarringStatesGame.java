@@ -469,19 +469,24 @@ public class WarringStatesGame {
      * @return the list of supporters for the given player
      */
     public static String getSupporters(String setup, String moveSequence, int numPlayers, int playerId) {
-        // FIXME Task 7: get the list of supporters for a given player after a sequence of moves
-        // initialize the supporter
-        List<String> sup = new ArrayList<>();
+        // Task 7: get the list of supporters for a given player after a sequence of moves
+
         char[] mov = moveSequence.toCharArray();
+
+        // initialize the supporter
+        List<String> sup0 = new ArrayList<>();
+        List<String> sup1 = new ArrayList<>();
+        List<String> sup2 = new ArrayList<>();
+        List<String> sup3 = new ArrayList<>();
+
+        // find ZhangYi's initial location for setup board
+        char zyloc = setup.charAt(setup.indexOf('z') + 2);
 
         // make a loop to read all corresponding positions in the moveSequence
         int i = 0;
         while (i < moveSequence.length()) {
-            char[] bd = setup.toCharArray();
-
-            // find ZhangYi's location
-            char zyloc = setup.charAt(setup.indexOf('z') + 2);
             int ZY = normaliseLoc(zyloc);
+            char[] bd = setup.toCharArray();
 
             // find the destination location on setup board
             int m = 2;
@@ -499,60 +504,96 @@ public class WarringStatesGame {
             // the normalised form for destination location
             int D = normaliseLoc(mov[i]);
 
-            // check whether it is in the playerID's loop
-            if (Math.abs(i - playerId) % numPlayers == 0) {
-                // add supporter String at the given destination
-                char[] a_arr = new char[]{country, sID};
-                String a_str = new String(a_arr);
-                sup.add(a_str);
+            // add supporter String at the given destination
+            char[] a_arr = new char[]{country, sID};
+            String a_str = new String(a_arr);
+            // check for different player
+            if (i % numPlayers == 0) {
+                sup0.add(a_str);
+            } else if (i % numPlayers == 1) {
+                sup1.add(a_str);
+            } else if (i % numPlayers == 2) {
+                sup2.add(a_str);
+            } else {
+                sup3.add(a_str);
             }
 
             for (int k = 0; k < setup.length(); k = k + 3) {
                 int K = normaliseLoc(bd[k + 2]);
+                // the card belongs to same country with the destination
                 if (bd[k] == country) {
-                    if (sameRow(mov[i], bd[k + 2]) || sameCol(mov[i], bd[k + 2])) {
+                    // the card is in the same row or column with ZhangYi and destination position
+                    if ((sameRow(mov[i], bd[k + 2]) && sameRow(zyloc, bd[k + 2])) || (sameCol(mov[i], bd[k + 2]) && sameCol(zyloc, bd[k + 2]))) {
+                        // the card is between ZhangYi and the destination position
                         if ((D < K && K < ZY) || (ZY < K && K < D)) {
-                            if (Math.abs(i - playerId) % numPlayers == 0) {
-                                // add other supporters from the same country between ZhangYi and the destination
-                                char[] b_arr = new char[]{bd[k], bd[k + 1]};
-                                String b_str = new String(b_arr);
-                                sup.add(b_str);
+                            // add other supporters from the same country between ZhangYi and the destination
+                            char[] b_arr = new char[]{bd[k], bd[k + 1]};
+                            String b_str = new String(b_arr);
+
+                            // the supporter ID have not been contained in other player's supporters list
+                            if (!sup0.contains(b_str) && !sup1.contains(b_str) && !sup2.contains(b_str) && !sup3.contains(b_str)) {
+
+                                if (i % numPlayers == 0) {
+                                    sup0.add(b_str);
+                                } else if (i % numPlayers == 1) {
+                                    sup1.add(b_str);
+                                } else if (i % numPlayers == 2) {
+                                    sup2.add(b_str);
+                                } else {
+                                    sup3.add(b_str);
+                                }
+
                             }
 
-                            // update the setup board
-                            bd[k] = '/';
-                            bd[k + 1] = '/';
-                            bd[k + 2] = '/';
                         }
                     }
                 }
             }
 
-            // update the setup board
-            bd[setup.indexOf('z')] = '/';
-            bd[setup.indexOf('z') + 1] = '/';
-            bd[setup.indexOf('z') + 2] = '/';
-            bd[m - 2] = 'z';
-            bd[m - 1] = '9';
-
-            // have the new setup board for the next player
-            setup = new String(bd);
+            // Update ZhangYi's location
+            zyloc = mov[i];
 
             i++;
         }
 
-        // Make the final supporters list in country order
-        Collections.sort(sup);
-
-        // transform the Character List to our required String type
-        char[] s_arr = new char[2 * sup.size()];
-        for (int r = 0; r < sup.size(); r++) {
-            char[] r_arr = sup.get(r).toCharArray();
-            s_arr[2*r] = r_arr[0];
-            s_arr[2*r + 1] = r_arr[1];
+        char[] s_arr;
+        if (playerId == 0) {
+            // Make the final supporters list in country order
+            Collections.sort(sup0);
+            // transform the Character List to our required String type
+            s_arr = new char[2 * sup0.size()];
+            for (int r = 0; r < sup0.size(); r++) {
+                char[] r_arr = sup0.get(r).toCharArray();
+                s_arr[2 * r] = r_arr[0];
+                s_arr[2 * r + 1] = r_arr[1];
+            }
+        } else if (playerId == 1) {
+            Collections.sort(sup1);
+            s_arr = new char[2 * sup1.size()];
+            for (int r = 0; r < sup1.size(); r++) {
+                char[] r_arr = sup1.get(r).toCharArray();
+                s_arr[2 * r] = r_arr[0];
+                s_arr[2 * r + 1] = r_arr[1];
+            }
+        } else if (playerId == 2) {
+            Collections.sort(sup2);
+            s_arr = new char[2 * sup2.size()];
+            for (int r = 0; r < sup2.size(); r++) {
+                char[] r_arr = sup2.get(r).toCharArray();
+                s_arr[2 * r] = r_arr[0];
+                s_arr[2 * r + 1] = r_arr[1];
+            }
+        } else {
+            Collections.sort(sup3);
+            s_arr = new char[2 * sup3.size()];
+            for (int r = 0; r < sup3.size(); r++) {
+                char[] r_arr = sup3.get(r).toCharArray();
+                s_arr[2 * r] = r_arr[0];
+                s_arr[2 * r + 1] = r_arr[1];
+            }
         }
 
-        return (new String (s_arr));
+        return (new String(s_arr));
     }
 
     /**
