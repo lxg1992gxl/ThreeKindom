@@ -48,7 +48,7 @@ public class Viewer extends Application {
      */
 
     void makePlacement(String placement) {
-        // FIXME Task 4: implement the simple placement viewer
+        // Task 4: implement the simple placement viewer
 
         //remove previously on borad
         flow.getChildren().removeAll(flow.getChildren());
