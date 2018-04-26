@@ -2,7 +2,7 @@ package comp1110.ass2;
 
 import java.util.*;
 
-public class TestUtility {
+class TestUtility {
     static final int BASE_ITERATIONS = 100;
     static final int PIECES = 8;
     static final int ORIENTATIONS = 8;

@@ -4,9 +4,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
 
+import java.util.HashSet;
 import java.util.Random;
 
 import static comp1110.ass2.TestUtility.PLACEMENTS;
+import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -29,8 +31,7 @@ public class GetSupportersTest {
             for (int j = 0; j < TestUtility.MOVE_SEQUENCES[i].length; j++) {
                 String moveSequence = TestUtility.MOVE_SEQUENCES[i][j];
                 for (int p = 0; p < 4; p++) {
-                    String supporters = WarringStatesGame.getSupporters(setup, moveSequence, 4, p);
-                    assertTrue("Expected " + TestUtility.SUPPORTERS[i][j][p] + " but got " + supporters, TestUtility.SUPPORTERS[i][j][p].equals(supporters));
+                    checkSupporters(TestUtility.SUPPORTERS[i][j][p], setup, moveSequence, p);
                 }
             }
         }
@@ -45,9 +46,10 @@ public class GetSupportersTest {
                 String moveSequence = TestUtility.MOVE_SEQUENCES[i][j];
                 for (int p = 0; p < 4; p++) {
                     String supporters = WarringStatesGame.getSupporters(setup, moveSequence, 4, p);
-                    int victim = r.nextInt((supporters.length())/2-1);
-                    String victimStr = supporters.substring(victim*2,(victim+1)*2);
-                    supporters = supporters.substring(0,victim*2) + supporters.substring((victim+1)*2);
+                    assertNotNull(supporters);
+                    int victim = r.nextInt((supporters.length()) / 2 - 1);
+                    String victimStr = supporters.substring(victim * 2, (victim + 1) * 2);
+                    supporters = supporters.substring(0, victim * 2) + supporters.substring((victim + 1) * 2);
                     assertFalse("Missing supporter " + victimStr + ", expected " + TestUtility.SUPPORTERS[i][j][p], TestUtility.SUPPORTERS[i][j][p].equals(supporters));
                 }
             }
@@ -64,9 +66,10 @@ public class GetSupportersTest {
                 String moveSequence = TestUtility.MOVE_SEQUENCES[i][j];
                 for (int p = 0; p < 4; p++) {
                     String supporters = WarringStatesGame.getSupporters(setup, moveSequence, 4, p);
-                    String supportersNextPlayer = WarringStatesGame.getSupporters(setup, moveSequence, 4, (p+1)%4);
-                    int victim = r.nextInt((supportersNextPlayer.length())/2-1);
-                    String victimStr = supportersNextPlayer.substring(victim*2,(victim+1)*2);
+                    String supportersNextPlayer = WarringStatesGame.getSupporters(setup, moveSequence, 4, (p + 1) % 4);
+                    assertNotNull(supportersNextPlayer);
+                    int victim = r.nextInt((supportersNextPlayer.length()) / 2 - 1);
+                    String victimStr = supportersNextPlayer.substring(victim * 2, (victim + 1) * 2);
                     supporters = supporters + victimStr;
                     assertFalse("Unexpected supporter " + victimStr + ", expected only " + TestUtility.SUPPORTERS[i][j][p], TestUtility.SUPPORTERS[i][j][p].equals(supporters));
                 }
@@ -76,7 +79,28 @@ public class GetSupportersTest {
     }
 
     private void checkSimpleValid() {
-        String supporters = WarringStatesGame.getSupporters(PLACEMENTS[0], TestUtility.MOVE_SEQUENCES[0][0], 4, 0);
-        assertTrue("Expected " + TestUtility.SUPPORTERS[0][0][0] + " but got " + supporters, TestUtility.SUPPORTERS[0][0][0].equals(supporters));
+        checkSupporters(TestUtility.SUPPORTERS[0][0][0], PLACEMENTS[0], TestUtility.MOVE_SEQUENCES[0][0], 0);
+    }
+
+    private void checkSupporters(String expected, String setup, String moveSequence, int playerNum) {
+        String actual = WarringStatesGame.getSupporters(setup, moveSequence, 4, playerNum);
+        String testDescription = "getSupporters for 4 players setup " + setup + " moveSequence " + moveSequence + " playerNum " + playerNum + ": ";
+        assertTrue(testDescription + ": supporter string is null", actual != null);
+        assertTrue(testDescription + "supporter string is of length " + actual.length() + ": should be a sequence of two-character card IDs", actual.length() % 2 == 0);
+        HashSet<String> s = new HashSet<>();
+        for (int i = 0; i < actual.length(); i += 2) {
+            String supporter = actual.substring(i, i + 2);
+            assertTrue(testDescription + "found duplicated supporter " + supporter, s.add(supporter));
+        }
+        HashSet<String> e = new HashSet<>();
+        for (int i = 0; i < expected.length(); i += 2) {
+            e.add(expected.substring(i, i + 2));
+        }
+        for (String c : e) {
+            assertTrue(testDescription + "did not find expected supporter " + c, s.contains(c));
+        }
+        for (String c : s) {
+            assertTrue(testDescription + "found unexpected supporter " + c, e.contains(c));
+        }
     }
 }
