@@ -728,6 +728,16 @@ public class WarringStatesGame {
      */
     public static char generateMove(String placement) {
         // FIXME Task 10: generate a legal move
+        //get Zhang Yi's current location
+
+        
+
         return '\0';
+
+        /** find Zhang Yi's current location
+         * location char for same row columns
+         * check for whether card at destination
+         * check for no further away cards
+         */
     }
 }

@@ -33,7 +33,7 @@ public class Game extends Application {
 
         primaryStage.setTitle("Warring States");
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
-        
+
         primaryStage.setScene(scene);
         primaryStage.show();
         //task 9
