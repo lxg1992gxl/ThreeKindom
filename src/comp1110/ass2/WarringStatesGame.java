@@ -624,13 +624,6 @@ public class WarringStatesGame {
         return (new String(s_arr));
     }
 
-    public static void main(String[] args) {
-        System.out.println(WarringStatesGame.getSupporters("c2Kd0Lc3Qc4Vd4Ob0Xb10e0Rb33b64a2Jb5Wb4Ng16f2Za31c09g0Aa0Bf1Ca1Dd1Ue3Ha7Yc1Tz92d35d28f0Mb27a6Pc5Ea4Ge1Fe2Ia5S","WSGACUXT584MNPD1YZ39FBEQ",3,0));
-        System.out.println(WarringStatesGame.getSupporters("c2Kd0Lc3Qc4Vd4Ob0Xb10e0Rb33b64a2Jb5Wb4Ng16f2Za31c09g0Aa0Bf1Ca1Dd1Ue3Ha7Yc1Tz92d35d28f0Mb27a6Pc5Ea4Ge1Fe2Ia5S","WSGACUXT584MNPD1YZ39FBEQ",3,1));
-        System.out.println(WarringStatesGame.getSupporters("c2Kd0Lc3Qc4Vd4Ob0Xb10e0Rb33b64a2Jb5Wb4Ng16f2Za31c09g0Aa0Bf1Ca1Dd1Ue3Ha7Yc1Tz92d35d28f0Mb27a6Pc5Ea4Ge1Fe2Ia5S","WSGACUXT584MNPD1YZ39FBEQ",3,2));
-    }
-
-
 
     /**
      * Given a setup and move sequence, determine which player controls the flag of each kingdom
@@ -650,7 +643,7 @@ public class WarringStatesGame {
      * If no player controls a particular house, the element for that house will have the value -1.
      */
     public static int[] getFlags(String setup, String moveSequence, int numPlayers) {
-        // FIXME Task 8: determine which player controls the flag of each kingdom after a given sequence of moves
+        // Task 8: determine which player controls the flag of each kingdom after a given sequence of moves
 
         char[] mov = moveSequence.toCharArray();
         char[] bd = setup.toCharArray();
@@ -883,13 +876,7 @@ public class WarringStatesGame {
 
             }
             i++;
-
-            for(int a = 0; a < flags.length-1; a++){
-                System.out.print(flags[a]+"  ");
-            }
-            System.out.println(flags[6]);
         }
-        System.out.println(moveSequence.length());
 
         return flags;
     }
