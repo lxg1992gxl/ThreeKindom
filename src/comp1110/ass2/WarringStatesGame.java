@@ -731,26 +731,22 @@ public class WarringStatesGame {
                                     sup0.add(bd[k]);
                                     sup0.add(bd[k + 1]);
                                     sup00.add(b_str);
-                                    cardsNum++;
                                 } else if (i % numPlayers == 1) {
                                     sup1.add(bd[k]);
                                     sup1.add(bd[k + 1]);
                                     sup01.add(b_str);
-                                    cardsNum++;
                                 } else if (i % numPlayers == 2) {
                                     sup2.add(bd[k]);
                                     sup2.add(bd[k + 1]);
                                     sup02.add(b_str);
-                                    cardsNum++;
                                 } else {
                                     sup3.add(bd[k]);
                                     sup3.add(bd[k + 1]);
                                     sup03.add(b_str);
-                                    cardsNum++;
                                 }
+                                cardsNum++;
 
                             }
-
                         }
                     }
                 }
@@ -832,7 +828,7 @@ public class WarringStatesGame {
                 }
 
                 // check whether the current player holds an equal or greater number of characters of a country than the current flag owner
-                if (cardsNum >= flagCardsNum || flagOwner == -1) {
+                if (cardsNum >= flagCardsNum) {
                     if (country == 'a') {
                         flags[0] = currentPlayer;
                     } else if (country == 'b') {
