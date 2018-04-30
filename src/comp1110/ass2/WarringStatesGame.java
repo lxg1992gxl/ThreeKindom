@@ -383,99 +383,99 @@ public class WarringStatesGame {
     static boolean isMoveSequenceValid(String setup, String moveSequence) {
         // FIXME Task 6: determine whether a placement sequence is valid
         // check whether has empty string or initial out of range
-        if (moveSequence.length() > 36|| moveSequence == "" || setup == null || setup == "") {
+        if (moveSequence.length() > 36 || moveSequence == "" || setup == null || setup == "") {
             return false;
-        } else if (!isPlacementWellFormed(setup)){
-            return  false;
-        }
-        else {
-                char[] move = moveSequence.toCharArray();
+        } else if (!isPlacementWellFormed(setup)) {
+            return false;
+        } else {
+            char[] move = moveSequence.toCharArray();
 
-                for (int i= 0; i<36;i++){  //check duplication of moveSequence
-                    int count = 0;
-                    for (int k= 0; k<moveSequence.length();k++) {
-                        if (i == normaliseLoc(move[k])) {
-                            count += 1;
-                        }
-                    }
-                    if (count>1){
-                        return false;
+            for (int i = 0; i < 36; i++) {  //check duplication of moveSequence
+                int count = 0;
+                for (int k = 0; k < moveSequence.length(); k++) {
+                    if (i == normaliseLoc(move[k])) {
+                        count += 1;
                     }
                 }
+                if (count > 1) {
+                    return false;
+                }
+            }
 
-                // go through every move in moveSequence one by one
-                int i = 0;
-                while (i != -1 && i < moveSequence.length()) {
+            // go through every move in moveSequence one by one
+            int i = 0;
+            while (i != -1 && i < moveSequence.length()) {
 
-                    char[] board = setup.toCharArray();
+                char[] board = setup.toCharArray();
 
-                    if (!isMoveLegal(setup, move[i])) {
-                        //use i to record "have found an invalid move in the sequence"
-                        i = -1;
+                if (!isMoveLegal(setup, move[i])) {
+                    //use i to record "have found an invalid move in the sequence"
+                    i = -1;
 
-                    } else {
-                        // find ZhangYi's location
-                        char zyloc = setup.charAt(setup.indexOf('z') + 2);
-                        int ZY = normaliseLoc(zyloc);
+                } else {
+                    // find ZhangYi's location
+                    char zyloc = setup.charAt(setup.indexOf('z') + 2);
+                    int ZY = normaliseLoc(zyloc);
 
-                        // update setup board with the new checked move
-                        int p = 2;
-                        while (p != -1 && p < setup.length()) {
-                            // find the setup board location same with the current move location
-                            if (board[p] == move[i]) {
-                                // find the corresponding country for the card in current move location
-                                char loc = board[p];
-                                char country = board[p - 2];
-                                int D = normaliseLoc(loc);
+                    // update setup board with the new checked move
+                    int p = 2;
+                    while (p != -1 && p < setup.length()) {
+                        // find the setup board location same with the current move location
+                        if (board[p] == move[i]) {
+                            // find the corresponding country for the card in current move location
+                            char loc = board[p];
+                            char country = board[p - 2];
+                            int D = normaliseLoc(loc);
 
-                                // go through the board to find the card from same country between ZhangYi and goal location
-                                int k = 2;
-                                // find all cards between Zhangyi and the destination, delete them at the same time
-                                while (k < setup.length()) {
-                                    if (board[k-2] == country) {
-                                        int K = normaliseLoc(board[k]);
-                                        // the card is in the same row or column with ZhangYi and destination position
-                                        if ((sameRow(loc, board[k]) && sameRow(zyloc, board[k])) || (sameCol(loc, board[k]) && sameCol(zyloc, board[k]))) {
-                                            // the card is between ZhangYi and the destination position
-                                            if (((D < K && K < ZY) || (ZY < K && K < D))&&(D!=K)) { //D:destination of zhang//K:possible same contry card//ZY:zhangyi's location
-                                                board[k] = '/';
-                                                board[k - 1] = '/';
-                                                board[k - 2] = '/';
-                                            }
+                            // go through the board to find the card from same country between ZhangYi and goal location
+                            int k = 2;
+                            // find all cards between Zhangyi and the destination, delete them at the same time
+                            while (k < setup.length()) {
+                                if (board[k - 2] == country) {
+                                    int K = normaliseLoc(board[k]);
+                                    // the card is in the same row or column with ZhangYi and destination position
+                                    if ((sameRow(loc, board[k]) && sameRow(zyloc, board[k])) || (sameCol(loc, board[k]) && sameCol(zyloc, board[k]))) {
+                                        // the card is between ZhangYi and the destination position
+                                        if (((D < K && K < ZY) || (ZY < K && K < D)) && (D != K)) { //D:destination of zhang//K:possible same contry card//ZY:zhangyi's location
+                                            board[k] = '/';
+                                            board[k - 1] = '/';
+                                            board[k - 2] = '/';
                                         }
                                     }
-                                    k = k + 3;
                                 }
-
-                                //To move ZY to his new position
-                                board[p - 2] = 'z';
-                                board[p - 1] = '9';
-                                //set old position to empty
-                                board[setup.indexOf('z') + 2] = '/';
-                                board[setup.indexOf('z') + 1] = '/';
-                                board[setup.indexOf('z')] = '/';
-                                //FIXME occasional error when testBadMoves comes up with array outofboundsexception -1 at line above
-
-
-                                setup = new String(); //generate new setup string by remove all '/' in board array
-                                for (int n = 0; n < board.length; n++){
-                                    if (board[n]!='/'){
-                                        setup += board[n];
-                                    }else{}
-                                }
-                                p = -1;
-                            } else {
-                                p = p + 3;
+                                k = k + 3;
                             }
+
+                            //To move ZY to his new position
+                            board[p - 2] = 'z';
+                            board[p - 1] = '9';
+                            //set old position to empty
+                            board[setup.indexOf('z') + 2] = '/';
+                            board[setup.indexOf('z') + 1] = '/';
+                            board[setup.indexOf('z')] = '/';
+                            //FIXME occasional error when testBadMoves comes up with array outofboundsexception -1 at line above
+
+
+                            setup = new String(); //generate new setup string by remove all '/' in board array
+                            for (int n = 0; n < board.length; n++) {
+                                if (board[n] != '/') {
+                                    setup += board[n];
+                                } else {
+                                }
+                            }
+                            p = -1;
+                        } else {
+                            p = p + 3;
                         }
-                        i = i + 1;
                     }
+                    i = i + 1;
                 }
-                // justify whether we check until the end of the moveSequence
-                if (i == -1) {
-                    return false;
-                } else {
-                    return true;
+            }
+            // justify whether we check until the end of the moveSequence
+            if (i == -1) {
+                return false;
+            } else {
+                return true;
             }
         }
     }
@@ -647,7 +647,7 @@ public class WarringStatesGame {
         char[] bd = setup.toCharArray();
 
         // initialize final output array
-        int[] flags = new int[] {-1, -1, -1, -1, -1, -1, -1};
+        int[] flags = new int[]{-1, -1, -1, -1, -1, -1, -1};
 
         // initialize the supporter "CHARACTER" LIST
         List<Character> sup0 = new ArrayList<>();
@@ -745,7 +745,6 @@ public class WarringStatesGame {
                                     sup03.add(b_str);
                                 }
                                 cardsNum++;
-
                             }
                         }
                     }
@@ -756,6 +755,7 @@ public class WarringStatesGame {
             zyloc = mov[i];
 
             // ** Main new part for Task8 comparing to Task7 !
+
             int currentPlayer = i % numPlayers;
 
             // get the flagOwner playerId that currently has the "country" flag
@@ -804,22 +804,19 @@ public class WarringStatesGame {
                             flagCardsNum++;
                         }
                     }
-                }
-                else if (flagOwner == 1) {
+                } else if (flagOwner == 1) {
                     for (int p = 0; p < sup1.size(); p = p + 2) {
                         if (sup1.get(p) == country) {
                             flagCardsNum++;
                         }
                     }
-                }
-                else if (flagOwner == 2) {
+                } else if (flagOwner == 2) {
                     for (int p = 0; p < sup2.size(); p = p + 2) {
                         if (sup2.get(p) == country) {
                             flagCardsNum++;
                         }
                     }
-                }
-                else {
+                } else {
                     for (int p = 0; p < sup3.size(); p = p + 2) {
                         if (sup3.get(p) == country) {
                             flagCardsNum++;
@@ -847,39 +844,39 @@ public class WarringStatesGame {
                 }
 
             }
-                i++;
-            }
-
-            return flags;
+            i++;
         }
 
-
-        /**
-         * Generate a legal move, given the provided placement string.
-         * A move is valid if:
-         * - the location char is in the range A .. Z or 0..9
-         * - there is a card at the chosen location;
-         * - the destination location is different to Zhang Yi's current location;
-         * - the destination is in the same row or column of the grid as Zhang Yi's current location; and
-         * - drawing a line from Zhang Yi's current location through the card at the chosen location,
-         * there are no other cards along the line from the same kingdom as the chosen card
-         * that are further away from Zhang Yi.
-         * If there is no legal move available, return the null character '\0'.
-         *
-         * @param placement the current placement string
-         * @return a location character representing Zhang Yi's destination for the move
-         */
-        public static char generateMove (String placement){
-            // FIXME Task 10: generate a legal move
-            //get Zhang Yi's current location
-
-
-            return '\0';
-
-            /** find Zhang Yi's current location
-             * location char for same row columns
-             * check for whether card at destination
-             * check for no further away cards
-             */
-        }
+        return flags;
     }
+
+
+    /**
+     * Generate a legal move, given the provided placement string.
+     * A move is valid if:
+     * - the location char is in the range A .. Z or 0..9
+     * - there is a card at the chosen location;
+     * - the destination location is different to Zhang Yi's current location;
+     * - the destination is in the same row or column of the grid as Zhang Yi's current location; and
+     * - drawing a line from Zhang Yi's current location through the card at the chosen location,
+     * there are no other cards along the line from the same kingdom as the chosen card
+     * that are further away from Zhang Yi.
+     * If there is no legal move available, return the null character '\0'.
+     *
+     * @param placement the current placement string
+     * @return a location character representing Zhang Yi's destination for the move
+     */
+    public static char generateMove(String placement) {
+        // FIXME Task 10: generate a legal move
+        //get Zhang Yi's current location
+
+
+        return '\0';
+
+        /** find Zhang Yi's current location
+         * location char for same row columns
+         * check for whether card at destination
+         * check for no further away cards
+         */
+    }
+}
