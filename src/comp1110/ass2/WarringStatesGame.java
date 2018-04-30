@@ -3,6 +3,7 @@ package comp1110.ass2;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 /**
  * This class provides the text interface for the Warring States game
@@ -899,15 +900,39 @@ public class WarringStatesGame {
      */
     public static char generateMove(String placement) {
         // FIXME Task 10: generate a legal move
-        //get Zhang Yi's current location
 
+        // find ZhangYi's location in the placement
+        char zyloc = placement.charAt(placement.indexOf('z') + 2);
 
-        return '\0';
+        // check whether there are no cards in any direction from Zhang Yi
+        int availableMove = 0;
+        // when there exists Available Move, change value of "availableMove" from 0 to 1
+        // check positions from 'A' to 'Z'
+        for (char c = 'A'; availableMove == 0 && c <= 'Z'; c++) {
+            if (c != zyloc && (sameCol(c, zyloc) || sameRow(c, zyloc))) {
+                availableMove = 1;
+            }
+        }
+        if (availableMove == 0) {
+            // check positions from '0' to '9'
+            for (char c = '0'; availableMove == 0 && c <= '9'; c++) {
+                if (c != zyloc && (sameCol(c, zyloc) || sameRow(c, zyloc))) {
+                    availableMove = 1;
+                }
+            }
+        }
 
-        /** find Zhang Yi's current location
-         * location char for same row columns
-         * check for whether card at destination
-         * check for no further away cards
-         */
+        if (availableMove == 0) {
+            return '\0';
+        } else {
+            Random rand = new Random();
+            char move = ' ';
+            while (!((move >= 'A' && move <= 'Z') || (move >= '0' && move <= '9')) || move == zyloc || !isMoveLegal(placement, move)) {
+                move = (char) rand.nextInt(91);
+            }
+            return move;
+        }
     }
+
+
 }
