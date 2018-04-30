@@ -454,6 +454,8 @@ public class WarringStatesGame {
                                 board[setup.indexOf('z') + 2] = '/';
                                 board[setup.indexOf('z') + 1] = '/';
                                 board[setup.indexOf('z')] = '/';
+                                //FIXME occasional error when testBadMoves comes up with array outofboundsexception -1 at line above
+
 
                                 setup = new String(); //generate new setup string by remove all '/' in board array
                                 for (int n = 0; n < board.length; n++){
