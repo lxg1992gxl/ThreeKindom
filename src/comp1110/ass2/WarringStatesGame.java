@@ -521,7 +521,9 @@ public class WarringStatesGame {
                     p = -1;
                 }
             }
-            m = m - 3;
+            if (m != 2) {
+                m = m - 3;
+            }
 
             //find the corresponding card at destination position
             char country = bd[m - 2];
@@ -670,9 +672,6 @@ public class WarringStatesGame {
 
             int ZY = normaliseLoc(zyloc);
 
-            // initialize No. of cards that are collected by the player this time
-            int cardsNum = 0;
-
             // find the destination location on setup board
             int m = 2;
             for (int p = 0; p != -1 && m < setup.length(); m = m + 3) {
@@ -680,7 +679,9 @@ public class WarringStatesGame {
                     p = -1;
                 }
             }
-            m = m - 3;
+            if (m != 2) {
+                m = m - 3;
+            }
 
             //find the corresponding card at destination position
             char country = bd[m - 2];
@@ -711,7 +712,6 @@ public class WarringStatesGame {
                 sup3.add(sID);
                 sup03.add(a_str);
             }
-            cardsNum++;
 
             for (int k = 0; k < setup.length(); k = k + 3) {
                 int K = normaliseLoc(bd[k + 2]);
@@ -744,7 +744,6 @@ public class WarringStatesGame {
                                     sup3.add(bd[k + 1]);
                                     sup03.add(b_str);
                                 }
-                                cardsNum++;
                             }
                         }
                     }
@@ -754,9 +753,39 @@ public class WarringStatesGame {
             // Update ZhangYi's location
             zyloc = mov[i];
 
+
             // ** Main new part for Task8 comparing to Task7 !
 
+            // get No. of the corresponding updated country's cards of current player
             int currentPlayer = i % numPlayers;
+            int playerCardsNum = 0;
+
+            if (currentPlayer == 0) {
+                for (int p = 0; p < sup0.size(); p = p + 2) {
+                    if (sup0.get(p) == country) {
+                        playerCardsNum++;
+                    }
+                }
+            } else if (currentPlayer == 1) {
+                for (int p = 0; p < sup1.size(); p = p + 2) {
+                    if (sup1.get(p) == country) {
+                        playerCardsNum++;
+                    }
+                }
+            } else if (currentPlayer == 2) {
+                for (int p = 0; p < sup2.size(); p = p + 2) {
+                    if (sup2.get(p) == country) {
+                        playerCardsNum++;
+                    }
+                }
+            } else {
+                for (int p = 0; p < sup3.size(); p = p + 2) {
+                    if (sup3.get(p) == country) {
+                        playerCardsNum++;
+                    }
+                }
+            }
+
 
             // get the flagOwner playerId that currently has the "country" flag
             int flagOwner;
@@ -795,8 +824,8 @@ public class WarringStatesGame {
                 }
             }
             // Then, check whether the flag owner is the current player, if yes, skip all following check steps (no change will happen)
-            else if (flagOwner != currentPlayer) {
-                // Find No. of the corresponding country's flags of the current flagOwner
+            else {
+                // Find No. of the corresponding country's cards of the current flagOwner
                 int flagCardsNum = 0;
                 if (flagOwner == 0) {
                     for (int p = 0; p < sup0.size(); p = p + 2) {
@@ -825,7 +854,7 @@ public class WarringStatesGame {
                 }
 
                 // check whether the current player holds an equal or greater number of characters of a country than the current flag owner
-                if (cardsNum >= flagCardsNum) {
+                if (playerCardsNum >= flagCardsNum) {
                     if (country == 'a') {
                         flags[0] = currentPlayer;
                     } else if (country == 'b') {
@@ -845,7 +874,13 @@ public class WarringStatesGame {
 
             }
             i++;
+
+            for(int a = 0; a < flags.length-1; a++){
+                System.out.print(flags[a]+"  ");
+            }
+            System.out.println(flags[6]);
         }
+        System.out.println(moveSequence.length());
 
         return flags;
     }
