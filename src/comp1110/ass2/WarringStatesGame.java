@@ -360,7 +360,6 @@ public class WarringStatesGame {
                 }
             }
 
-
             return true;
         } else { //locationChar is out of range
             return false;
@@ -382,7 +381,7 @@ public class WarringStatesGame {
      * @return True if the placement sequence is valid
      */
     static boolean isMoveSequenceValid(String setup, String moveSequence) {
-        // FIXME Task 6: determine whether a placement sequence is valid
+        // Task 6: determine whether a placement sequence is valid
         // check whether has empty string or initial out of range
         if (moveSequence.length() > 36 || moveSequence == "" || setup == null || setup == "") {
             return false;
@@ -410,7 +409,7 @@ public class WarringStatesGame {
                 char[] board = setup.toCharArray();
 
                 if (!isMoveLegal(setup, move[i])) {
-                    //use i to record "have found an invalid move in the sequence"
+                    // use i to record "have found an invalid move in the sequence"
                     i = -1;
 
                 } else {
@@ -447,17 +446,16 @@ public class WarringStatesGame {
                                 k = k + 3;
                             }
 
-                            //To move ZY to his new position
-                            board[p - 2] = 'z';
-                            board[p - 1] = '9';
-                            //set old position to empty
+                            // set previous Zhang Yi's position to empty
                             board[setup.indexOf('z') + 2] = '/';
                             board[setup.indexOf('z') + 1] = '/';
                             board[setup.indexOf('z')] = '/';
-                            //FIXME occasional error when testBadMoves comes up with array outofboundsexception -1 at line above
 
+                            // move ZY to his new position
+                            board[p - 2] = 'z';
+                            board[p - 1] = '9';
 
-                            setup = new String(); //generate new setup string by remove all '/' in board array
+                            setup = new String(); // generate new setup string by remove all '/' in board array
                             for (int n = 0; n < board.length; n++) {
                                 if (board[n] != '/') {
                                     setup += board[n];
