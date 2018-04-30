@@ -640,26 +640,38 @@ public class WarringStatesGame {
      */
     public static int[] getFlags(String setup, String moveSequence, int numPlayers) {
         // FIXME Task 8: determine which player controls the flag of each kingdom after a given sequence of moves
+
         char[] mov = moveSequence.toCharArray();
         char[] bd = setup.toCharArray();
 
-        // initialize
-        int[] kingdom = new int[7];
+        // initialize final output array
+        int[] flags = new int[7];
 
-        List<String> sup0 = new ArrayList<>();
-        List<String> sup1 = new ArrayList<>();
-        List<String> sup2 = new ArrayList<>();
-        List<String> sup3 = new ArrayList<>();
+        // initialize the supporter CHARACTER LIST
+        List<Character> sup0 = new ArrayList<>();
+        List<Character> sup1 = new ArrayList<>();
+        List<Character> sup2 = new ArrayList<>();
+        List<Character> sup3 = new ArrayList<>();
 
-        // ZhangYi's initial location
+        // initialize the supporter STRING LIST
+        List<String> sup00 = new ArrayList<>();
+        List<String> sup01 = new ArrayList<>();
+        List<String> sup02 = new ArrayList<>();
+        List<String> sup03 = new ArrayList<>();
+
+        // find ZhangYi's initial location for setup board
         char zyloc = setup.charAt(setup.indexOf('z') + 2);
 
+        // make a loop to read all corresponding positions in the moveSequence
         int i = 0;
         while (i < moveSequence.length()) {
 
             int ZY = normaliseLoc(zyloc);
 
-            // destination location on setup board
+            // No. of cards that are collected by the player this time
+            int cardsNum = 0;
+
+            // find the destination location on setup board
             int m = 2;
             for (int p = 0; p != -1 && m < setup.length(); m = m + 3) {
                 if (bd[m] == mov[i]) {
@@ -668,83 +680,190 @@ public class WarringStatesGame {
             }
             m = m - 3;
 
-            // the corresponding card at destination position
+            //find the corresponding card at destination position
             char country = bd[m - 2];
             char sID = bd[m - 1];
+
+            // the normalised form for destination location
             int D = normaliseLoc(mov[i]);
 
-            // add supporter String at the given destination
+            // add supporter String/Character Pairs at the given destination & check for different players
             char[] a_arr = new char[]{country, sID};
             String a_str = new String(a_arr);
-            if (i % numPlayers == 0) {
-                sup0.add(a_str);
-            } else if (i % numPlayers == 1) {
-                sup1.add(a_str);
-            } else if (i % numPlayers == 2) {
-                sup2.add(a_str);
-            } else {
-                sup3.add(a_str);
-            }
 
-            // record the number of cards collected from the same country this time
-            int number = 1;
+            // add supporter String at the given destination & check for different players
+            if (i % numPlayers == 0) {
+                sup0.add(country);
+                sup0.add(sID);
+                sup00.add(a_str);
+            } else if (i % numPlayers == 1) {
+                sup1.add(country);
+                sup1.add(sID);
+                sup01.add(a_str);
+            } else if (i % numPlayers == 2) {
+                sup2.add(country);
+                sup2.add(sID);
+                sup02.add(a_str);
+            } else {
+                sup3.add(country);
+                sup3.add(sID);
+                sup03.add(a_str);
+            }
+            cardsNum++;
+
             for (int k = 0; k < setup.length(); k = k + 3) {
                 int K = normaliseLoc(bd[k + 2]);
+                // the card belongs to same country with the destination
                 if (bd[k] == country) {
+                    // the card is in the same row or column with ZhangYi and destination position
                     if ((sameRow(mov[i], bd[k + 2]) && sameRow(zyloc, bd[k + 2])) || (sameCol(mov[i], bd[k + 2]) && sameCol(zyloc, bd[k + 2]))) {
+                        // the card is between ZhangYi and the destination position
                         if ((D < K && K < ZY) || (ZY < K && K < D)) {
                             // add other supporters from the same country between ZhangYi and the destination
                             char[] b_arr = new char[]{bd[k], bd[k + 1]};
                             String b_str = new String(b_arr);
-
+                            // the supporter ID have not been contained in other player's supporters list
                             if (!sup0.contains(b_str) && !sup1.contains(b_str) && !sup2.contains(b_str) && !sup3.contains(b_str)) {
+
                                 if (i % numPlayers == 0) {
-                                    sup0.add(b_str);
-                                    number++;
+                                    sup0.add(bd[k]);
+                                    sup0.add(bd[k + 1]);
+                                    sup00.add(b_str);
+                                    cardsNum++;
                                 } else if (i % numPlayers == 1) {
-                                    sup1.add(b_str);
-                                    number++;
+                                    sup1.add(bd[k]);
+                                    sup1.add(bd[k + 1]);
+                                    sup01.add(b_str);
+                                    cardsNum++;
                                 } else if (i % numPlayers == 2) {
-                                    sup2.add(b_str);
-                                    number++;
+                                    sup2.add(bd[k]);
+                                    sup2.add(bd[k + 1]);
+                                    sup02.add(b_str);
+                                    cardsNum++;
                                 } else {
-                                    sup3.add(b_str);
-                                    number++;
+                                    sup3.add(bd[k]);
+                                    sup3.add(bd[k + 1]);
+                                    sup03.add(b_str);
+                                    cardsNum++;
                                 }
+
                             }
+
                         }
                     }
                 }
             }
 
-            // compare the number of the collected cards with cards from the same country in other players' supporter list
-
-            // update kingdom array
-
+            // Update ZhangYi's location
             zyloc = mov[i];
-            i++;
+
+            // ** Main new part for Task8 comparing to Task7 !
+            int currentPlayer = i % numPlayers;
+
+            // get the flagOwner playerId that currently has the "country" flag
+            int flagOwner;
+            if (country == 'a') {
+                flagOwner = flags[0];
+            } else if (country == 'b') {
+                flagOwner = flags[1];
+            } else if (country == 'c') {
+                flagOwner = flags[2];
+            } else if (country == 'd') {
+                flagOwner = flags[3];
+            } else if (country == 'e') {
+                flagOwner = flags[4];
+            } else if (country == 'f') {
+                flagOwner = flags[5];
+            } else {
+                flagOwner = flags[6];
+            }
+
+            // Find No. of the corresponding country's flags of the current flagOwner
+            // initially, check whether the flag owner is the current player, if yes, skip all following check steps (no change will happen)
+            if (flagOwner != currentPlayer) {
+                int flagCardsNum = 0;
+                if (flagOwner == 0) {
+                    for (int p = 0; p < sup0.size(); p = p + 2) {
+                        if (sup0.get(p) == country) {
+                            flagCardsNum++;
+                        }
+                    }
+                }
+                else if (flagOwner == 1) {
+                    for (int p = 0; p < sup1.size(); p = p + 2) {
+                        if (sup1.get(p) == country) {
+                            flagCardsNum++;
+                        }
+                    }
+                }
+                else if (flagOwner == 2) {
+                    for (int p = 0; p < sup2.size(); p = p + 2) {
+                        if (sup2.get(p) == country) {
+                            flagCardsNum++;
+                        }
+                    }
+                }
+                else {
+                    for (int p = 0; p < sup3.size(); p = p + 2) {
+                        if (sup3.get(p) == country) {
+                            flagCardsNum++;
+                        }
+                    }
+                }
+
+                // check whether the current player holds an equal or greater number of characters of a country than the current flag owner
+                if (cardsNum >= flagCardsNum) {
+                    if (country == 'a') {
+                        flags[0] = currentPlayer;
+                    } else if (country == 'b') {
+                        flags[1] = currentPlayer;
+                    } else if (country == 'c') {
+                        flags[2] = currentPlayer;
+                    } else if (country == 'd') {
+                        flags[3] = currentPlayer;
+                    } else if (country == 'e') {
+                        flags[4] = currentPlayer;
+                    } else if (country == 'f') {
+                        flags[5] = currentPlayer;
+                    } else {
+                        flags[6] = currentPlayer;
+                    }
+                }
+
+            }
+                i++;
+            }
+
+            return flags;
         }
 
-        return kingdom;
-    }
 
-    /**
-     * Generate a legal move, given the provided placement string.
-     * A move is valid if:
-     * - the location char is in the range A .. Z or 0..9
-     * - there is a card at the chosen location;
-     * - the destination location is different to Zhang Yi's current location;
-     * - the destination is in the same row or column of the grid as Zhang Yi's current location; and
-     * - drawing a line from Zhang Yi's current location through the card at the chosen location,
-     * there are no other cards along the line from the same kingdom as the chosen card
-     * that are further away from Zhang Yi.
-     * If there is no legal move available, return the null character '\0'.
-     *
-     * @param placement the current placement string
-     * @return a location character representing Zhang Yi's destination for the move
-     */
-    public static char generateMove(String placement) {
-        // FIXME Task 10: generate a legal move
-        return '\0';
+        /**
+         * Generate a legal move, given the provided placement string.
+         * A move is valid if:
+         * - the location char is in the range A .. Z or 0..9
+         * - there is a card at the chosen location;
+         * - the destination location is different to Zhang Yi's current location;
+         * - the destination is in the same row or column of the grid as Zhang Yi's current location; and
+         * - drawing a line from Zhang Yi's current location through the card at the chosen location,
+         * there are no other cards along the line from the same kingdom as the chosen card
+         * that are further away from Zhang Yi.
+         * If there is no legal move available, return the null character '\0'.
+         *
+         * @param placement the current placement string
+         * @return a location character representing Zhang Yi's destination for the move
+         */
+        public static char generateMove (String placement){
+            // FIXME Task 10: generate a legal move
+            //get Zhang Yi's current location
+
+
+            return '\0';
+
+            /** find Zhang Yi's current location
+             * location char for same row columns
+             * check for whether card at destination
+             * check for no further away cards
+             */
+        }
     }
-}
