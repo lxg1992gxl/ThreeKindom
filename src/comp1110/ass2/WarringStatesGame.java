@@ -645,15 +645,15 @@ public class WarringStatesGame {
         char[] bd = setup.toCharArray();
 
         // initialize final output array
-        int[] flags = new int[7];
+        int[] flags = new int[] {-1, -1, -1, -1, -1, -1, -1};
 
-        // initialize the supporter CHARACTER LIST
+        // initialize the supporter "CHARACTER" LIST
         List<Character> sup0 = new ArrayList<>();
         List<Character> sup1 = new ArrayList<>();
         List<Character> sup2 = new ArrayList<>();
         List<Character> sup3 = new ArrayList<>();
 
-        // initialize the supporter STRING LIST
+        // initialize the supporter "STRING" LIST
         List<String> sup00 = new ArrayList<>();
         List<String> sup01 = new ArrayList<>();
         List<String> sup02 = new ArrayList<>();
@@ -668,7 +668,7 @@ public class WarringStatesGame {
 
             int ZY = normaliseLoc(zyloc);
 
-            // No. of cards that are collected by the player this time
+            // initialize No. of cards that are collected by the player this time
             int cardsNum = 0;
 
             // find the destination location on setup board
@@ -778,9 +778,27 @@ public class WarringStatesGame {
                 flagOwner = flags[6];
             }
 
-            // Find No. of the corresponding country's flags of the current flagOwner
-            // initially, check whether the flag owner is the current player, if yes, skip all following check steps (no change will happen)
-            if (flagOwner != currentPlayer) {
+            // First, check whether no previous country holds the flag
+            if (flagOwner == -1) {
+                if (country == 'a') {
+                    flags[0] = currentPlayer;
+                } else if (country == 'b') {
+                    flags[1] = currentPlayer;
+                } else if (country == 'c') {
+                    flags[2] = currentPlayer;
+                } else if (country == 'd') {
+                    flags[3] = currentPlayer;
+                } else if (country == 'e') {
+                    flags[4] = currentPlayer;
+                } else if (country == 'f') {
+                    flags[5] = currentPlayer;
+                } else {
+                    flags[6] = currentPlayer;
+                }
+            }
+            // Then, check whether the flag owner is the current player, if yes, skip all following check steps (no change will happen)
+            else if (flagOwner != currentPlayer) {
+                // Find No. of the corresponding country's flags of the current flagOwner
                 int flagCardsNum = 0;
                 if (flagOwner == 0) {
                     for (int p = 0; p < sup0.size(); p = p + 2) {
@@ -812,7 +830,7 @@ public class WarringStatesGame {
                 }
 
                 // check whether the current player holds an equal or greater number of characters of a country than the current flag owner
-                if (cardsNum >= flagCardsNum) {
+                if (cardsNum >= flagCardsNum || flagOwner == -1) {
                     if (country == 'a') {
                         flags[0] = currentPlayer;
                     } else if (country == 'b') {
