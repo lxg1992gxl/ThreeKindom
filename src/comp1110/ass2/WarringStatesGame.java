@@ -899,32 +899,34 @@ public class WarringStatesGame {
      * @return a location character representing Zhang Yi's destination for the move
      */
     public static char generateMove(String placement) {
-        // FIXME Task 10: generate a legal move
+        // Task 10: generate a legal move
 
         // find ZhangYi's location in the placement
         char zyloc = placement.charAt(placement.indexOf('z') + 2);
 
+        // find all positions in the "placement" sequence that still have cards
+        char[] place = placement.toCharArray();
+        List<Character> allPositions = new ArrayList<>();
+        for (int p = 2; p < placement.length(); p = p + 3) {
+            allPositions.add(place[p]);
+        }
+
         // check whether there are no cards in any direction from Zhang Yi
         int availableMove = 0;
         // when there exists Available Move, change value of "availableMove" from 0 to 1
-        // check positions from 'A' to 'Z'
-        for (char c = 'A'; availableMove == 0 && c <= 'Z'; c++) {
-            if (c != zyloc && (sameCol(c, zyloc) || sameRow(c, zyloc))) {
+        // check for all positions still have cards
+        for (int i = 0; availableMove == 0 && i < allPositions.size(); i++) {
+            char p = allPositions.get(i);
+            if (p != zyloc && (sameCol(p, zyloc) || sameRow(p, zyloc))) {
                 availableMove = 1;
             }
         }
-        if (availableMove == 0) {
-            // check positions from '0' to '9'
-            for (char c = '0'; availableMove == 0 && c <= '9'; c++) {
-                if (c != zyloc && (sameCol(c, zyloc) || sameRow(c, zyloc))) {
-                    availableMove = 1;
-                }
-            }
-        }
 
+        // if there is no legal move available, return null character
         if (availableMove == 0) {
             return '\0';
         } else {
+            // randomly produce a "move character" until it satisfies our requirements
             Random rand = new Random();
             char move = ' ';
             while (!((move >= 'A' && move <= 'Z') || (move >= '0' && move <= '9')) || move == zyloc || !isMoveLegal(placement, move)) {
