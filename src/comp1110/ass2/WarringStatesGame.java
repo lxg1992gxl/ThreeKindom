@@ -624,6 +624,13 @@ public class WarringStatesGame {
         return (new String(s_arr));
     }
 
+    public static void main(String[] args) {
+        System.out.println(WarringStatesGame.getSupporters("c2Kd0Lc3Qc4Vd4Ob0Xb10e0Rb33b64a2Jb5Wb4Ng16f2Za31c09g0Aa0Bf1Ca1Dd1Ue3Ha7Yc1Tz92d35d28f0Mb27a6Pc5Ea4Ge1Fe2Ia5S","WSGACUXT584MNPD1YZ39FBEQ",3,0));
+        System.out.println(WarringStatesGame.getSupporters("c2Kd0Lc3Qc4Vd4Ob0Xb10e0Rb33b64a2Jb5Wb4Ng16f2Za31c09g0Aa0Bf1Ca1Dd1Ue3Ha7Yc1Tz92d35d28f0Mb27a6Pc5Ea4Ge1Fe2Ia5S","WSGACUXT584MNPD1YZ39FBEQ",3,1));
+        System.out.println(WarringStatesGame.getSupporters("c2Kd0Lc3Qc4Vd4Ob0Xb10e0Rb33b64a2Jb5Wb4Ng16f2Za31c09g0Aa0Bf1Ca1Dd1Ue3Ha7Yc1Tz92d35d28f0Mb27a6Pc5Ea4Ge1Fe2Ia5S","WSGACUXT584MNPD1YZ39FBEQ",3,2));
+    }
+
+
 
     /**
      * Given a setup and move sequence, determine which player controls the flag of each kingdom
@@ -669,6 +676,7 @@ public class WarringStatesGame {
         // make a loop to read all corresponding positions in the moveSequence
         int i = 0;
         while (i < moveSequence.length()) {
+            int currentPlayer = i % numPlayers;
 
             int ZY = normaliseLoc(zyloc);
 
@@ -695,15 +703,15 @@ public class WarringStatesGame {
             String a_str = new String(a_arr);
 
             // add supporter String at the given destination & check for different players
-            if (i % numPlayers == 0) {
+            if (currentPlayer == 0) {
                 sup0.add(country);
                 sup0.add(sID);
                 sup00.add(a_str);
-            } else if (i % numPlayers == 1) {
+            } else if (currentPlayer == 1) {
                 sup1.add(country);
                 sup1.add(sID);
                 sup01.add(a_str);
-            } else if (i % numPlayers == 2) {
+            } else if (currentPlayer == 2) {
                 sup2.add(country);
                 sup2.add(sID);
                 sup02.add(a_str);
@@ -725,17 +733,17 @@ public class WarringStatesGame {
                             char[] b_arr = new char[]{bd[k], bd[k + 1]};
                             String b_str = new String(b_arr);
                             // the supporter ID have not been contained in other player's supporters list
-                            if (!sup0.contains(b_str) && !sup1.contains(b_str) && !sup2.contains(b_str) && !sup3.contains(b_str)) {
+                            if (!sup00.contains(b_str) && !sup01.contains(b_str) && !sup02.contains(b_str) && !sup03.contains(b_str)) {
 
-                                if (i % numPlayers == 0) {
+                                if (currentPlayer == 0) {
                                     sup0.add(bd[k]);
                                     sup0.add(bd[k + 1]);
                                     sup00.add(b_str);
-                                } else if (i % numPlayers == 1) {
+                                } else if (currentPlayer == 1) {
                                     sup1.add(bd[k]);
                                     sup1.add(bd[k + 1]);
                                     sup01.add(b_str);
-                                } else if (i % numPlayers == 2) {
+                                } else if (currentPlayer == 2) {
                                     sup2.add(bd[k]);
                                     sup2.add(bd[k + 1]);
                                     sup02.add(b_str);
@@ -757,7 +765,7 @@ public class WarringStatesGame {
             // ** Main new part for Task8 comparing to Task7 !
 
             // get No. of the corresponding updated country's cards of current player
-            int currentPlayer = i % numPlayers;
+
             int playerCardsNum = 0;
 
             if (currentPlayer == 0) {
@@ -824,9 +832,10 @@ public class WarringStatesGame {
                 }
             }
             // Then, check whether the flag owner is the current player, if yes, skip all following check steps (no change will happen)
-            else {
+            else if (flagOwner != currentPlayer) {
                 // Find No. of the corresponding country's cards of the current flagOwner
                 int flagCardsNum = 0;
+
                 if (flagOwner == 0) {
                     for (int p = 0; p < sup0.size(); p = p + 2) {
                         if (sup0.get(p) == country) {
@@ -845,7 +854,7 @@ public class WarringStatesGame {
                             flagCardsNum++;
                         }
                     }
-                } else {
+                } else if (flagOwner == 3) {
                     for (int p = 0; p < sup3.size(); p = p + 2) {
                         if (sup3.get(p) == country) {
                             flagCardsNum++;
