@@ -73,7 +73,7 @@ public class WarringStatesGame {
      */
 
     static boolean isPlacementWellFormed(String placement) {
-        //Task 3: determine whether a placement is well-formed
+        // Task 3: determine whether a placement is well-formed
 
         //Construct the possible number index in each different country group
         char qin[] = new char[]{'0', '1', '2', '3', '4', '5', '6', '7'};
@@ -212,8 +212,8 @@ public class WarringStatesGame {
 
     public static int normaliseLoc(char locationChar) {
         int result = -1;
-        if (locationChar >= 'A' & locationChar <= 'Z') { //normalises letter locations
-            result = ((int) locationChar);
+        if (locationChar >= 'A' && locationChar <= 'Z') { //normalises letter locations
+            result = (int) locationChar;
             result -= 65;
         } else { //normalises number locations
             result = (int) locationChar;
@@ -321,6 +321,8 @@ public class WarringStatesGame {
 
                         if (sameCol(zhangloc, a.charAt(2))) {
 //                          //compare distances
+
+
                             int dist = normaliseLoc(locationChar) - normaliseLoc(zhangloc);
                             int dist2 = normaliseLoc(a.charAt(2)) - normaliseLoc(zhangloc);
                             if (dist > 0) {
@@ -381,82 +383,97 @@ public class WarringStatesGame {
     static boolean isMoveSequenceValid(String setup, String moveSequence) {
         // FIXME Task 6: determine whether a placement sequence is valid
         // check whether has empty string or initial out of range
-        if (moveSequence.length() > 36 || moveSequence == "" || setup == null || setup == "") {
+        if (moveSequence.length() > 36|| moveSequence == "" || setup == null || setup == "") {
             return false;
-        } else {
-            char[] move = moveSequence.toCharArray();
+        } else if (!isPlacementWellFormed(setup)){
+            return  false;
+        }
+        else {
+                char[] move = moveSequence.toCharArray();
 
-            // go through every move in moveSequence one by one
-            int i = 0;
-            while (i != -1 && i < moveSequence.length()) {
-
-                char[] board = setup.toCharArray();
-
-                if (!isMoveLegal(setup, move[i])) {
-                    //use i to record "have found an invalid move in the sequence"
-                    i = -1;
-
-                } else {
-                    // find ZhangYi's location
-                    char zyloc = setup.charAt(setup.indexOf('z') + 2);
-                    int ZY = normaliseLoc(board[zyloc]);
-
-                    // update setup board with the new checked move
-                    int p = 2;
-                    while (p != -1 && p < setup.length()) {
-                        // find the setup board location same with the current move location
-                        if (board[p] == move[i]) {
-                            // find the corresponding country for the card in current move location
-                            char loc = board[p];
-                            char country = board[p - 2];
-                            int D = normaliseLoc(loc);
-
-                            // go through the board to find the card from same country between ZhangYi and goal location
-                            int k = 2;
-                            int K = normaliseLoc(board[k]);
-
-                            // find all cards between Zhangyi and the destination, delete them at the same time
-                            while (k < setup.length()) {
-                                if (board[k] == country) {
-                                    // the card is in the same row or column with ZhangYi and destination position
-                                    if ((sameRow(loc, board[k + 2]) && sameRow(zyloc, board[k + 2])) || (sameCol(loc, board[k + 2]) && sameCol(zyloc, board[k + 2]))) {
-                                        // the card is between ZhangYi and the destination position
-                                        if ((D < K && K < ZY) || (ZY < K && K < D)) {
-                                            board[k] = '/';
-                                            board[k - 1] = '/';
-                                            board[k - 2] = '/';
-                                        }
-                                    }
-                                }
-                                k = k + 3;
-                            }
-
-                            //To move ZY to his new position
-                            board[p - 2] = 'z';
-                            board[p - 1] = '9';
-
-                            //set old position to empty
-                            board[setup.indexOf('z') + 2] = '/';
-                            board[setup.indexOf('z') + 1] = '/';
-                            board[setup.indexOf('z')] = '/';
-
-                            //set new setup board
-                            setup = new String(board);
-                            p = -1;
-
-                        } else {
-                            p = p + 3;
+                for (int i= 0; i<36;i++){  //check duplication of moveSequence
+                    int count = 0;
+                    for (int k= 0; k<moveSequence.length();k++) {
+                        if (i == normaliseLoc(move[k])) {
+                            count += 1;
                         }
                     }
-                    i = i + 1;
+                    if (count>1){
+                        return false;
+                    }
                 }
-            }
 
-            // justify whether we check until the end of the moveSequence
-            if (i == -1) {
-                return false;
-            } else {
-                return true;
+                // go through every move in moveSequence one by one
+                int i = 0;
+                while (i != -1 && i < moveSequence.length()) {
+
+                    char[] board = setup.toCharArray();
+
+                    if (!isMoveLegal(setup, move[i])) {
+                        //use i to record "have found an invalid move in the sequence"
+                        i = -1;
+
+                    } else {
+                        // find ZhangYi's location
+                        char zyloc = setup.charAt(setup.indexOf('z') + 2);
+                        int ZY = normaliseLoc(zyloc);
+
+                        // update setup board with the new checked move
+                        int p = 2;
+                        while (p != -1 && p < setup.length()) {
+                            // find the setup board location same with the current move location
+                            if (board[p] == move[i]) {
+                                // find the corresponding country for the card in current move location
+                                char loc = board[p];
+                                char country = board[p - 2];
+                                int D = normaliseLoc(loc);
+
+                                // go through the board to find the card from same country between ZhangYi and goal location
+                                int k = 2;
+                                // find all cards between Zhangyi and the destination, delete them at the same time
+                                while (k < setup.length()) {
+                                    if (board[k-2] == country) {
+                                        int K = normaliseLoc(board[k]);
+                                        // the card is in the same row or column with ZhangYi and destination position
+                                        if ((sameRow(loc, board[k]) && sameRow(zyloc, board[k])) || (sameCol(loc, board[k]) && sameCol(zyloc, board[k]))) {
+                                            // the card is between ZhangYi and the destination position
+                                            if (((D < K && K < ZY) || (ZY < K && K < D))&&(D!=K)) { //D:destination of zhang//K:possible same contry card//ZY:zhangyi's location
+                                                board[k] = '/';
+                                                board[k - 1] = '/';
+                                                board[k - 2] = '/';
+                                            }
+                                        }
+                                    }
+                                    k = k + 3;
+                                }
+
+                                //To move ZY to his new position
+                                board[p - 2] = 'z';
+                                board[p - 1] = '9';
+                                //set old position to empty
+                                board[setup.indexOf('z') + 2] = '/';
+                                board[setup.indexOf('z') + 1] = '/';
+                                board[setup.indexOf('z')] = '/';
+
+                                setup = new String(); //generate new setup string by remove all '/' in board array
+                                for (int n = 0; n < board.length; n++){
+                                    if (board[n]!='/'){
+                                        setup += board[n];
+                                    }else{}
+                                }
+                                p = -1;
+                            } else {
+                                p = p + 3;
+                            }
+                        }
+                        i = i + 1;
+                    }
+                }
+                // justify whether we check until the end of the moveSequence
+                if (i == -1) {
+                    return false;
+                } else {
+                    return true;
             }
         }
     }
