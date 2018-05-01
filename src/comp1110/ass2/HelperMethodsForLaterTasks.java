@@ -1,5 +1,8 @@
 package comp1110.ass2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HelperMethodsForLaterTasks {
 
 //    // Task 7
@@ -112,6 +115,39 @@ public class HelperMethodsForLaterTasks {
         }
 
         return winnerID;
+    }
+
+
+    // Task 10 & Task 9
+    // check whether for the current placement, there are no more valid move
+    public static boolean noMoreValidMove(String placement) {
+
+        // find ZhangYi's location in the placement
+        char zyloc = placement.charAt(placement.indexOf('z') + 2);
+
+        // find all positions in the "placement" sequence that still have cards
+        char[] place = placement.toCharArray();
+        List<Character> allPositions = new ArrayList<>();
+        for (int p = 2; p < placement.length(); p = p + 3) {
+            allPositions.add(place[p]);
+        }
+
+        // check whether there are no cards in any direction from Zhang Yi
+        int availableMove = 0;
+        // when there exists Available Move, change value of "availableMove" from 0 to 1
+        // check for all positions still have cards
+        for (int i = 0; availableMove == 0 && i < allPositions.size(); i++) {
+            char p = allPositions.get(i);
+            if (p != zyloc && (WarringStatesGame.sameCol(p, zyloc) || WarringStatesGame.sameRow(p, zyloc))) {
+                availableMove = 1;
+            }
+        }
+
+        if (availableMove == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
