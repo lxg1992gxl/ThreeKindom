@@ -14,8 +14,13 @@ public class Game extends Application {
     // FIXME Task 9: Implement a basic playable Warring States game in JavaFX
 
     // FIXME Task 11: Allow players of your Warring States game to play against your simple agent
+    //randomly generate move (task 10), make it
+
 
     // FIXME Task 12: Integrate a more advanced opponent into your game
+    //check who winning after move?
+    //recursive check for who winning after that up to AI's next move?
+    //other ideas
 
     private static final int VIEWER_WIDTH = 933;
     private static final int VIEWER_HEIGHT = 700;
@@ -44,6 +49,13 @@ public class Game extends Application {
          *      if move accepted, make move and take card/cards (make sure to take other cards as relevant)
          *      if not accepted, error message
          *  after move next player (indicate on screen which player's turn it is)
+         *      check for any moves available (iHelper)
+         *  if no moves left, check win condition, display winner
+         */
+
+        //makemove
+        /**
+         *
          */
 
     }
