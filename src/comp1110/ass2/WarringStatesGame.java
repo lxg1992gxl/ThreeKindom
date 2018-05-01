@@ -10,6 +10,37 @@ import java.util.Random;
  */
 public class WarringStatesGame {
 
+
+    public static boolean isValidLocation(char location) {
+        if ((location >= 'A' & location <= 'Z') | (location >= '0' & location <= '9')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //return true if the String given represents a card within the game specifications, otherwise returns false
+    public static boolean isValidCard (String card){
+        char [] chunks;
+
+        if(card.length()==2) {
+            chunks = card.toCharArray();
+        }
+        else{
+            return false;
+        }
+
+
+        if(chunks[0] >= 'a' & chunks[0] <= 'g'){
+            if ((chunks[1] + chunks[0] <= 152) & (chunks[1] >= 48)){
+                return true;
+            }
+            else {return false;}
+        }
+        else {return false;}
+
+    }
+
     /**
      * Determine whether a card placement is well-formed according to the following:
      * - it consists of exactly three characters
@@ -33,6 +64,7 @@ public class WarringStatesGame {
                 //check for second character
                 if ((chunks[1] + chunks[0] <= 152) & (chunks[1] >= 48)) {
                     //check for third character
+                    //FIXME
                     if ((chunks[2] >= 'A' & chunks[2] <= 'Z') | (chunks[2] >= '0' & chunks[2] <= '9')) {
                         //check in right range and also number possibilities
                         return true;
@@ -915,6 +947,8 @@ public class WarringStatesGame {
             return move;
         }
     }
+
+
 
 
 }
