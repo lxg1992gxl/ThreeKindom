@@ -3,9 +3,9 @@ package comp1110.ass2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HelperMethodsForLaterTasks {
+public class iHelperMethods {
 
-//    // Task 7
+    //    // Task 7
 //    public static String orderedCards(ArrayList<String> existedCards) {
 //        char[] s_arr;
 //        Collections.sort(existedCards);
@@ -149,5 +149,6 @@ public class HelperMethodsForLaterTasks {
             return false;
         }
     }
+
 
 }

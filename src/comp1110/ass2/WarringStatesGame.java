@@ -903,7 +903,7 @@ public class WarringStatesGame {
         char zyloc = placement.charAt(placement.indexOf('z') + 2);
 
         // if there is no legal move available, return null character
-        if (HelperMethodsForLaterTasks.noMoreValidMove(placement)) {
+        if (iHelperMethods.noMoreValidMove(placement)) {
             return '\0';
         } else {
             // randomly produce a "move character" until it satisfies our requirements
