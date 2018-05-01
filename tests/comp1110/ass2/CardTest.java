@@ -60,12 +60,14 @@ public class CardTest {
 
         Random r = new Random();
         char k = (char) ('a' + r.nextInt(7));
-        int n = 8;// - (k - 'a');
-        char c = (char) ('0' + r.nextInt(n));
+        int n = (k -'a')+1; //+1 to avoid out of bounds exceptions when kingdom a is chosen
+        char c = (char) ('8' - r.nextInt(n));
+
+
         String card = ""+k+c;
 
+        //a8,b7, c6, d5, e4, f3, g2
         //number out of bounds for kingdom in question
-        assertTrue(card, !isValidCard(card));
-
+        assertTrue("Kingdom "+ k + " does not have a card "+c, !isValidCard(card));
     }
 }
