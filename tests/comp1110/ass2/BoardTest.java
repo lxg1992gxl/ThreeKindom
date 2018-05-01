@@ -33,12 +33,24 @@ public class BoardTest {
     @Test
     public void testBad() {
         Random r = new Random();
+        char choice;
+        if(true){
+            choice = (char)((r.nextInt(26))+97);
+        }
+        else {
+            if(r.nextBoolean()){
+                choice = (char)('Z'+ r.nextInt(5));
+            }
+            else{
+                choice = (char)('A'- r.nextInt(5));
+            }
+        }
 
-        //char choice = ((char)r.nextInt(200));
-        char choice = 'a'-1;
+        //65-90
+        //97 122
 
         //caps wrong
-        assertFalse("Board location encoding must use upper case characters", choice >= 'a' && choice <= 'z');
+        assertTrue("Board location encoding must use upper case characters" + choice, choice >= 'a' && choice <= 'z');
         //out of bounds
         assertTrue("Board character " + choice+ " is out of bounds", (!isValidLocation(choice)));
     }
