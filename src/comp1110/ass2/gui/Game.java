@@ -1,7 +1,14 @@
 package comp1110.ass2.gui;
 
 import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.scene.image.ImageView;
 
 public class Game extends Application {
     private static final int BOARD_WIDTH = 933;
@@ -10,11 +17,64 @@ public class Game extends Application {
     // FIXME Task 9: Implement a basic playable Warring States game in JavaFX
 
     // FIXME Task 11: Allow players of your Warring States game to play against your simple agent
+    //randomly generate move (task 10), make it
+
 
     // FIXME Task 12: Integrate a more advanced opponent into your game
+    //check who winning after move?
+    //recursive check for who winning after that up to AI's next move?
+    //other ideas
+
+    private static final int VIEWER_WIDTH = 933;
+    private static final int VIEWER_HEIGHT = 700;
+
+    private static final String URI_BASE = "assets/";
+
+    private final Group root = new Group();
+    private final Group controls = new Group();
+    private final StackPane board = new StackPane();
+    private final FlowPane flow = new FlowPane(7,7);    //to organize every card in grid
+
+
+    class FXpiece extends ImageView{
+
+        FXpiece (String placement){
+            String card = placement.substring(0,2); //check this
+            setImage(new Image(Game.class.getResource(URI_BASE+card+".png").toString()));
+            //add where placement?
+        }
+
+
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        primaryStage.setTitle("Warring States");
+        Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
+
+        Rectangle i = new Rectangle(0,0,20, 20);
+        root.getChildren().add(i);
+        FXpiece test = new FXpiece("a1L");
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        //task 9
+        /** create board that shows current game state
+         * choose number of players
+         * display what cards have collected and kingdom flags
+         * allow to click on a card to attempt move
+         *      if move accepted, make move and take card/cards (make sure to take other cards as relevant)
+         *      if not accepted, error message
+         *  after move next player (indicate on screen which player's turn it is)
+         *      check for any moves available (iHelper)
+         *  if no moves left, check win condition, display winner
+         */
+
+        //makemove
+        /**
+         *
+         */
 
     }
 }

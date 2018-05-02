@@ -3,11 +3,43 @@ package comp1110.ass2;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 /**
  * This class provides the text interface for the Warring States game
  */
 public class WarringStatesGame {
+
+
+    public static boolean isValidLocation(char location) {
+        if ((location >= 'A' & location <= 'Z') | (location >= '0' & location <= '9')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //return true if the String given represents a card within the game specifications, otherwise returns false
+    public static boolean isValidCard (String card){
+        char [] chunks;
+
+        if(card.length()==2) {
+            chunks = card.toCharArray();
+        }
+        else{
+            return false;
+        }
+
+
+        if(chunks[0] >= 'a' & chunks[0] <= 'g'){
+            if ((chunks[1] + chunks[0] <= 152) & (chunks[1] >= 48)){
+                return true;
+            }
+            else {return false;}
+        }
+        else {return false;}
+
+    }
 
     /**
      * Determine whether a card placement is well-formed according to the following:
@@ -32,6 +64,7 @@ public class WarringStatesGame {
                 //check for second character
                 if ((chunks[1] + chunks[0] <= 152) & (chunks[1] >= 48)) {
                     //check for third character
+                    //FIXME
                     if ((chunks[2] >= 'A' & chunks[2] <= 'Z') | (chunks[2] >= '0' & chunks[2] <= '9')) {
                         //check in right range and also number possibilities
                         return true;
@@ -73,7 +106,7 @@ public class WarringStatesGame {
      */
 
     static boolean isPlacementWellFormed(String placement) {
-        //Task 3: determine whether a placement is well-formed
+        // Task 3: determine whether a placement is well-formed
 
         //Construct the possible number index in each different country group
         char qin[] = new char[]{'0', '1', '2', '3', '4', '5', '6', '7'};
@@ -212,8 +245,8 @@ public class WarringStatesGame {
 
     public static int normaliseLoc(char locationChar) {
         int result = -1;
-        if (locationChar >= 'A' & locationChar <= 'Z') { //normalises letter locations
-            result = ((int) locationChar);
+        if (locationChar >= 'A' && locationChar <= 'Z') { //normalises letter locations
+            result = (int) locationChar;
             result -= 65;
         } else { //normalises number locations
             result = (int) locationChar;
@@ -321,6 +354,8 @@ public class WarringStatesGame {
 
                         if (sameCol(zhangloc, a.charAt(2))) {
 //                          //compare distances
+
+
                             int dist = normaliseLoc(locationChar) - normaliseLoc(zhangloc);
                             int dist2 = normaliseLoc(a.charAt(2)) - normaliseLoc(zhangloc);
                             if (dist > 0) {
@@ -357,7 +392,6 @@ public class WarringStatesGame {
                 }
             }
 
-
             return true;
         } else { //locationChar is out of range
             return false;
@@ -379,12 +413,26 @@ public class WarringStatesGame {
      * @return True if the placement sequence is valid
      */
     static boolean isMoveSequenceValid(String setup, String moveSequence) {
-        // FIXME Task 6: determine whether a placement sequence is valid
+        // Task 6: determine whether a placement sequence is valid
         // check whether has empty string or initial out of range
         if (moveSequence.length() > 36 || moveSequence == "" || setup == null || setup == "") {
             return false;
+        } else if (!isPlacementWellFormed(setup)) {
+            return false;
         } else {
             char[] move = moveSequence.toCharArray();
+
+            for (int i = 0; i < 36; i++) {  //check duplication of moveSequence
+                int count = 0;
+                for (int k = 0; k < moveSequence.length(); k++) {
+                    if (i == normaliseLoc(move[k])) {
+                        count += 1;
+                    }
+                }
+                if (count > 1) {
+                    return false;
+                }
+            }
 
             // go through every move in moveSequence one by one
             int i = 0;
@@ -393,13 +441,13 @@ public class WarringStatesGame {
                 char[] board = setup.toCharArray();
 
                 if (!isMoveLegal(setup, move[i])) {
-                    //use i to record "have found an invalid move in the sequence"
+                    // use i to record "have found an invalid move in the sequence"
                     i = -1;
 
                 } else {
                     // find ZhangYi's location
                     char zyloc = setup.charAt(setup.indexOf('z') + 2);
-                    int ZY = normaliseLoc(board[zyloc]);
+                    int ZY = normaliseLoc(zyloc);
 
                     // update setup board with the new checked move
                     int p = 2;
@@ -413,15 +461,14 @@ public class WarringStatesGame {
 
                             // go through the board to find the card from same country between ZhangYi and goal location
                             int k = 2;
-                            int K = normaliseLoc(board[k]);
-
                             // find all cards between Zhangyi and the destination, delete them at the same time
                             while (k < setup.length()) {
-                                if (board[k] == country) {
+                                if (board[k - 2] == country) {
+                                    int K = normaliseLoc(board[k]);
                                     // the card is in the same row or column with ZhangYi and destination position
-                                    if ((sameRow(loc, board[k + 2]) && sameRow(zyloc, board[k + 2])) || (sameCol(loc, board[k + 2]) && sameCol(zyloc, board[k + 2]))) {
+                                    if ((sameRow(loc, board[k]) && sameRow(zyloc, board[k])) || (sameCol(loc, board[k]) && sameCol(zyloc, board[k]))) {
                                         // the card is between ZhangYi and the destination position
-                                        if ((D < K && K < ZY) || (ZY < K && K < D)) {
+                                        if (((D < K && K < ZY) || (ZY < K && K < D)) && (D != K)) { //D:destination of zhang//K:possible same contry card//ZY:zhangyi's location
                                             board[k] = '/';
                                             board[k - 1] = '/';
                                             board[k - 2] = '/';
@@ -431,19 +478,23 @@ public class WarringStatesGame {
                                 k = k + 3;
                             }
 
-                            //To move ZY to his new position
-                            board[p - 2] = 'z';
-                            board[p - 1] = '9';
-
-                            //set old position to empty
+                            // set previous Zhang Yi's position to empty
                             board[setup.indexOf('z') + 2] = '/';
                             board[setup.indexOf('z') + 1] = '/';
                             board[setup.indexOf('z')] = '/';
 
-                            //set new setup board
-                            setup = new String(board);
-                            p = -1;
+                            // move ZY to his new position
+                            board[p - 2] = 'z';
+                            board[p - 1] = '9';
 
+                            setup = new String(); // generate new setup string by remove all '/' in board array
+                            for (int n = 0; n < board.length; n++) {
+                                if (board[n] != '/') {
+                                    setup += board[n];
+                                } else {
+                                }
+                            }
+                            p = -1;
                         } else {
                             p = p + 3;
                         }
@@ -451,7 +502,6 @@ public class WarringStatesGame {
                     i = i + 1;
                 }
             }
-
             // justify whether we check until the end of the moveSequence
             if (i == -1) {
                 return false;
@@ -502,7 +552,9 @@ public class WarringStatesGame {
                     p = -1;
                 }
             }
-            m = m - 3;
+            if (m != 2) {
+                m = m - 3;
+            }
 
             //find the corresponding card at destination position
             char country = bd[m - 2];
@@ -622,77 +674,107 @@ public class WarringStatesGame {
      * If no player controls a particular house, the element for that house will have the value -1.
      */
     public static int[] getFlags(String setup, String moveSequence, int numPlayers) {
-        // FIXME Task 8: determine which player controls the flag of each kingdom after a given sequence of moves
+        // Task 8: determine which player controls the flag of each kingdom after a given sequence of moves
+
         char[] mov = moveSequence.toCharArray();
         char[] bd = setup.toCharArray();
 
-        // initialize
-        int[] kingdom = new int[7];
+        // initialize final output array
+        int[] flags = new int[]{-1, -1, -1, -1, -1, -1, -1};
 
-        List<String> sup0 = new ArrayList<>();
-        List<String> sup1 = new ArrayList<>();
-        List<String> sup2 = new ArrayList<>();
-        List<String> sup3 = new ArrayList<>();
+        // initialize the supporter "CHARACTER" LIST
+        List<Character> sup0 = new ArrayList<>();
+        List<Character> sup1 = new ArrayList<>();
+        List<Character> sup2 = new ArrayList<>();
+        List<Character> sup3 = new ArrayList<>();
 
-        // ZhangYi's initial location
+        // initialize the supporter "STRING" LIST
+        List<String> sup00 = new ArrayList<>();
+        List<String> sup01 = new ArrayList<>();
+        List<String> sup02 = new ArrayList<>();
+        List<String> sup03 = new ArrayList<>();
+
+        // find ZhangYi's initial location for setup board
         char zyloc = setup.charAt(setup.indexOf('z') + 2);
 
+        // make a loop to read all corresponding positions in the moveSequence
         int i = 0;
         while (i < moveSequence.length()) {
+            int currentPlayer = i % numPlayers;
 
             int ZY = normaliseLoc(zyloc);
 
-            // destination location on setup board
+            // find the destination location on setup board
             int m = 2;
             for (int p = 0; p != -1 && m < setup.length(); m = m + 3) {
                 if (bd[m] == mov[i]) {
                     p = -1;
                 }
             }
-            m = m - 3;
-
-            // the corresponding card at destination position
-            char country = bd[m - 2];
-            char sID = bd[m - 1];
-            int D = normaliseLoc(mov[i]);
-
-            // add supporter String at the given destination
-            char[] a_arr = new char[]{country, sID};
-            String a_str = new String(a_arr);
-            if (i % numPlayers == 0) {
-                sup0.add(a_str);
-            } else if (i % numPlayers == 1) {
-                sup1.add(a_str);
-            } else if (i % numPlayers == 2) {
-                sup2.add(a_str);
-            } else {
-                sup3.add(a_str);
+            if (m != 2) {
+                m = m - 3;
             }
 
-            // record the number of cards collected from the same country this time
-            int number = 1;
+            //find the corresponding card at destination position
+            char country = bd[m - 2];
+            char sID = bd[m - 1];
+
+            // the normalised form for destination location
+            int D = normaliseLoc(mov[i]);
+
+            // add supporter String/Character Pairs at the given destination & check for different players
+            char[] a_arr = new char[]{country, sID};
+            String a_str = new String(a_arr);
+
+            // add supporter String at the given destination & check for different players
+            if (currentPlayer == 0) {
+                sup0.add(country);
+                sup0.add(sID);
+                sup00.add(a_str);
+            } else if (currentPlayer == 1) {
+                sup1.add(country);
+                sup1.add(sID);
+                sup01.add(a_str);
+            } else if (currentPlayer == 2) {
+                sup2.add(country);
+                sup2.add(sID);
+                sup02.add(a_str);
+            } else {
+                sup3.add(country);
+                sup3.add(sID);
+                sup03.add(a_str);
+            }
+
             for (int k = 0; k < setup.length(); k = k + 3) {
                 int K = normaliseLoc(bd[k + 2]);
+                // the card belongs to same country with the destination
                 if (bd[k] == country) {
+                    // the card is in the same row or column with ZhangYi and destination position
                     if ((sameRow(mov[i], bd[k + 2]) && sameRow(zyloc, bd[k + 2])) || (sameCol(mov[i], bd[k + 2]) && sameCol(zyloc, bd[k + 2]))) {
+                        // the card is between ZhangYi and the destination position
                         if ((D < K && K < ZY) || (ZY < K && K < D)) {
                             // add other supporters from the same country between ZhangYi and the destination
                             char[] b_arr = new char[]{bd[k], bd[k + 1]};
                             String b_str = new String(b_arr);
+                            // the supporter ID have not been contained in other player's supporters list
+                            if (!sup00.contains(b_str) && !sup01.contains(b_str) && !sup02.contains(b_str) && !sup03.contains(b_str)) {
 
-                            if (!sup0.contains(b_str) && !sup1.contains(b_str) && !sup2.contains(b_str) && !sup3.contains(b_str)) {
-                                if (i % numPlayers == 0) {
-                                    sup0.add(b_str);
-                                    number++;
-                                } else if (i % numPlayers == 1) {
-                                    sup1.add(b_str);
-                                    number++;
-                                } else if (i % numPlayers == 2) {
-                                    sup2.add(b_str);
-                                    number++;
+                                if (currentPlayer == 0) {
+                                    sup0.add(bd[k]);
+                                    sup0.add(bd[k + 1]);
+                                    sup00.add(b_str);
+                                } else if (currentPlayer == 1) {
+                                    sup1.add(bd[k]);
+                                    sup1.add(bd[k + 1]);
+                                    sup01.add(b_str);
+                                } else if (currentPlayer == 2) {
+                                    sup2.add(bd[k]);
+                                    sup2.add(bd[k + 1]);
+                                    sup02.add(b_str);
                                 } else {
-                                    sup3.add(b_str);
-                                    number++;
+                                    sup3.add(bd[k]);
+                                    sup3.add(bd[k + 1]);
+                                    sup03.add(b_str);
                                 }
                             }
                         }
@@ -700,16 +782,136 @@ public class WarringStatesGame {
                 }
             }
 
-            // compare the number of the collected cards with cards from the same country in other players' supporter list
-
-            // update kingdom array
-
+            // Update ZhangYi's location
             zyloc = mov[i];
+
+
+            // ** Main new part for Task8 comparing to Task7 !
+
+            // get No. of the corresponding updated country's cards of current player
+
+            int playerCardsNum = 0;
+
+            if (currentPlayer == 0) {
+                for (int p = 0; p < sup0.size(); p = p + 2) {
+                    if (sup0.get(p) == country) {
+                        playerCardsNum++;
+                    }
+                }
+            } else if (currentPlayer == 1) {
+                for (int p = 0; p < sup1.size(); p = p + 2) {
+                    if (sup1.get(p) == country) {
+                        playerCardsNum++;
+                    }
+                }
+            } else if (currentPlayer == 2) {
+                for (int p = 0; p < sup2.size(); p = p + 2) {
+                    if (sup2.get(p) == country) {
+                        playerCardsNum++;
+                    }
+                }
+            } else {
+                for (int p = 0; p < sup3.size(); p = p + 2) {
+                    if (sup3.get(p) == country) {
+                        playerCardsNum++;
+                    }
+                }
+            }
+
+
+            // get the flagOwner playerId that currently has the "country" flag
+            int flagOwner;
+            if (country == 'a') {
+                flagOwner = flags[0];
+            } else if (country == 'b') {
+                flagOwner = flags[1];
+            } else if (country == 'c') {
+                flagOwner = flags[2];
+            } else if (country == 'd') {
+                flagOwner = flags[3];
+            } else if (country == 'e') {
+                flagOwner = flags[4];
+            } else if (country == 'f') {
+                flagOwner = flags[5];
+            } else {
+                flagOwner = flags[6];
+            }
+
+            // First, check whether no previous country holds the flag
+            if (flagOwner == -1) {
+                if (country == 'a') {
+                    flags[0] = currentPlayer;
+                } else if (country == 'b') {
+                    flags[1] = currentPlayer;
+                } else if (country == 'c') {
+                    flags[2] = currentPlayer;
+                } else if (country == 'd') {
+                    flags[3] = currentPlayer;
+                } else if (country == 'e') {
+                    flags[4] = currentPlayer;
+                } else if (country == 'f') {
+                    flags[5] = currentPlayer;
+                } else {
+                    flags[6] = currentPlayer;
+                }
+            }
+            // Then, check whether the flag owner is the current player, if yes, skip all following check steps (no change will happen)
+            else if (flagOwner != currentPlayer) {
+                // Find No. of the corresponding country's cards of the current flagOwner
+                int flagCardsNum = 0;
+
+                if (flagOwner == 0) {
+                    for (int p = 0; p < sup0.size(); p = p + 2) {
+                        if (sup0.get(p) == country) {
+                            flagCardsNum++;
+                        }
+                    }
+                } else if (flagOwner == 1) {
+                    for (int p = 0; p < sup1.size(); p = p + 2) {
+                        if (sup1.get(p) == country) {
+                            flagCardsNum++;
+                        }
+                    }
+                } else if (flagOwner == 2) {
+                    for (int p = 0; p < sup2.size(); p = p + 2) {
+                        if (sup2.get(p) == country) {
+                            flagCardsNum++;
+                        }
+                    }
+                } else if (flagOwner == 3) {
+                    for (int p = 0; p < sup3.size(); p = p + 2) {
+                        if (sup3.get(p) == country) {
+                            flagCardsNum++;
+                        }
+                    }
+                }
+
+                // check whether the current player holds an equal or greater number of characters of a country than the current flag owner
+                if (playerCardsNum >= flagCardsNum) {
+                    if (country == 'a') {
+                        flags[0] = currentPlayer;
+                    } else if (country == 'b') {
+                        flags[1] = currentPlayer;
+                    } else if (country == 'c') {
+                        flags[2] = currentPlayer;
+                    } else if (country == 'd') {
+                        flags[3] = currentPlayer;
+                    } else if (country == 'e') {
+                        flags[4] = currentPlayer;
+                    } else if (country == 'f') {
+                        flags[5] = currentPlayer;
+                    } else {
+                        flags[6] = currentPlayer;
+                    }
+                }
+
+            }
             i++;
         }
 
-        return kingdom;
+        return flags;
     }
+
 
     /**
      * Generate a legal move, given the provided placement string.
@@ -727,7 +929,26 @@ public class WarringStatesGame {
      * @return a location character representing Zhang Yi's destination for the move
      */
     public static char generateMove(String placement) {
-        // FIXME Task 10: generate a legal move
-        return '\0';
+        // Task 10: generate a legal move
+
+        // find ZhangYi's location in the placement
+        char zyloc = placement.charAt(placement.indexOf('z') + 2);
+
+        // if there is no legal move available, return null character
+        if (iHelperMethods.noMoreValidMove(placement)) {
+            return '\0';
+        } else {
+            // randomly produce a "move character" until it satisfies our requirements
+            Random rand = new Random();
+            char move = ' ';
+            while (!((move >= 'A' && move <= 'Z') || (move >= '0' && move <= '9')) || move == zyloc || !isMoveLegal(placement, move)) {
+                move = (char) rand.nextInt(91);
+            }
+            return move;
+        }
     }
+
+
+
+
 }
