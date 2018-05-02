@@ -3,9 +3,12 @@ package comp1110.ass2.gui;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.scene.image.ImageView;
 
 public class Game extends Application {
     private static final int BOARD_WIDTH = 933;
@@ -33,11 +36,26 @@ public class Game extends Application {
     private final FlowPane flow = new FlowPane(7,7);    //to organize every card in grid
 
 
+    class FXpiece extends ImageView{
+
+        FXpiece (String placement){
+            String card = placement.substring(0,2); //check this
+            setImage(new Image(Game.class.getResource(URI_BASE+card+".png").toString()));
+            //add where placement?
+        }
+
+
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         primaryStage.setTitle("Warring States");
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
+
+        Rectangle i = new Rectangle(0,0,20, 20);
+        root.getChildren().add(i);
+        FXpiece test = new FXpiece("a1L");
 
         primaryStage.setScene(scene);
         primaryStage.show();
