@@ -39,8 +39,8 @@ public class Game extends Application {
     class FXpiece extends ImageView{
 
         FXpiece (String placement){
-            String card = placement.substring(0,2); //check this
-            setImage(new Image(Game.class.getResource(URI_BASE+card+".png").toString()));
+            String card = "a1"; //placement.substring(0,2); //check this
+            setImage(new Image (Game.class.getResource("assets/"+card+".png").toString()));
             //add where placement?
         }
 
@@ -56,6 +56,7 @@ public class Game extends Application {
         Rectangle i = new Rectangle(0,0,20, 20);
         root.getChildren().add(i);
         FXpiece test = new FXpiece("a1L");
+        root.getChildren().add(test);
 
         primaryStage.setScene(scene);
         primaryStage.show();
