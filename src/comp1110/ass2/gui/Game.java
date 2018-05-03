@@ -39,11 +39,10 @@ public class Game extends Application {
     class FXpiece extends ImageView{
 
         FXpiece (String placement){
-            String card = "a1"; //placement.substring(0,2); //check this
-            setImage(new Image (Game.class.getResource("assets/"+card+".png").toString()));
+            String card = placement.substring(0,2); //check this
+            setImage(new Image (Game.class.getResource(URI_BASE+card+".png").toString()));
             //add where placement?
         }
-
 
     }
 

@@ -55,6 +55,7 @@ public class iHelperMethods {
             if (flagNumbers[i] == flagMax) {
                 maxFlagsPlayer[i] = i;
             }
+
         }
 
         return maxFlagsPlayer;
