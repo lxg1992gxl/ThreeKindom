@@ -41,6 +41,7 @@ public class WarringStatesGame {
 
     }
 
+
     /**
      * Determine whether a card placement is well-formed according to the following:
      * - it consists of exactly three characters
@@ -93,6 +94,7 @@ public class WarringStatesGame {
 
     }
 
+    
     /**
      * Determine whether a placement string is well-formed:
      * - it consists of exactly N three-character card placements (where N = 1 .. 36);
@@ -254,6 +256,7 @@ public class WarringStatesGame {
         }
         return result;
     }
+
 
     /**
      * Compares whether two location characters are in the same row,
@@ -947,8 +950,6 @@ public class WarringStatesGame {
             return move;
         }
     }
-
-
 
 
 }
