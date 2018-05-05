@@ -10,6 +10,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 
+import static comp1110.ass2.WarringStatesGame.normaliseLoc;
+
 public class Game extends Application {
     private static final int BOARD_WIDTH = 933;
     private static final int BOARD_HEIGHT = 700;
@@ -39,9 +41,28 @@ public class Game extends Application {
     class FXpiece extends ImageView{
 
         FXpiece (String placement){
-            String card = placement.substring(0,2); //check this
-            setImage(new Image(Game.class.getResource(URI_BASE+card+".png").toString()));
+            String card = placement.substring(0,2);
+            setImage(new Image (Game.class.getResource(URI_BASE+card+".png").toString()));
             //add where placement?
+
+            //determines location of the card based on the location char
+            int loc = normaliseLoc(placement.charAt(2));
+            int w = 100;
+            int h= 100;
+            int gap = 10;
+            setLayoutX(BOARD_WIDTH-((loc/6+1)*w +(loc/6+1)*gap)); //inverse because starts on right
+            setLayoutY(loc%6*h+loc%6*gap);
+
+
+            /*
+            4 Y S M G A                             30 24 18 12 6 0
+            5 Z T N H B                             31 25 19 13 7 1
+            6 0 U O I C   --> after normalisation   32 26 20 14 8 2
+            7 1 V P J D                             33 27 21 15 9 3
+            8 2 W Q K E                             34 28 22 16 10 4
+            9 3 X R L F                             35 29 23 17 11 5
+
+             */
         }
 
 
@@ -49,13 +70,16 @@ public class Game extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         primaryStage.setTitle("Warring States");
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
-        Rectangle i = new Rectangle(0,0,20, 20);
-        root.getChildren().add(i);
-        FXpiece test = new FXpiece("a1L");
+        String place = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
+        FXpiece[] board = new FXpiece[place.length()/3];
+        for(int j=0;j<place.length()/3; j++){
+            board[j] = new FXpiece(place.substring(j*3, j*3+3));
+            root.getChildren().add(board[j]);
+        }
+
 
         primaryStage.setScene(scene);
         primaryStage.show();
