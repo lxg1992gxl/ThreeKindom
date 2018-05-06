@@ -39,10 +39,11 @@ public class Game extends Application {
 
 
     class FXpiece extends ImageView{
+        String id;
 
         FXpiece (String placement){
-            String card = placement.substring(0,2);
-            setImage(new Image (Game.class.getResource(URI_BASE+card+".png").toString()));
+            this.id = placement.substring(0,2);
+            setImage(new Image (Game.class.getResource(URI_BASE+this.id+".png").toString()));
             //add where placement?
 
             //determines location of the card based on the location char
@@ -53,7 +54,6 @@ public class Game extends Application {
             setLayoutX(BOARD_WIDTH-((loc/6+1)*w +(loc/6+1)*gap)); //inverse because starts on right
             setLayoutY(loc%6*h+loc%6*gap);
 
-
             /*
             4 Y S M G A                             30 24 18 12 6 0
             5 Z T N H B                             31 25 19 13 7 1
@@ -63,9 +63,13 @@ public class Game extends Application {
             9 3 X R L F                             35 29 23 17 11 5
 
              */
+            setOnMousePressed(event -> {      // mouse press indicates begin of drag
+                System.out.println(this.id);
+            });
+
+            //width and height is currently 100
+
         }
-
-
     }
 
     @Override
