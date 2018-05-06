@@ -1,5 +1,6 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.WarringStatesGame;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -8,6 +9,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
+
+import java.util.Random;
 
 import static comp1110.ass2.WarringStatesGame.normaliseLoc;
 
@@ -36,6 +39,7 @@ public class Game extends Application {
     private final StackPane board = new StackPane();
     private final FlowPane flow = new FlowPane(7,7);    //to organize every card in grid
 
+    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
 
     class FXpiece extends ImageView{
         String id;
@@ -64,6 +68,9 @@ public class Game extends Application {
              */
             setOnMousePressed(event -> {      // mouse press indicates begin of drag
                 System.out.println(this.id);
+                if(WarringStatesGame.isMoveLegal(setup, placement.charAt(2))){
+                    System.out.println("yes"); //call make move method
+                };
             });
 
             //width and height is currently 100
@@ -71,15 +78,37 @@ public class Game extends Application {
         }
     }
 
+    public void makeMove(String placement, char location){
+        //move ZY to the location
+        //take card from location and any on way off board/placement
+        //add those cards to the players set
+        //check if any valid moves left (use HelperMethods)
+    }
+
+    public void endGame(){
+        
+    }
+
+
+    public void startGame(){
+        //creates a random setup
+        //random card from the available, goes into A...Z....9
+
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        //start game
+        //      create setup
+        //number of players
+
         primaryStage.setTitle("Warring States");
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
-        String place = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
-        FXpiece[] board = new FXpiece[place.length()/3];
-        for(int j=0;j<place.length()/3; j++){
-            board[j] = new FXpiece(place.substring(j*3, j*3+3));
+        FXpiece[] board = new FXpiece[setup.length()/3];
+        for(int j=0;j<setup.length()/3; j++){
+            board[j] = new FXpiece(setup.substring(j*3, j*3+3));
             root.getChildren().add(board[j]);
         }
 
