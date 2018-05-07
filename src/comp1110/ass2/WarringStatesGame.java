@@ -963,16 +963,25 @@ public class WarringStatesGame {
 
 
 
-    public void endGame(){
+    public void endGame(String placement, String history, int players){
+        //check flags
+        getFlags(placement,history, players); //int[]
+
+        //determine winner
+        //display winner
 
     }
 
 
     public void startGame(){
         //creates a random setup
+        Random r = new Random();
+
+
+        //use logic from testUtility, be sure to include in statement of originality!!!
+
         //random card from the available, goes into A...Z....9
-        //number of players
-        //number of computer players
+
 
     }
 

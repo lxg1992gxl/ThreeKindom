@@ -68,11 +68,18 @@ public class Game extends Application {
             9 3 X R L F                             35 29 23 17 11 5
 
              */
-            setOnMousePressed(event -> {      // mouse press indicates begin of drag
+
+            //on mouse click, hover over acceptable
+//
+//            this.setScaleX(1.1);
+//            this.setScaleY(1.1);
+//            this.toFront();
+
+            setOnMousePressed(event -> {
                 System.out.println(this.id);
                 if(WarringStatesGame.isMoveLegal(setup, placement.charAt(2))){
                     System.out.println("yes"); //call make move method
-                    //on mouse click, hover over acceptable
+
                 };
             });
 
