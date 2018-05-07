@@ -72,6 +72,7 @@ public class Game extends Application {
                 System.out.println(this.id);
                 if(WarringStatesGame.isMoveLegal(setup, placement.charAt(2))){
                     System.out.println("yes"); //call make move method
+                    //on mouse click, hover over acceptable
                 };
             });
 
@@ -79,6 +80,8 @@ public class Game extends Application {
 
         }
     }
+
+
 
     private void makeControls(){
         Button start = new Button ("Restart game");
