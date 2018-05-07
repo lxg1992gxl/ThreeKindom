@@ -94,7 +94,7 @@ public class WarringStatesGame {
 
     }
 
-    
+
     /**
      * Determine whether a placement string is well-formed:
      * - it consists of exactly N three-character card placements (where N = 1 .. 36);
