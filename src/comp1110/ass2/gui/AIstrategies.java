@@ -7,32 +7,27 @@ import java.util.List;
 
 public class AIstrategies {
 
-    // Overall, have time limitation for AI Strategic operation
-
-    // First, need to check all cards in the same row or column, and collect them as a corresponding list
-    public static List<String> allSameColumnOrRowWithZY (String placement) {
-        List<String> allCards = new ArrayList<>();
+    // collect all valid-move cards
+    public static List<Character> allSameColumnOrRowWithZY (String placement) {
+        List<Character> allValidCards = new ArrayList<>();
 
         // find ZhangYi's location in the placement
         char zyloc = placement.charAt(placement.indexOf('z') + 2);
         int ZY = WarringStatesGame.normaliseLoc(zyloc);
 
-        // find all positions in the "placement" sequence that still have cards
+        // find all valid cards in the "placement" sequence (collect a card in a 3-character form)
         char[] place = placement.toCharArray();
-        List<Character> allPositions = new ArrayList<>();
-        for (int p = 2; p < placement.length(); p = p + 3) {
-            allPositions.add(place[p-2]);
-            allPositions.add(place[p-1]);
-            allPositions.add(place[p]);
+        for (int i = 2; i < placement.length(); i = i + 3) {
+            char loc = place[i];
+            if (loc!=zyloc && (WarringStatesGame.sameRow(loc, zyloc) || WarringStatesGame.sameCol(loc, zyloc))) {
+                allValidCards.add(place[i-2]);
+                allValidCards.add(place[i-1]);
+                allValidCards.add(loc);
+            }
         }
 
-//        for (int p = 2; p < allPositions.size(); p = p + 3) {
-//            char p = allPositions.get(i);
-//            if (p != zyloc && (WarringStatesGame.sameCol(p, zyloc) || WarringStatesGame.sameRow(p, zyloc))) {
-//            }
-//        }
-
-
-        return allCards;
+        return allValidCards;
     }
+
+    
 }
