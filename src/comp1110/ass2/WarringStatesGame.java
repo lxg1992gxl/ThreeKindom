@@ -957,8 +957,11 @@ public class WarringStatesGame {
         //take card from location and any on way off board/placement
         //add those cards to the players set
         //check if any valid moves left (use HelperMethods)
+
         //if current player == computer, make move using computerplayer methods
     }
+
+
 
     public void endGame(){
 

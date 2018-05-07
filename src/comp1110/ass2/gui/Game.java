@@ -4,6 +4,8 @@ import comp1110.ass2.WarringStatesGame;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
@@ -78,6 +80,15 @@ public class Game extends Application {
         }
     }
 
+    private void makeControls(){
+        Button start = new Button ("Restart game");
+        Slider players = new Slider (2, 4, 2);
+
+        //difficulty
+
+        controls.getChildren().add(start);
+        controls.getChildren().add(players);
+    }
 
 
     @Override
