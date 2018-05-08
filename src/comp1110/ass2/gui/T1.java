@@ -32,7 +32,7 @@ public class T1 extends Application {
         primaryStage.setTitle("Choose the number of players!");
         //build scene
         Pane playerNum = new Pane();
-        Scene scene = new Scene(playerNum,300,300);
+        Scene scene = new Scene(playerNum,350,300);
 
         //create buttons
         Button exitBtn = new Button("Exit");
