@@ -4,6 +4,8 @@ import comp1110.ass2.WarringStatesGame;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
@@ -66,10 +68,18 @@ public class Game extends Application {
             9 3 X R L F                             35 29 23 17 11 5
 
              */
-            setOnMousePressed(event -> {      // mouse press indicates begin of drag
+
+            //on mouse click, hover over acceptable
+//
+//            this.setScaleX(1.1);
+//            this.setScaleY(1.1);
+//            this.toFront();
+
+            setOnMousePressed(event -> {
                 System.out.println(this.id);
                 if(WarringStatesGame.isMoveLegal(setup, placement.charAt(2))){
                     System.out.println("yes"); //call make move method
+
                 };
             });
 
@@ -78,23 +88,18 @@ public class Game extends Application {
         }
     }
 
-    public void makeMove(String placement, char location){
-        //move ZY to the location
-        //take card from location and any on way off board/placement
-        //add those cards to the players set
-        //check if any valid moves left (use HelperMethods)
+
+
+    private void makeControls(){
+        Button start = new Button ("Restart game");
+        Slider players = new Slider (2, 4, 2);
+
+        //difficulty
+
+        controls.getChildren().add(start);
+        controls.getChildren().add(players);
     }
 
-    public void endGame(){
-        
-    }
-
-
-    public void startGame(){
-        //creates a random setup
-        //random card from the available, goes into A...Z....9
-
-    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {

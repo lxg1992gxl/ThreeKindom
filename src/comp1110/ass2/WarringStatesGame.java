@@ -94,7 +94,7 @@ public class WarringStatesGame {
 
     }
 
-    
+
     /**
      * Determine whether a placement string is well-formed:
      * - it consists of exactly N three-character card placements (where N = 1 .. 36);
@@ -951,5 +951,38 @@ public class WarringStatesGame {
         }
     }
 
+
+    public void makeMove(String placement, char location){
+        //move ZY to the location
+        //take card from location and any on way off board/placement
+        //add those cards to the players set
+        //check if any valid moves left (use HelperMethods)
+
+        //if current player == computer, make move using computerplayer methods
+    }
+
+
+
+    public void endGame(String placement, String history, int players){
+        //check flags
+        getFlags(placement,history, players); //int[]
+
+        //determine winner
+        //display winner
+
+    }
+
+
+    public void startGame(){
+        //creates a random setup
+        Random r = new Random();
+
+
+        //use logic from testUtility, be sure to include in statement of originality!!!
+
+        //random card from the available, goes into A...Z....9
+
+
+    }
 
 }
