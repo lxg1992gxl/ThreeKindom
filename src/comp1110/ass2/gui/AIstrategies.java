@@ -35,7 +35,7 @@ public class AIstrategies {
     }
 
 
-    // At this stage, previousState just have 3 String represent one state (1st: previous moveSequence; 2nd: board; 3rd: mark)
+    // At this stage, previousState just has 3 String representing one state (1st: previous moveSequence; 2nd: board; 3rd: mark)
     public static List<String> allNextStepPossibilities(List<String> previousState, int initialPlayer, int checkedPlayer, int numPlayers) {
         List<String> possibleState = new ArrayList<>();
 
@@ -161,6 +161,68 @@ public class AIstrategies {
         }
 
         return possibleState;
+    }
+
+
+    // Do loops to get the bottom layer states for "Minimax" tree, given our required lookedLayers number
+    public static List<String> bottomLookedLayerStates(int LookedLayers, String placement, int initialPlayer, int numPlayers) {
+
+        // initial state setting in String form
+        List<String> beginningStates = new ArrayList<>();
+        beginningStates.add(null);
+        beginningStates.add(placement);
+        beginningStates.add(null);
+
+        for (int i = 1; i <= LookedLayers; i++) {
+
+            // initialise the new created one whole layer "all possible states" String List
+            List<String> completedOneLayer = new ArrayList<>();
+
+            for (int p = 0; p <= beginningStates.size(); p = p + 3) {
+
+                // get the player ID of the currently checked player
+                int checkedPlayer = (initialPlayer + i) % numPlayers;
+
+                List<String> previousState = new ArrayList<>();
+                previousState.add(beginningStates.get(p));
+                previousState.add(beginningStates.get(p + 1));
+                previousState.add(beginningStates.get(p + 2));
+
+                // combine all possible states under different previous state nodes
+                completedOneLayer.addAll(allNextStepPossibilities(previousState, initialPlayer, checkedPlayer, numPlayers));
+            }
+
+            // update beginningStates for next loop as the completed states combination for this loop
+            beginningStates = completedOneLayer;
+        }
+
+        return beginningStates;
+    }
+
+
+    // According to our bottomLayerStates, get the possible highest mark for the initial player and its corresponding initial move.
+    public static char bestMove(int LookedLayers, String placement, int initialPlayer, int numPlayers) {
+
+        // 3 elements as a group: 1st -- previous moveSequence; 2nd -- board; 3rd -- mark
+        List<String> bottomLayerStates = bottomLookedLayerStates(LookedLayers, placement, initialPlayer, numPlayers);
+
+        // initialize
+        String bestMoveSequence = bottomLayerStates.get(0);
+        int bestMark = Integer.valueOf(bottomLayerStates.get(2));
+
+        // compare final mark one by one in the loop, and keeps the moveSequence corresponding to the higher mark
+        if (bottomLayerStates.size() >= 6) {
+            for (int i = 5; i < bottomLayerStates.size(); i = i + 3) {
+                int currentMark = Integer.valueOf(bottomLayerStates.get(i));
+                if (currentMark > bestMark) {
+                    bestMoveSequence = bottomLayerStates.get(i - 2);
+                }
+            }
+        }
+
+        // the first character of the bestMoveSequence is the move that the initial player is willing to go currently to maximize his/ her potential marks,
+        // considering opponents' rational potential choices in future steps
+        return ((bestMoveSequence.toCharArray())[0]);
     }
 
 
