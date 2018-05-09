@@ -13,4 +13,4 @@ needed and image names would be more appropriate.
 4. This hard coding increases the likelihood of update errors from this function.
 5. Java conventions are followed, and the style is consistent throughout.
 6. Refresh button deletes previous placement visual, but does not replace with new placement from text field. In order to do so, it would need
-to get the text from the text field and use that as a parameter for makePlacement(). 
+to get the text from the text field and use that as a parameter for makePlacement().
