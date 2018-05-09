@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 
 import java.util.Random;
 
+import static comp1110.ass2.WarringStatesGame.getSupporters;
 import static comp1110.ass2.WarringStatesGame.normaliseLoc;
 
 public class Game extends Application {
@@ -45,7 +46,8 @@ public class Game extends Application {
     private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
     private int players = 2;
     private int AIs = 1;
-
+    private String history = "";
+    private int currentPlayer = 0;
 
     class FXpiece extends ImageView{
         String id;
@@ -85,8 +87,22 @@ public class Game extends Application {
                 System.out.println(this.id+this.loc);
                 if(WarringStatesGame.isMoveLegal(setup, this.loc)){
                     System.out.println("yes"); //call make move method
+                    history.concat("hi");
+                    System.out.println(history); //Not adding to history appropriately
 
+                    //move the supporters to side
+                    FXpiece[] supporters = new FXpiece[35]; //length?
+                    getSupporters(setup, history, players, currentPlayer);
+                    for(int j=0;j<supporters.length; j++){
+                        supporters[j] = new FXpiece(setup.substring(j*3, j*3+3)); //take only relevant cards
+                        supporters[j].setLayoutX(20);
+                        supporters[j].setLayoutY(20*j);
+                        //include factor based on which player
+                        root.getChildren().add(supporters[j]);
+                    }
                 };
+
+
             });
 
             //width and height is currently 100
@@ -111,8 +127,8 @@ public class Game extends Application {
         Label l [] = new Label[players];
         for (int i= 0; i<players; i++){
             l[i] = new Label ("Player "+ i+1);
-            l[i].setLayoutX(10);
-            l[i].setLayoutY((BOARD_HEIGHT/players)*i+10);
+            l[i].setLayoutX(200); //doesn't seem to be working?
+            l[i].setLayoutY(((BOARD_HEIGHT/players)*i)+10);
             scores.getChildren().add(l[i]);
         }
     }
