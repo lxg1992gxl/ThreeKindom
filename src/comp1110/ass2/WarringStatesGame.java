@@ -954,10 +954,12 @@ public class WarringStatesGame {
     }
 
 
-    public void makeMove(String placement, char location, String history, int players){
+    public void makeMove(String placement, char location, String history, int players, int playerID){
         //move ZY to the location
         placement = placement ; //(minus supporters, move ZY)
 
+        //remove from placement, loop for getSupporters, and +1 to include location also
+        getSupporters(placement, history, players, playerID);
         //take card from location and any on way off board/placement
         // reverse of cards player has?)
 
