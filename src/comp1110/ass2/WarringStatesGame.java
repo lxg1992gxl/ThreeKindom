@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import static comp1110.ass2.iHelperMethods.*;
+
 /**
  * This class provides the text interface for the Warring States game
  */
@@ -938,7 +940,7 @@ public class WarringStatesGame {
         char zyloc = placement.charAt(placement.indexOf('z') + 2);
 
         // if there is no legal move available, return null character
-        if (iHelperMethods.noMoreValidMove(placement)) {
+        if (noMoreValidMove(placement)) {
             return '\0';
         } else {
             // randomly produce a "move character" until it satisfies our requirements
@@ -954,15 +956,19 @@ public class WarringStatesGame {
 
     public void makeMove(String placement, char location, String history, int players){
         //move ZY to the location
+        placement = placement ; //(minus supporters, move ZY)
 
         //take card from location and any on way off board/placement
         // reverse of cards player has?)
-        //add those cards to the players set
+
+        //show supporters for relevant player
 
         //check if any valid moves left (use HelperMethods)
-        if(iHelperMethods.noMoreValidMove(placement)){ //but then remove card(s) as applicable
+        if(noMoreValidMove(placement)){ //but then remove card(s) as applicable
             endGame(placement, history, players);
         }
+
+        //inGame class, when call this method, currentPLayer += 1 (and loop around based on total number of players)
 
         //if current player == computer, make move using computerplayer methods
     }
@@ -971,10 +977,12 @@ public class WarringStatesGame {
 
     public void endGame(String placement, String history, int players){
         //check flags
-        getFlags(placement,history, players); //int[]
 
         //determine winner
+        int winner = getWinnerID(getFlags(placement,history, players)); //int[])
         //display winner
+
+        //don't allow to continue playing when finished- boolean playable?
 
     }
 
