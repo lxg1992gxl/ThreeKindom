@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
@@ -38,23 +39,28 @@ public class Game extends Application {
 
     private final Group root = new Group();
     private final Group controls = new Group();
-    private final StackPane board = new StackPane();
+    private final StackPane scores = new StackPane();
     private final FlowPane flow = new FlowPane(7,7);    //to organize every card in grid
 
     private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
+    private int players = 2;
+    private int AIs = 1;
+
 
     class FXpiece extends ImageView{
         String id;
+        char loc;
 
         FXpiece (String placement){
             this.id = placement.substring(0,2);
+            this.loc = placement.charAt(2);
             setImage(new Image (Game.class.getResource(URI_BASE+this.id+".png").toString()));
             //add where placement?
 
             //determines location of the card based on the location char
             int loc = normaliseLoc(placement.charAt(2));
             int w = 100;
-            int h= 100;
+            int h = 100;
             int gap = 10;
             setLayoutX(BOARD_WIDTH-((loc/6+1)*w +(loc/6+1)*gap)); //inverse because starts on right
             setLayoutY(loc%6*h+loc%6*gap);
@@ -76,8 +82,8 @@ public class Game extends Application {
 //            this.toFront();
 
             setOnMousePressed(event -> {
-                System.out.println(this.id);
-                if(WarringStatesGame.isMoveLegal(setup, placement.charAt(2))){
+                System.out.println(this.id+this.loc);
+                if(WarringStatesGame.isMoveLegal(setup, this.loc)){
                     System.out.println("yes"); //call make move method
 
                 };
@@ -101,14 +107,23 @@ public class Game extends Application {
     }
 
 
+    private void makeScores(){
+        Label l [] = new Label[players];
+        for (int i= 0; i<players; i++){
+            l[i] = new Label ("Player "+ i+1);
+            l[i].setLayoutX(10);
+            l[i].setLayoutY((BOARD_HEIGHT/players)*i+10);
+            scores.getChildren().add(l[i]);
+
+        }
+
+
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        //start game
-        //      create setup
-        //number of players
-
-        primaryStage.setTitle("Warring States");
+        primaryStage.setTitle("Seven Kingdoms Game");
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
         FXpiece[] board = new FXpiece[setup.length()/3];
@@ -117,25 +132,10 @@ public class Game extends Application {
             root.getChildren().add(board[j]);
         }
 
-
+        root.getChildren().add(scores);
         primaryStage.setScene(scene);
         primaryStage.show();
-        //task 9
-        /** create board that shows current game state
-         * choose number of players
-         * display what cards have collected and kingdom flags
-         * allow to click on a card to attempt move
-         *      if move accepted, make move and take card/cards (make sure to take other cards as relevant)
-         *      if not accepted, error message
-         *  after move next player (indicate on screen which player's turn it is)
-         *      check for any moves available (iHelper)
-         *  if no moves left, check win condition, display winner
-         */
 
-        //makemove
-        /**
-         *
-         */
 
     }
 }
