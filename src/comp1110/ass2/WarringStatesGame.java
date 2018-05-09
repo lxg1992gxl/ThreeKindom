@@ -952,11 +952,17 @@ public class WarringStatesGame {
     }
 
 
-    public void makeMove(String placement, char location){
+    public void makeMove(String placement, char location, String history, int players){
         //move ZY to the location
+
         //take card from location and any on way off board/placement
+        // reverse of cards player has?)
         //add those cards to the players set
+
         //check if any valid moves left (use HelperMethods)
+        if(iHelperMethods.noMoreValidMove(placement)){ //but then remove card(s) as applicable
+            endGame(placement, history, players);
+        }
 
         //if current player == computer, make move using computerplayer methods
     }
