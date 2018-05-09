@@ -114,10 +114,7 @@ public class Game extends Application {
             l[i].setLayoutX(10);
             l[i].setLayoutY((BOARD_HEIGHT/players)*i+10);
             scores.getChildren().add(l[i]);
-
         }
-
-
     }
 
     @Override
@@ -132,6 +129,7 @@ public class Game extends Application {
             root.getChildren().add(board[j]);
         }
 
+        makeScores();
         root.getChildren().add(scores);
         primaryStage.setScene(scene);
         primaryStage.show();
