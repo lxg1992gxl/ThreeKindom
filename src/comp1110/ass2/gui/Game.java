@@ -58,7 +58,7 @@ public class Game extends Application {
         FXpiece (String placement){
             this.id = placement.substring(0,2);
             this.loc = placement.charAt(2);
-            setImage(new Image (Game.class.getResource(URI_BASE+this.id+".png").toString()));
+            setImage(new Image (Game.class.getResource(URI_BASE+this.id+".png").toString())); //problem?
             //add where placement?
 
             //determines location of the card based on the location char
@@ -86,14 +86,14 @@ public class Game extends Application {
 //            this.toFront();
 
             setOnMousePressed(event -> {
-                //System.out.println("current card: "+ this.id+this.loc);
-                if(WarringStatesGame.isMoveLegal(currentBoard, this.loc)){
+                System.out.println("current card: "+ this.id+this.loc);
+                if(this.id!="z9"&WarringStatesGame.isMoveLegal(currentBoard, this.loc)){
                     history=history+this.loc+"";
                   //  System.out.println("current history: " +history);
                     showCollectedCards();
                     currentBoard = newBoard(setup, history);
                     //System.out.println(currentBoard);
-                    makeBoard();
+                    makeBoard(); //problem?
                     currentPlayer=(currentPlayer+1)%players;
 
                     //TODO if current player = AI, make next move based on AIstrategies here
@@ -174,7 +174,7 @@ public class Game extends Application {
         //create all board pieces
         FXpiece[] b = new FXpiece[currentBoard.length()/3];
         for(int j=0;j<currentBoard.length()/3; j++){
-            b[j] = new FXpiece(currentBoard.substring(j*3, j*3+3));
+            b[j] = new FXpiece(currentBoard.substring(j*3, j*3+3)); //problem?
             board.getChildren().add(b[j]);
         }
     }
