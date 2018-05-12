@@ -85,45 +85,44 @@ public class Game extends Application {
 //            this.toFront();
 
             setOnMousePressed(event -> {
-                System.out.println(this.id+this.loc);
+                System.out.println("current card: "+ this.id+this.loc);
                 if(WarringStatesGame.isMoveLegal(setup, this.loc)){
-                    showCollectedCards(history);
+                    history=history+this.loc+"";
+                    System.out.println("current history: " +history);
+                    showCollectedCards();
                 };
-
-
             });
-
             //width and height is currently 100
-
         }
     }
 
 
-    private void showCollectedCards(String history){
+    private void showCollectedCards(){
+        //clear current cards collected to avoid double up
         //get moves so far
 
         //stringbuilder?
 
         //System.out.println("yes"); //call make move method
-        history = history+"hi";
-        System.out.println(history); //Not adding to history appropriately
+//        history = history+"hi";
+//        System.out.println(history); //Not adding to history appropriately
 
         //move the supporters to side
-        FXpiece[] supporters = new FXpiece[35]; //length?
         String support = getSupporters(setup, history, players, currentPlayer);
-        System.out.println(support);
-        for(int j=0;j<support.length()/2; j++){
-            supporters[j] = new FXpiece(support.substring(j*2, j*2+2)+'A'); //FIXMEtake only relevant cards
-            System.out.println("current substring: "+supporters[j]);
 
-            supporters[j].setLayoutX(20);
-            supporters[j].setLayoutY(20*j);
-            //include factor based on which player
-            root.getChildren().add(supporters[j]);
+        System.out.println("supporters: "+ support);
+        for(int j=0;j<support.length()/2; j++){
+            cards[currentPlayer][j] = new FXpiece (support.substring(j*2, j*2+2)+'?');
+
+            //supporters[j] = new FXpiece(support.substring(j*2, j*2+2)+"A"); //FIXMEtake only relevant cards
+            System.out.println("current substring: "+cards[currentPlayer][j]);
+
+//            supporters[j].setLayoutX(20);
+//            supporters[j].setLayoutY(20*j);
+              root.getChildren().add(cards[currentPlayer][j]);
         }
         //give new setup string to show only remaining cards on the board
         //collect flags
-
 
     }
 
@@ -162,7 +161,7 @@ public class Game extends Application {
         }
 
         makeScores();
-        showCollectedCards(history);
+        showCollectedCards();
         root.getChildren().add(scores);
         primaryStage.setScene(scene);
         primaryStage.show();
