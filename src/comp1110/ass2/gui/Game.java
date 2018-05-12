@@ -16,7 +16,9 @@ import javafx.scene.image.ImageView;
 import java.util.Random;
 
 import static comp1110.ass2.WarringStatesGame.getSupporters;
+import static comp1110.ass2.WarringStatesGame.newBoard;
 import static comp1110.ass2.WarringStatesGame.normaliseLoc;
+import static comp1110.ass2.iHelperMethods.noMoreValidMove;
 
 public class Game extends Application {
     private static final int BOARD_WIDTH = 933;
@@ -41,9 +43,11 @@ public class Game extends Application {
     private final Group root = new Group();
     private final Group controls = new Group();
     private final StackPane scores = new StackPane();
+    private final Group board = new Group();
     private final FlowPane flow = new FlowPane(7,7);    //to organize every card in grid
 
     private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
+    private String currentBoard = setup;
     private int players = 2;
     private int AIs = 1;
     private String history = "";
@@ -86,14 +90,26 @@ public class Game extends Application {
 
             setOnMousePressed(event -> {
                 System.out.println("current card: "+ this.id+this.loc);
-                if(WarringStatesGame.isMoveLegal(setup, this.loc)){
+                if(WarringStatesGame.isMoveLegal(currentBoard, this.loc)){
                     history=history+this.loc+"";
                     System.out.println("current history: " +history);
                     showCollectedCards();
+                    currentBoard = newBoard(setup, history);
+                    System.out.println(currentBoard);
+                    makeBoard();
                     currentPlayer=(currentPlayer+1)%players;
+                    if(noMoreValidMove(currentBoard)){
+                        System.out.println("finished!"); //working
+                    }
                 };
             });
             //width and height is currently 100
+
+        }
+
+        @Override
+        public String toString() {
+            return this.id+this.loc;
         }
     }
 
@@ -106,7 +122,7 @@ public class Game extends Application {
 
         System.out.println("supporters: "+ support);
         for(int j=0;j<support.length()/2; j++){
-            cards[currentPlayer][j] = new FXpiece (support.substring(j*2, j*2+2)+'?');
+            cards[currentPlayer][j] = new FXpiece (support.substring(j*2, j*2+2)+'/');
             System.out.println("current substring: "+cards[currentPlayer][j]);
 
             cards[currentPlayer][j].setLayoutX(105*currentPlayer); //if clearing at beginning of method, need to get supporters for all players
@@ -127,6 +143,19 @@ public class Game extends Application {
             l[i].setLayoutY(((BOARD_HEIGHT/players)*i)+10);
             scores.getChildren().add(l[i]);
         }
+        root.getChildren().add(scores);
+    }
+
+    private void makeBoard(){
+        //clear to avoid double up
+        board.getChildren().removeAll(board.getChildren());
+
+        //create all board pieces
+        FXpiece[] b = new FXpiece[currentBoard.length()/3];
+        for(int j=0;j<currentBoard.length()/3; j++){
+            b[j] = new FXpiece(currentBoard.substring(j*3, j*3+3));
+            board.getChildren().add(b[j]);
+        }
     }
 
     @Override
@@ -135,18 +164,14 @@ public class Game extends Application {
         primaryStage.setTitle("Seven Kingdoms Game");
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
-        FXpiece[] board = new FXpiece[setup.length()/3];
-        for(int j=0;j<setup.length()/3; j++){
-            board[j] = new FXpiece(setup.substring(j*3, j*3+3));
-            root.getChildren().add(board[j]);
-        }
-
+        makeBoard();
         makeScores();
         showCollectedCards();
-        root.getChildren().add(scores);
+
+        root.getChildren().add(board);
+
         primaryStage.setScene(scene);
         primaryStage.show();
-
 
     }
 }
