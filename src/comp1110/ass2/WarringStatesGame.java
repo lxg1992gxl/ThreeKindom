@@ -954,30 +954,114 @@ public class WarringStatesGame {
         }
     }
 
+    //FIXME write tests?, neaten up
+    public static String newBoard(String placement, String moves){
+                char[] move = moves.toCharArray();
+
+                for (int i = 0; i < 36; i++) {  //check duplication of moveSequence
+                    int count = 0;
+                    for (int k = 0; k < moves.length(); k++) {
+                        if (i == normaliseLoc(move[k])) {
+                            count += 1;
+                        }
+                    }
+                    if (count > 1) {
+                      //  return false;
+                    }
+                }
+
+                // go through every move in moveSequence one by one
+                int i = 0;
+                while (i != -1 && i < moves.length()) {
+
+                    char[] board = placement.toCharArray();
+
+                    if (!isMoveLegal(placement, move[i])) {
+                        // use i to record "have found an invalid move in the sequence"
+                        i = -1;
+
+                    } else {
+                        // find ZhangYi's location
+                        char zyloc =placement.charAt(placement.indexOf('z') + 2);
+                        int ZY = normaliseLoc(zyloc);
+
+                        // update setup board with the new checked move
+                        int p = 2;
+                        while (p != -1 && p < placement.length()) {
+                            // find the setup board location same with the current move location
+                            if (board[p] == move[i]) {
+                                // find the corresponding country for the card in current move location
+                                char loc = board[p];
+                                char country = board[p - 2];
+                                int D = normaliseLoc(loc);
+
+                                // go through the board to find the card from same country between ZhangYi and goal location
+                                int k = 2;
+                                // find all cards between Zhangyi and the destination, delete them at the same time
+                                while (k < placement.length()) {
+                                    if (board[k - 2] == country) {
+                                        int K = normaliseLoc(board[k]);
+                                        // the card is in the same row or column with ZhangYi and destination position
+                                        if ((sameRow(loc, board[k]) && sameRow(zyloc, board[k])) || (sameCol(loc, board[k]) && sameCol(zyloc, board[k]))) {
+                                            // the card is between ZhangYi and the destination position
+                                            if (((D < K && K < ZY) || (ZY < K && K < D)) && (D != K)) { //D:destination of zhang//K:possible same contry card//ZY:zhangyi's location
+                                                board[k] = '/';
+                                                board[k - 1] = '/';
+                                                board[k - 2] = '/';
+                                            }
+                                        }
+                                    }
+                                    k = k + 3;
+                                }
+
+                                // set previous Zhang Yi's position to empty
+                                board[placement.indexOf('z') + 2] = '/';
+                                board[placement.indexOf('z') + 1] = '/';
+                                board[placement.indexOf('z')] = '/';
+
+                                // move ZY to his new position
+                                board[p - 2] = 'z';
+                                board[p - 1] = '9';
+
+                                placement = new String(); // generate new setup string by remove all '/' in board array
+                                for (int n = 0; n < board.length; n++) {
+                                    if (board[n] != '/') {
+                                        placement += board[n];
+                                    } else {
+                                    }
+                                }
+                                p = -1;
+                            } else {
+                                p = p + 3;
+                            }
+                        }
+                        i = i + 1;
+                    }
+                }
+                // justify whether we check until the end of the moveSequence
+                if (i == -1) {
+                    //return false;
+                } else {
+                    //return true;
+                }
+
+
+
+        return placement;
+    }
+
 
     public void makeMove(String placement, char location, String history, int players, int playerID){
-        //move ZY to the location
-        placement = placement ; //(minus supporters, move ZY)
-
-        //remove from placement, loop for getSupporters, and +1 to include location also
-        getSupporters(placement, history, players, playerID);
-        //take card from location and any on way off board/placement
-        // reverse of cards player has?)
-
-        //show supporters for relevant player
-
+         //FIXME move to game class in making move
         //check if any valid moves left (use HelperMethods)
         if(noMoreValidMove(placement)){ //but then remove card(s) as applicable
             endGame(placement, history, players);
         }
-
-        //inGame class, when call this method, currentPLayer += 1 (and loop around based on total number of players)
-
         //if current player == computer, make move using computerplayer methods
     }
 
 
-
+    //FIXME move this to game class, is mainly executed there
     public void endGame(String placement, String history, int players){
         //check flags
 
@@ -990,7 +1074,7 @@ public class WarringStatesGame {
     }
 
 
-    public void startGame(){
+    public void randomSetup(){
         //creates a random setup
         Random r = new Random();
 
