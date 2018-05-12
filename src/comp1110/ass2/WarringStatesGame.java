@@ -1050,30 +1050,6 @@ public class WarringStatesGame {
         return placement;
     }
 
-
-    public void makeMove(String placement, char location, String history, int players, int playerID){
-         //FIXME move to game class in making move
-        //check if any valid moves left (use HelperMethods)
-        if(noMoreValidMove(placement)){ //but then remove card(s) as applicable
-            endGame(placement, history, players);
-        }
-        //if current player == computer, make move using computerplayer methods
-    }
-
-
-    //FIXME move this to game class, is mainly executed there
-    public void endGame(String placement, String history, int players){
-        //check flags
-
-        //determine winner
-        int winner = getWinnerID(getFlags(placement,history, players)); //int[])
-        //display winner
-
-        //don't allow to continue playing when finished- boolean playable?
-
-    }
-
-
     public void randomSetup(){
         //creates a random setup
         Random r = new Random();
