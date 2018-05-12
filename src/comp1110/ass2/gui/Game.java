@@ -90,6 +90,7 @@ public class Game extends Application {
                     history=history+this.loc+"";
                     System.out.println("current history: " +history);
                     showCollectedCards();
+                    currentPlayer=(currentPlayer+1)%players;
                 };
             });
             //width and height is currently 100
@@ -98,14 +99,7 @@ public class Game extends Application {
 
 
     private void showCollectedCards(){
-        //clear current cards collected to avoid double up
-        //get moves so far
-
-        //stringbuilder?
-
-        //System.out.println("yes"); //call make move method
-//        history = history+"hi";
-//        System.out.println(history); //Not adding to history appropriately
+        //FIXME clear current cards collected to avoid double up
 
         //move the supporters to side
         String support = getSupporters(setup, history, players, currentPlayer);
@@ -113,30 +107,17 @@ public class Game extends Application {
         System.out.println("supporters: "+ support);
         for(int j=0;j<support.length()/2; j++){
             cards[currentPlayer][j] = new FXpiece (support.substring(j*2, j*2+2)+'?');
-
-            //supporters[j] = new FXpiece(support.substring(j*2, j*2+2)+"A"); //FIXMEtake only relevant cards
             System.out.println("current substring: "+cards[currentPlayer][j]);
 
-//            supporters[j].setLayoutX(20);
-//            supporters[j].setLayoutY(20*j);
-              root.getChildren().add(cards[currentPlayer][j]);
+            cards[currentPlayer][j].setLayoutX(105*currentPlayer); //if clearing at beginning of method, need to get supporters for all players
+            //if more than 2 players, show below instead?
+            cards[currentPlayer][j].setLayoutY(20*j);
+            root.getChildren().add(cards[currentPlayer][j]);
         }
         //give new setup string to show only remaining cards on the board
         //collect flags
 
     }
-
-
-    private void makeControls(){
-        Button start = new Button ("Restart game");
-        Slider players = new Slider (2, 4, 2);
-
-        //difficulty
-
-        controls.getChildren().add(start);
-        controls.getChildren().add(players);
-    }
-
 
     private void makeScores(){
         Label l [] = new Label[players];
