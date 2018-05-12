@@ -13,11 +13,8 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 
-import java.util.Random;
-
-import static comp1110.ass2.WarringStatesGame.getSupporters;
-import static comp1110.ass2.WarringStatesGame.newBoard;
-import static comp1110.ass2.WarringStatesGame.normaliseLoc;
+import static comp1110.ass2.WarringStatesGame.*;
+import static comp1110.ass2.iHelperMethods.getWinnerID;
 import static comp1110.ass2.iHelperMethods.noMoreValidMove;
 
 public class Game extends Application {
@@ -44,11 +41,10 @@ public class Game extends Application {
     private final Group controls = new Group();
     private final StackPane scores = new StackPane();
     private final Group board = new Group();
-    private final FlowPane flow = new FlowPane(7,7);    //to organize every card in grid
 
     private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
     private String currentBoard = setup;
-    private int players = 2;
+    private int players = 3;
     private int AIs = 1;
     private String history = "";
     private int currentPlayer = 0;
@@ -89,19 +85,20 @@ public class Game extends Application {
 //            this.toFront();
 
             setOnMousePressed(event -> {
-                System.out.println("current card: "+ this.id+this.loc);
+                //System.out.println("current card: "+ this.id+this.loc);
                 if(WarringStatesGame.isMoveLegal(currentBoard, this.loc)){
                     history=history+this.loc+"";
-                    System.out.println("current history: " +history);
+                  //  System.out.println("current history: " +history);
                     showCollectedCards();
                     currentBoard = newBoard(setup, history);
-                    System.out.println(currentBoard);
+                    //System.out.println(currentBoard);
                     makeBoard();
                     currentPlayer=(currentPlayer+1)%players;
+                    System.out.println(currentPlayer);
                     if(noMoreValidMove(currentBoard)){
                         System.out.println("finished!"); //working
                     }
-                };
+                }
             });
             //width and height is currently 100
 
@@ -113,6 +110,17 @@ public class Game extends Application {
         }
     }
 
+    //TODO create a method which will display the flags currently controlled by each player
+    private void showFlags(){
+
+    }
+
+    //TODO create a method which will give instructions for when the game ends
+    private void endGame(){
+
+        int winner = getWinnerID(getFlags(setup,history, players));
+        //don't allow to continue playing when finished- boolean playable?
+    }
 
     private void showCollectedCards(){
         //FIXME clear current cards collected to avoid double up
@@ -120,7 +128,7 @@ public class Game extends Application {
         //move the supporters to side
         String support = getSupporters(setup, history, players, currentPlayer);
 
-        System.out.println("supporters: "+ support);
+        //System.out.println("supporters: "+ support);
         for(int j=0;j<support.length()/2; j++){
             cards[currentPlayer][j] = new FXpiece (support.substring(j*2, j*2+2)+'/');
             System.out.println("current substring: "+cards[currentPlayer][j]);
