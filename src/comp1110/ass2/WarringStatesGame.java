@@ -318,6 +318,7 @@ public class WarringStatesGame {
     public static boolean isMoveLegal(String placement, char locationChar) {
         //Task 5: determine whether a given move is legal
 
+        //FIXME returns true for location char where ZY is 
         //check placement valid
         //check location char in range
         if ((locationChar >= 'A' & locationChar <= 'Z') | (locationChar >= '0' & locationChar <= '9')) {
