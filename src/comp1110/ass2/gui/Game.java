@@ -10,6 +10,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 
@@ -94,9 +95,14 @@ public class Game extends Application {
                     //System.out.println(currentBoard);
                     makeBoard();
                     currentPlayer=(currentPlayer+1)%players;
-                    System.out.println(currentPlayer);
+
+                    //TODO if current player = AI, make next move based on AIstrategies here
+
+                    //System.out.println(currentPlayer);
                     if(noMoreValidMove(currentBoard)){
                         System.out.println("finished!"); //working
+                        endGame();
+
                     }
                 }
             });
@@ -112,12 +118,19 @@ public class Game extends Application {
 
     //TODO create a method which will display the flags currently controlled by each player
     private void showFlags(){
+        //show the flags won by each player
+        getFlags(setup, history, players);
+
+        //images for flags in assets folder?
+
+        //where should flags be shown
 
     }
 
     //TODO create a method which will give instructions for when the game ends
     private void endGame(){
 
+        System.out.println("end game");
         int winner = getWinnerID(getFlags(setup,history, players));
         //don't allow to continue playing when finished- boolean playable?
     }
@@ -131,7 +144,7 @@ public class Game extends Application {
         //System.out.println("supporters: "+ support);
         for(int j=0;j<support.length()/2; j++){
             cards[currentPlayer][j] = new FXpiece (support.substring(j*2, j*2+2)+'/');
-            System.out.println("current substring: "+cards[currentPlayer][j]);
+            //System.out.println("current substring: "+cards[currentPlayer][j]);
 
             cards[currentPlayer][j].setLayoutX(105*currentPlayer); //if clearing at beginning of method, need to get supporters for all players
             //if more than 2 players, show below instead?
