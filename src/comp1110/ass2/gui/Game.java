@@ -48,6 +48,7 @@ public class Game extends Application {
     private int AIs = 1;
     private String history = "";
     private int currentPlayer = 0;
+    private FXpiece[][] cards = new FXpiece[players][35]; //number of players, number of character cards
 
     class FXpiece extends ImageView{
         String id;
@@ -86,20 +87,7 @@ public class Game extends Application {
             setOnMousePressed(event -> {
                 System.out.println(this.id+this.loc);
                 if(WarringStatesGame.isMoveLegal(setup, this.loc)){
-                    System.out.println("yes"); //call make move method
-                    history.concat("hi");
-                    System.out.println(history); //Not adding to history appropriately
-
-                    //move the supporters to side
-                    FXpiece[] supporters = new FXpiece[35]; //length?
-                    getSupporters(setup, history, players, currentPlayer);
-                    for(int j=0;j<supporters.length; j++){
-                        supporters[j] = new FXpiece(setup.substring(j*3, j*3+3)); //take only relevant cards
-                        supporters[j].setLayoutX(20);
-                        supporters[j].setLayoutY(20*j);
-                        //include factor based on which player
-                        root.getChildren().add(supporters[j]);
-                    }
+                    showCollectedCards(history);
                 };
 
 
@@ -110,6 +98,34 @@ public class Game extends Application {
         }
     }
 
+
+    private void showCollectedCards(String history){
+        //get moves so far
+
+        //stringbuilder?
+
+        //System.out.println("yes"); //call make move method
+        history = history+"hi";
+        System.out.println(history); //Not adding to history appropriately
+
+        //move the supporters to side
+        FXpiece[] supporters = new FXpiece[35]; //length?
+        String support = getSupporters(setup, history, players, currentPlayer);
+        System.out.println(support);
+        for(int j=0;j<support.length()/2; j++){
+            supporters[j] = new FXpiece(support.substring(j*2, j*2+2)+'A'); //FIXMEtake only relevant cards
+            System.out.println("current substring: "+supporters[j]);
+
+            supporters[j].setLayoutX(20);
+            supporters[j].setLayoutY(20*j);
+            //include factor based on which player
+            root.getChildren().add(supporters[j]);
+        }
+        //give new setup string to show only remaining cards on the board
+        //collect flags
+
+
+    }
 
 
     private void makeControls(){
@@ -146,6 +162,7 @@ public class Game extends Application {
         }
 
         makeScores();
+        showCollectedCards(history);
         root.getChildren().add(scores);
         primaryStage.setScene(scene);
         primaryStage.show();
