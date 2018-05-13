@@ -31,7 +31,7 @@ public class Game extends Application {
     private static final int VIEWER_WIDTH = 933;
     private static final int VIEWER_HEIGHT = 700;
 
-    private static final String URI_BASE = "img/";
+    private static final String URI_BASE = "assets/";
 
     private final Group root = new Group();
     private final Group controls = new Group();
@@ -66,9 +66,9 @@ public class Game extends Application {
             int loc = normaliseLoc(placement.charAt(2));
             int w = 100;
             int h = 100;
-            int gap = 3;
+            int gap = 4;
             setLayoutX(BOARD_WIDTH - ((loc / 6 + 1) * w + (loc / 6 + 1) * gap)); //inverse because starts on right
-            setLayoutY(loc % 6 * h + loc % 6 * gap);
+            setLayoutY(20 + loc % 6 * h + loc % 6 * gap);
 
             /*
             4 Y S M G A                             30 24 18 12 6 0
@@ -193,7 +193,7 @@ public class Game extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        primaryStage.setTitle("Seven Kingdoms Game");
+        primaryStage.setTitle("Warring States");
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
         makeBoard();
@@ -202,7 +202,7 @@ public class Game extends Application {
 
         cardCollectBoard.setMaxWidth(250);
         cardCollectBoard.setLayoutX(10);
-        cardCollectBoard.setLayoutY(10);
+        cardCollectBoard.setLayoutY(30);
         cardCollectBoard.getChildren().add(scrBD0);
         cardCollectBoard.getChildren().add(scrBD1);
         cardCollectBoard.getChildren().add(scrBD2);
@@ -226,14 +226,5 @@ public class Game extends Application {
     //other ideas
 
 
-    // creates a random setup board at the start
-    public void randomSetup() {
-        //creates a random setup
-        Random rand = new Random();
-
-        //random card from the available, goes into A...Z....9
-
-
-    }
 }
 
