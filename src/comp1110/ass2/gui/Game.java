@@ -17,8 +17,8 @@ import javafx.scene.image.ImageView;
 import java.util.Random;
 
 import static comp1110.ass2.WarringStatesGame.*;
-import static comp1110.ass2.iHelperMethods.getWinnerID;
-import static comp1110.ass2.iHelperMethods.noMoreValidMove;
+import static comp1110.ass2.WarringStatesGame.getWinnerID;
+import static comp1110.ass2.WarringStatesGame.noMoreValidMove;
 
 public class Game extends Application {
     private static final int BOARD_WIDTH = 933;
