@@ -38,7 +38,7 @@ public class Game extends Application {
     private final Group controls = new Group();
     private final StackPane scores = new StackPane();
     private final Group board = new Group();
-    private final FlowPane cardCollectBoard = new FlowPane(10,10);
+    private final FlowPane cardCollectBoard = new FlowPane(10, 10);
     private final Group scrBD0 = new Group();
     private final Group scrBD1 = new Group();
     private final Group scrBD2 = new Group();
@@ -46,7 +46,7 @@ public class Game extends Application {
 
 
     private String setup = WarringStatesGame.randomSetup();
-//    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
+    //    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
     private String currentBoard = setup;
     private int players = 4;
     private int AIs = 1;
@@ -119,11 +119,43 @@ public class Game extends Application {
         }
     }
 
+    class Flag extends ImageView {
+
+        Flag(String kingdom, int playerID) {
+            Image f = new Image(Game.class.getResource(URI_BASE + kingdom + "flag.png").toString());
+
+            int k = 0; // initialize to represent kingdom "a" (Qin)
+            if (kingdom == "b") {
+                k = 1;
+            } else if (kingdom == "c") {
+                k = 2;
+            } else if (kingdom == "d") {
+                k = 3;
+            } else if (kingdom == "e") {
+                k = 4;
+            } else if (kingdom == "f") {
+                k = 5;
+            } else if (kingdom == "g") {
+                k = 6;
+            }
+
+            if (playerID != -1) {
+                setImage(f);
+                setFitWidth(15);
+                setFitHeight(15);
+                setLayoutX(50 + 15 * k);
+                setLayoutY(500 + 25 * playerID);
+            }
+        }
+
+    }
+
     //TODO create a method which will display the flags currently controlled by each player
     private void showFlags() {
         //show the flags won by each player
-        getFlags(setup, history, players);
+        int[] flags = getFlags(setup, history, players);
 
+        Flag a = new Flag("a", flags[0]);
         //images for flags in assets folder?
 
         //where should flags be shown
@@ -154,14 +186,18 @@ public class Game extends Application {
             cards[currentPlayer][j].setLayoutX(105 * currentPlayer); //if clearing at beginning of method, need to get supporters for all players
             //if more than 2 players, show below instead?
             cards[currentPlayer][j].setLayoutY(20 * j);
-            switch (currentPlayer){
-                case(0):scrBD0.getChildren().add(cards[currentPlayer][j]);
+            switch (currentPlayer) {
+                case (0):
+                    scrBD0.getChildren().add(cards[currentPlayer][j]);
                     break;
-                case(1):scrBD1.getChildren().add(cards[currentPlayer][j]);
+                case (1):
+                    scrBD1.getChildren().add(cards[currentPlayer][j]);
                     break;
-                case(2):scrBD2.getChildren().add(cards[currentPlayer][j]);
+                case (2):
+                    scrBD2.getChildren().add(cards[currentPlayer][j]);
                     break;
-                case(3):scrBD3.getChildren().add(cards[currentPlayer][j]);
+                case (3):
+                    scrBD3.getChildren().add(cards[currentPlayer][j]);
                     break;
             }
         }
@@ -212,7 +248,7 @@ public class Game extends Application {
         cardCollectBoard.getChildren().add(scrBD2);
         cardCollectBoard.getChildren().add(scrBD3);
 
-        root.getChildren().addAll(board,cardCollectBoard);
+        root.getChildren().addAll(board, cardCollectBoard);
 
         primaryStage.setScene(scene);
         primaryStage.show();
