@@ -112,6 +112,14 @@ public class Game extends Application {
             });
             //width and height is currently 100
 
+
+            //todo code to highlight valid move when hovered over
+            setOnMouseMoved(event ->{
+                System.out.println(getLayoutX());
+                System.out.println(getX());
+                    }
+            );
+
         }
 
         @Override
