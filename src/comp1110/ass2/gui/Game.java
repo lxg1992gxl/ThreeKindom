@@ -17,12 +17,9 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import javafx.scene.text.Text;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.stage.WindowEvent;
-import sun.awt.SunHints;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -46,7 +43,7 @@ public class Game extends Application {
     private final Group controls = new Group();
     private final StackPane scores = new StackPane();
     private final Group board = new Group();
-    private final FlowPane cardCollectBoard = new FlowPane(10, 10);
+    private final FlowPane cardCollectBoard = new FlowPane(10,10);
     private final Group scrBD0 = new Group();
     private final Group scrBD1 = new Group();
     private final Group scrBD2 = new Group();
@@ -57,8 +54,7 @@ public class Game extends Application {
     int numberOfPlayers;
     boolean advAI;
 
-    private String setup = WarringStatesGame.randomSetup();
-    //    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
+    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
     private String currentBoard = setup;
     private int players = numberOfChairs;
     private int AIs = numberOfAI;
@@ -80,9 +76,9 @@ public class Game extends Application {
             int loc = normaliseLoc(placement.charAt(2));
             int w = 100;
             int h = 100;
-            int gap = 4;
+            int gap = 5;
             setLayoutX(BOARD_WIDTH - ((loc / 6 + 1) * w + (loc / 6 + 1) * gap)); //inverse because starts on right
-            setLayoutY(10 + loc % 6 * h + loc % 6 * gap);
+            setLayoutY(loc % 6 * h + loc % 6 * gap);
 
             /*
             4 Y S M G A                             30 24 18 12 6 0
@@ -102,10 +98,7 @@ public class Game extends Application {
 
             setOnMousePressed(event -> {
                 System.out.println("current card: " + this.id + this.loc);
-                if(this.id.equals("z9")){
-                    System.out.println("not a valid move!");
-                }
-                else if (this.id != "z9" & WarringStatesGame.isMoveLegal(currentBoard, this.loc)) {
+                if (this.id != "z9" & WarringStatesGame.isMoveLegal(currentBoard, this.loc)) {
                     history = history + this.loc + "";
                     //  System.out.println("current history: " +history);
                     showCollectedCards();
@@ -134,70 +127,28 @@ public class Game extends Application {
         }
     }
 
-    class Flag extends ImageView {
-
-        Flag(String kingdom, int playerID) {
-            Image f = new Image(Game.class.getResource(URI_BASE + kingdom + "flag.png").toString());
-
-            int k = 0; // initialize to represent kingdom "a" (Qin)
-            if (kingdom == "b") {
-                k = 1;
-            } else if (kingdom == "c") {
-                k = 2;
-            } else if (kingdom == "d") {
-                k = 3;
-            } else if (kingdom == "e") {
-                k = 4;
-            } else if (kingdom == "f") {
-                k = 5;
-            } else if (kingdom == "g") {
-                k = 6;
-            }
-
-            if (playerID != -1) {
-                setImage(f);
-                setFitWidth(15);
-                setFitHeight(15);
-                setLayoutX(50 + 15 * k);
-                setLayoutY(500 + 25 * playerID);
-            }
-        }
-
-    }
-
     //TODO create a method which will display the flags currently controlled by each player
     private void showFlags() {
         //show the flags won by each player
-        int[] flags = getFlags(setup, history, players);
+        getFlags(setup, history, players);
 
-        Flag a = new Flag("a", flags[0]);
-        Flag b = new Flag("b", flags[1]);
-        Flag c = new Flag("c", flags[2]);
-        Flag d = new Flag("d", flags[3]);
-        Flag e = new Flag("e", flags[4]);
-        Flag f = new Flag("f", flags[5]);
-        Flag g = new Flag("g", flags[6]);
+        //images for flags in assets folder?
 
-        root.getChildren().add(a);
-        root.getChildren().add(b);
-        root.getChildren().add(c);
-        root.getChildren().add(d);
-        root.getChildren().add(e);
-        root.getChildren().add(f);
-        root.getChildren().add(g);
+        //where should flags be shown
+
     }
 
     //TODO create a method which will give instructions for when the game ends
     private void endGame() {
+
         System.out.println("end game");
         int winner = getWinnerID(getFlags(setup, history, players));
-//        Text endGame = new Text("Game ending! Player " + winner + " wins !!!");
-//        controls.getChildren().add(endGame);
-
         //don't allow to continue playing when finished- boolean playable?
     }
 
-    private void showCollectedCards() { //TODO make card display location more stable
+    private void showCollectedCards() {
+        //FIXME clear current cards collected to avoid double up
+
         //move the supporters to side
         String support = getSupporters(setup, history, players, currentPlayer);
 
@@ -209,21 +160,20 @@ public class Game extends Application {
             cards[currentPlayer][j].setLayoutX(105 * currentPlayer); //if clearing at beginning of method, need to get supporters for all players
             //if more than 2 players, show below instead?
             cards[currentPlayer][j].setLayoutY(20 * j);
-            switch (currentPlayer) {
-                case (0):
-                    scrBD0.getChildren().add(cards[currentPlayer][j]);
+            switch (currentPlayer){
+                case(0):scrBD0.getChildren().add(cards[currentPlayer][j]);
                     break;
-                case (1):
-                    scrBD1.getChildren().add(cards[currentPlayer][j]);
+                case(1):scrBD1.getChildren().add(cards[currentPlayer][j]);
                     break;
-                case (2):
-                    scrBD2.getChildren().add(cards[currentPlayer][j]);
+                case(2):scrBD2.getChildren().add(cards[currentPlayer][j]);
                     break;
-                case (3):
-                    scrBD3.getChildren().add(cards[currentPlayer][j]);
+                case(3):scrBD3.getChildren().add(cards[currentPlayer][j]);
                     break;
             }
         }
+
+        //give new setup string to show only remaining cards on the board
+        //collect flags
 
     }
 
@@ -249,6 +199,7 @@ public class Game extends Application {
             board.getChildren().add(b[j]);
         }
     }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -296,6 +247,7 @@ public class Game extends Application {
                 //choicebox
                 ArrayList chsb = new ArrayList();
                 String list = "012345";
+                numberOfAI = 0;
                 int i = 0;
                 while (i < numberOfChairs){
                     chsb.add(list.substring(i, i+1));
@@ -353,10 +305,10 @@ public class Game extends Application {
                         numberOfPlayers = numberOfChairs - numberOfAI;
                         page2.hide();
                         primaryStage.show();
-                        System.out.println(numberOfChairs);
-                        System.out.println(numberOfAI);
-                        System.out.println(numberOfPlayers);
-                        System.out.println(advAI);
+//                        System.out.println(numberOfChairs);
+//                        System.out.println(numberOfAI);
+//                        System.out.println(numberOfPlayers);
+//                        System.out.println(advAI);
                     }
                 });
 
@@ -420,13 +372,13 @@ public class Game extends Application {
 
         cardCollectBoard.setMaxWidth(250);
         cardCollectBoard.setLayoutX(10);
-        cardCollectBoard.setLayoutY(30);
+        cardCollectBoard.setLayoutY(10);
         cardCollectBoard.getChildren().add(scrBD0);
         cardCollectBoard.getChildren().add(scrBD1);
         cardCollectBoard.getChildren().add(scrBD2);
         cardCollectBoard.getChildren().add(scrBD3);
 
-        root.getChildren().addAll(board, cardCollectBoard);
+        root.getChildren().addAll(board,cardCollectBoard);
 
         primaryStage.setScene(scene);
         //move "primaryStage.show" to setting window "GameStart Btn"
@@ -444,6 +396,16 @@ public class Game extends Application {
     //recursive check for who winning after that up to AI's next move?
     //other ideas
 
+
+    // creates a random setup board at the start
+    public void randomSetup() {
+        //creates a random setup
+        Random rand = new Random();
+
+        //random card from the available, goes into A...Z....9
+
+
+    }
 
 }
 
