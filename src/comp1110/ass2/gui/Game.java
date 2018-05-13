@@ -122,8 +122,8 @@ public class Game extends Application {
 
             //todo code to highlight valid move when hovered over
             setOnMouseMoved(event ->{
-                System.out.println(getLayoutX());
-                System.out.println(getX());
+                //System.out.println(getLayoutX());
+                //System.out.println(getX());
                     }
             );
 
