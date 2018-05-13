@@ -29,7 +29,7 @@ public class Game extends Application {
     private static final int VIEWER_WIDTH = 933;
     private static final int VIEWER_HEIGHT = 700;
 
-    private static final String URI_BASE = "assets/";
+    private static final String URI_BASE = "img/";
 
     private final Group root = new Group();
     private final Group controls = new Group();
@@ -58,7 +58,7 @@ public class Game extends Application {
             int loc = normaliseLoc(placement.charAt(2));
             int w = 100;
             int h = 100;
-            int gap = 10;
+            int gap = 3;
             setLayoutX(BOARD_WIDTH - ((loc / 6 + 1) * w + (loc / 6 + 1) * gap)); //inverse because starts on right
             setLayoutY(loc % 6 * h + loc % 6 * gap);
 
