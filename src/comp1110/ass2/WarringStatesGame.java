@@ -5,44 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import static comp1110.ass2.iHelperMethods.*;
-
 /**
  * This class provides the text interface for the Warring States game
  */
 public class WarringStatesGame {
-
-
-    public static boolean isValidLocation(char location) {
-        if ((location >= 'A' & location <= 'Z') | (location >= '0' & location <= '9')) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    //return true if the String given represents a card within the game specifications, otherwise returns false
-    public static boolean isValidCard (String card){
-        char [] chunks;
-
-        if(card.length()==2) {
-            chunks = card.toCharArray();
-        }
-        else{
-            return false;
-        }
-
-
-        if(chunks[0] >= 'a' & chunks[0] <= 'g'){
-            if ((chunks[1] + chunks[0] <= 152) & (chunks[1] >= 48)){
-                return true;
-            }
-            else {return false;}
-        }
-        else {return false;}
-
-    }
-
 
     /**
      * Determine whether a card placement is well-formed according to the following:
@@ -93,7 +59,6 @@ public class WarringStatesGame {
             }
 
         }
-
     }
 
 
@@ -237,69 +202,6 @@ public class WarringStatesGame {
         }
     }
 
-    /**
-     * takes a locationChar and normalises it to use in row and column comparisons
-     * and distance methods
-     * assuming that locations are encoded A-Z and 0-9 for a 6x6 grid.
-     *
-     * @param locationChar
-     * @return the location char normalises to an int 0-35
-     */
-
-
-    public static int normaliseLoc(char locationChar) {
-        int result = -1;
-        if (locationChar >= 'A' && locationChar <= 'Z') { //normalises letter locations
-            result = (int) locationChar;
-            result -= 65;
-        } else { //normalises number locations
-            result = (int) locationChar;
-            result -= 22;
-        }
-        return result;
-    }
-
-
-    /**
-     * Compares whether two location characters are in the same row,
-     * assuming that locations are encoded A-Z and 0-9 for a 6x6 grid.
-     *
-     * @param location1
-     * @param location2
-     * @return true if the locations are in the same row as each other
-     */
-
-    public static boolean sameRow(char location1, char location2) {
-        int loc1 = normaliseLoc(location1);
-        int loc2 = normaliseLoc(location2);
-
-        if (loc1 % 6 == loc2 % 6) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Compares whether two location characters are in the same column,
-     * assuming that locations are encoded A-Z and 0-9 for a 6x6 grid.
-     *
-     * @param location1
-     * @param location2
-     * @return true if the locations are in the same column as each other
-     */
-
-    public static boolean sameCol(char location1, char location2) {
-        int loc1 = normaliseLoc(location1);
-        int loc2 = normaliseLoc(location2);
-
-        if (loc1 / 6 == loc2 / 6) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
 
     /**
      * Determine whether a given move is legal given a provided valid placement:
@@ -402,7 +304,6 @@ public class WarringStatesGame {
         } else { //locationChar is out of range
             return false;
         }
-
 
     }
 
@@ -954,112 +855,329 @@ public class WarringStatesGame {
         }
     }
 
-    //FIXME write tests?, neaten up
-    public static String newBoard(String placement, String moves){
-                char[] move = moves.toCharArray();
 
-                for (int i = 0; i < 36; i++) {  //check duplication of moveSequence
-                    int count = 0;
-                    for (int k = 0; k < moves.length(); k++) {
-                        if (i == normaliseLoc(move[k])) {
-                            count += 1;
-                        }
-                    }
-                    if (count > 1) {
-                      //  return false;
-                    }
-                }
-
-                // go through every move in moveSequence one by one
-                int i = 0;
-                while (i != -1 && i < moves.length()) {
-
-                    char[] board = placement.toCharArray();
-
-                    if (!isMoveLegal(placement, move[i])) {
-                        // use i to record "have found an invalid move in the sequence"
-                        i = -1;
-
-                    } else {
-                        // find ZhangYi's location
-                        char zyloc =placement.charAt(placement.indexOf('z') + 2);
-                        int ZY = normaliseLoc(zyloc);
-
-                        // update setup board with the new checked move
-                        int p = 2;
-                        while (p != -1 && p < placement.length()) {
-                            // find the setup board location same with the current move location
-                            if (board[p] == move[i]) {
-                                // find the corresponding country for the card in current move location
-                                char loc = board[p];
-                                char country = board[p - 2];
-                                int D = normaliseLoc(loc);
-
-                                // go through the board to find the card from same country between ZhangYi and goal location
-                                int k = 2;
-                                // find all cards between Zhangyi and the destination, delete them at the same time
-                                while (k < placement.length()) {
-                                    if (board[k - 2] == country) {
-                                        int K = normaliseLoc(board[k]);
-                                        // the card is in the same row or column with ZhangYi and destination position
-                                        if ((sameRow(loc, board[k]) && sameRow(zyloc, board[k])) || (sameCol(loc, board[k]) && sameCol(zyloc, board[k]))) {
-                                            // the card is between ZhangYi and the destination position
-                                            if (((D < K && K < ZY) || (ZY < K && K < D)) && (D != K)) { //D:destination of zhang//K:possible same contry card//ZY:zhangyi's location
-                                                board[k] = '/';
-                                                board[k - 1] = '/';
-                                                board[k - 2] = '/';
-                                            }
-                                        }
-                                    }
-                                    k = k + 3;
-                                }
-
-                                // set previous Zhang Yi's position to empty
-                                board[placement.indexOf('z') + 2] = '/';
-                                board[placement.indexOf('z') + 1] = '/';
-                                board[placement.indexOf('z')] = '/';
-
-                                // move ZY to his new position
-                                board[p - 2] = 'z';
-                                board[p - 1] = '9';
-
-                                placement = new String(); // generate new setup string by remove all '/' in board array
-                                for (int n = 0; n < board.length; n++) {
-                                    if (board[n] != '/') {
-                                        placement += board[n];
-                                    } else {
-                                    }
-                                }
-                                p = -1;
-                            } else {
-                                p = p + 3;
-                            }
-                        }
-                        i = i + 1;
-                    }
-                }
-                // justify whether we check until the end of the moveSequence
-                if (i == -1) {
-                    //return false;
-                } else {
-                    //return true;
-                }
+    //////////###############////////////// Helper Methods
 
 
-
-        return placement;
+    // Used for Initially Check
+    public static boolean isValidLocation(char location) {
+        if ((location >= 'A' & location <= 'Z') | (location >= '0' & location <= '9')) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public void randomSetup(){
-        //creates a random setup
-        Random r = new Random();
+    //return true if the String given represents a card within the game specifications, otherwise returns false
+    public static boolean isValidCard(String card) {
+        char[] chunks;
+
+        if (card.length() == 2) {
+            chunks = card.toCharArray();
+        } else {
+            return false;
+        }
 
 
-        //use logic from testUtility, be sure to include in statement of originality!!!
+        if (chunks[0] >= 'a' & chunks[0] <= 'g') {
+            if ((chunks[1] + chunks[0] <= 152) & (chunks[1] >= 48)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
 
-        //random card from the available, goes into A...Z....9
+    }
 
 
+    // Used Since Task5
+
+    /**
+     * takes a locationChar and normalises it to use in row and column comparisons
+     * and distance methods
+     * assuming that locations are encoded A-Z and 0-9 for a 6x6 grid.
+     *
+     * @param locationChar
+     * @return the location char normalises to an int 0-35
+     */
+
+    public static int normaliseLoc(char locationChar) {
+        int result = -1;
+        if (locationChar >= 'A' && locationChar <= 'Z') { //normalises letter locations
+            result = (int) locationChar;
+            result -= 65;
+        } else { //normalises number locations
+            result = (int) locationChar;
+            result -= 22;
+        }
+        return result;
+    }
+
+    /**
+     * Compares whether two location characters are in the same row,
+     * assuming that locations are encoded A-Z and 0-9 for a 6x6 grid.
+     *
+     * @param location1
+     * @param location2
+     * @return true if the locations are in the same row as each other
+     */
+
+    public static boolean sameRow(char location1, char location2) {
+        int loc1 = normaliseLoc(location1);
+        int loc2 = normaliseLoc(location2);
+
+        if (loc1 % 6 == loc2 % 6) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Compares whether two location characters are in the same column,
+     * assuming that locations are encoded A-Z and 0-9 for a 6x6 grid.
+     *
+     * @param location1
+     * @param location2
+     * @return true if the locations are in the same column as each other
+     */
+
+    public static boolean sameCol(char location1, char location2) {
+        int loc1 = normaliseLoc(location1);
+        int loc2 = normaliseLoc(location2);
+
+        if (loc1 / 6 == loc2 / 6) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    // Task 10 & Task 9
+    // check whether for the current placement, there are no more valid move
+    public static boolean noMoreValidMove(String placement) {
+
+        // find ZhangYi's location in the placement
+        char zyloc = placement.charAt(placement.indexOf('z') + 2);
+
+        // find all positions in the "placement" sequence that still have cards
+        char[] place = placement.toCharArray();
+        List<Character> allPositions = new ArrayList<>();
+        for (int p = 2; p < placement.length(); p = p + 3) {
+            allPositions.add(place[p]);
+        }
+
+        // check whether there are no cards in any direction from Zhang Yi
+        int availableMove = 0;
+        // when there exists Available Move, change value of "availableMove" from 0 to 1
+        // check for all positions still have cards
+        for (int i = 0; availableMove == 0 && i < allPositions.size(); i++) {
+            char p = allPositions.get(i);
+            if (p != zyloc && (sameCol(p, zyloc) || sameRow(p, zyloc))) {
+                availableMove = 1;
+            }
+        }
+
+        if (availableMove == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    // Task 9
+    // get an array of the final flags number of every player, player ID will work as array index
+    public static int[] playerFlagNumbers(int[] finalFlags) {
+        // here, "int[] finalFlags = getFlags(setup, moveSequence, numPlayers)" which we can get from Task 8 result
+        int[] flagNumbers = new int[4];
+        for (int i = 0; i < 7; i++) {
+            int p = finalFlags[i];
+            if (p != -1) {
+                flagNumbers[p]++;
+            }
+        }
+        return flagNumbers;
+    }
+
+    // get an array with player IDs of players who hold the maximum number of flags
+    public static int[] getMaximumFlagsIDs(int[] finalFlags) {
+        // get No. of flags of every players
+        int[] flagNumbers = playerFlagNumbers(finalFlags);
+
+        // initialize an array to record the player with the maximum flags
+        int[] maxFlagsPlayer = new int[]{-1, -1, -1, -1};
+
+        // get the maximum No. of flags among all players
+        int flagMax = 0;
+        for (int i = 0; i < flagNumbers.length; i++) {
+            if (flagNumbers[i] >= flagMax) {
+                flagMax = flagNumbers[i];
+            }
+        }
+
+        // get all players IDs that own that max No. of flags
+        for (int i = 0; i < flagNumbers.length; i++) {
+            if (flagNumbers[i] == flagMax) {
+                maxFlagsPlayer[i] = i;
+            }
+
+        }
+
+        return maxFlagsPlayer;
+    }
+
+    // get the final winner's ID
+    public static int getWinnerID(int[] finalFlags) {
+        int[] maxFlagsPlayer = getMaximumFlagsIDs(finalFlags);
+
+        int winnerID = -1;
+
+        // check whether there exists one only player holds the greatest number of flags
+        int p = 0;
+        int player = -1;
+        for (int i = 0; i < maxFlagsPlayer.length; i++) {
+            if (maxFlagsPlayer[i] != -1) {
+                player = i;
+                p++;
+            }
+        }
+
+        if (p == 1) {
+            winnerID = player;
+        } else {
+
+            // check whether there are player inside holds Qin flag
+            for (int i = 0; i < maxFlagsPlayer.length; i++) {
+                if (maxFlagsPlayer[i] == finalFlags[0]) {
+                    winnerID = maxFlagsPlayer[i];
+                }
+            }
+            // check whether there are player inside holds Qi flag
+            if (winnerID == -1) {
+                for (int i = 0; i < maxFlagsPlayer.length; i++) {
+                    if (maxFlagsPlayer[i] == finalFlags[1]) {
+                        winnerID = maxFlagsPlayer[i];
+                    }
+                }
+            }
+            // check whether there are player inside holds Chu flag
+            if (winnerID == -1) {
+                for (int i = 0; i < maxFlagsPlayer.length; i++) {
+                    if (maxFlagsPlayer[i] == finalFlags[2]) {
+                        winnerID = maxFlagsPlayer[i];
+                    }
+                }
+            }
+            // check whether there are player inside holds Zhao flag
+            if (winnerID == -1) {
+                for (int i = 0; i < maxFlagsPlayer.length; i++) {
+                    if (maxFlagsPlayer[i] == finalFlags[3]) {
+                        winnerID = maxFlagsPlayer[i];
+                    }
+                }
+            }
+        }
+
+        return winnerID;
+    }
+
+
+    //FIXME write tests?, neaten up
+    public static String newBoard(String placement, String moves) {
+        char[] move = moves.toCharArray();
+
+        for (int i = 0; i < 36; i++) {  //check duplication of moveSequence
+            int count = 0;
+            for (int k = 0; k < moves.length(); k++) {
+                if (i == normaliseLoc(move[k])) {
+                    count += 1;
+                }
+            }
+            if (count > 1) {
+                //  return false;
+            }
+        }
+
+        // go through every move in moveSequence one by one
+        int i = 0;
+        while (i != -1 && i < moves.length()) {
+
+            char[] board = placement.toCharArray();
+
+            if (!isMoveLegal(placement, move[i])) {
+                // use i to record "have found an invalid move in the sequence"
+                i = -1;
+
+            } else {
+                // find ZhangYi's location
+                char zyloc = placement.charAt(placement.indexOf('z') + 2);
+                int ZY = normaliseLoc(zyloc);
+
+                // update setup board with the new checked move
+                int p = 2;
+                while (p != -1 && p < placement.length()) {
+                    // find the setup board location same with the current move location
+                    if (board[p] == move[i]) {
+                        // find the corresponding country for the card in current move location
+                        char loc = board[p];
+                        char country = board[p - 2];
+                        int D = normaliseLoc(loc);
+
+                        // go through the board to find the card from same country between ZhangYi and goal location
+                        int k = 2;
+                        // find all cards between Zhangyi and the destination, delete them at the same time
+                        while (k < placement.length()) {
+                            if (board[k - 2] == country) {
+                                int K = normaliseLoc(board[k]);
+                                // the card is in the same row or column with ZhangYi and destination position
+                                if ((sameRow(loc, board[k]) && sameRow(zyloc, board[k])) || (sameCol(loc, board[k]) && sameCol(zyloc, board[k]))) {
+                                    // the card is between ZhangYi and the destination position
+                                    if (((D < K && K < ZY) || (ZY < K && K < D)) && (D != K)) { //D:destination of zhang//K:possible same contry card//ZY:zhangyi's location
+                                        board[k] = '/';
+                                        board[k - 1] = '/';
+                                        board[k - 2] = '/';
+                                    }
+                                }
+                            }
+                            k = k + 3;
+                        }
+
+                        // set previous Zhang Yi's position to empty
+                        board[placement.indexOf('z') + 2] = '/';
+                        board[placement.indexOf('z') + 1] = '/';
+                        board[placement.indexOf('z')] = '/';
+
+                        // move ZY to his new position
+                        board[p - 2] = 'z';
+                        board[p - 1] = '9';
+
+                        placement = new String(); // generate new setup string by remove all '/' in board array
+                        for (int n = 0; n < board.length; n++) {
+                            if (board[n] != '/') {
+                                placement += board[n];
+                            } else {
+                            }
+                        }
+                        p = -1;
+                    } else {
+                        p = p + 3;
+                    }
+                }
+                i = i + 1;
+            }
+        }
+        // justify whether we check until the end of the moveSequence
+        if (i == -1) {
+            //return false;
+        } else {
+            //return true;
+        }
+
+        return placement;
     }
 
 }

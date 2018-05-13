@@ -7,20 +7,13 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
-import java.io.IOException;
 
 public class T1 extends Application {
 
@@ -34,7 +27,7 @@ public class T1 extends Application {
         primaryStage.setTitle("Choose the number of players!");
         //build scene
         Pane playerNum = new Pane();
-        Scene scene = new Scene(playerNum,350,300);
+        Scene scene = new Scene(playerNum, 350, 300);
 
         //create buttons
         Button exitBtn = new Button("Exit");
@@ -43,13 +36,13 @@ public class T1 extends Application {
         Button nextBtn = new Button("Next");
         nextBtn.setLayoutX(220);
         nextBtn.setLayoutY(258);
-        playerNum.getChildren().addAll(exitBtn,nextBtn);
+        playerNum.getChildren().addAll(exitBtn, nextBtn);
 
         //event of buttons
         exitBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                Event.fireEvent(primaryStage, new WindowEvent(primaryStage, WindowEvent.WINDOW_CLOSE_REQUEST ));
+                Event.fireEvent(primaryStage, new WindowEvent(primaryStage, WindowEvent.WINDOW_CLOSE_REQUEST));
             }
         });
 
@@ -59,7 +52,7 @@ public class T1 extends Application {
                 primaryStage.hide();
                 Stage AIorNot = new Stage();
                 Pane AI = new Pane();
-                Scene scene = new Scene(AI,350,300);
+                Scene scene = new Scene(AI, 350, 300);
                 AIorNot.setTitle("Add Robot");
                 AIorNot.setScene(scene);
                 //create headline
@@ -71,7 +64,7 @@ public class T1 extends Application {
 //                String array = "01234";
 //                array.substring(0, numOfPlayer);
                 //choicebox
-                ChoiceBox choiceBox = new ChoiceBox(FXCollections.observableArrayList("0","1","2","3"));
+                ChoiceBox choiceBox = new ChoiceBox(FXCollections.observableArrayList("0", "1", "2", "3"));
                 choiceBox.setLayoutX(100);
                 choiceBox.setLayoutY(150);
                 AI.getChildren().add(choiceBox);
@@ -89,7 +82,7 @@ public class T1 extends Application {
                 Button gameStartBtn = new Button("Game Start!");
                 gameStartBtn.setLayoutX(220);
                 gameStartBtn.setLayoutY(258);
-                AI.getChildren().addAll(backBtn,gameStartBtn);
+                AI.getChildren().addAll(backBtn, gameStartBtn);
 
                 AIorNot.show();
 
@@ -103,7 +96,6 @@ public class T1 extends Application {
                 });
             }
         });
-
 
 
         //create radio buttons group
@@ -121,7 +113,7 @@ public class T1 extends Application {
         fourPlayers.setLayoutX(115);
         fourPlayers.setLayoutY(215);
         fourPlayers.setToggleGroup(rb);
-        playerNum.getChildren().addAll(twoPlayers,threePlayers,fourPlayers);
+        playerNum.getChildren().addAll(twoPlayers, threePlayers, fourPlayers);
 
         //create an int for store players number
         twoPlayers.setUserData(2);
@@ -131,11 +123,11 @@ public class T1 extends Application {
             public void changed(ObservableValue<? extends Toggle> ov,
                                 Toggle old_toggle, Toggle new_toggle) {
                 if (rb.getSelectedToggle() != null) {
-                    if (rb.equals(twoPlayers)){
+                    if (rb.equals(twoPlayers)) {
                         int numOfPlayer = 2;
-                    }else if (rb.equals(threePlayers)){
+                    } else if (rb.equals(threePlayers)) {
                         int numOfPlayer = 3;
-                    }else if (rb.equals(fourPlayers)){
+                    } else if (rb.equals(fourPlayers)) {
                         int numOfPlayer = 4;
                     }
                 }
