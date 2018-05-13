@@ -90,11 +90,6 @@ public class Game extends Application {
 
              */
 
-            //on mouse click, hover over acceptable
-//
-//            this.setScaleX(1.1);
-//            this.setScaleY(1.1);
-//            this.toFront();
 
             setOnMousePressed(event -> {
                 System.out.println("current card: " + this.id + this.loc);
@@ -117,8 +112,6 @@ public class Game extends Application {
                     }
                 }
             });
-            //width and height is currently 100
-
 
             //todo code to highlight valid move when hovered over
             setOnMouseMoved(event ->{
@@ -175,10 +168,6 @@ public class Game extends Application {
                     break;
             }
         }
-
-        //give new setup string to show only remaining cards on the board
-        //collect flags
-
     }
 
     private void makeScores() {
@@ -243,7 +232,7 @@ public class Game extends Application {
                 page2.setTitle("Add Robot");
                 page2.setScene(scene);
                 //create headline
-                Text headline = new Text("How many robot you want to add?");
+                Text headline = new Text("How many robots do you want to add?");
                 headline.setLayoutX(100);
                 headline.setLayoutY(120);
                 pane2.getChildren().add(headline);
