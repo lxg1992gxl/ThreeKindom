@@ -26,7 +26,10 @@ public class Game extends Application {
 
     // FIXME Task 9: Implement a basic playable Warring States game in JavaFX
 
-    private static final String URI_BASE = "assets/";
+    private static final int VIEWER_WIDTH = 933;
+    private static final int VIEWER_HEIGHT = 700;
+
+    private static final String URI_BASE = "img/";
 
     private final Group root = new Group();
     private final Group controls = new Group();
@@ -55,7 +58,7 @@ public class Game extends Application {
             int loc = normaliseLoc(placement.charAt(2));
             int w = 100;
             int h = 100;
-            int gap = 10;
+            int gap = 3;
             setLayoutX(BOARD_WIDTH - ((loc / 6 + 1) * w + (loc / 6 + 1) * gap)); //inverse because starts on right
             setLayoutY(loc % 6 * h + loc % 6 * gap);
 
@@ -172,8 +175,8 @@ public class Game extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        primaryStage.setTitle("Warring States");
-        Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
+        primaryStage.setTitle("Seven Kingdoms Game");
+        Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
         makeBoard();
         makeScores();
@@ -196,5 +199,15 @@ public class Game extends Application {
     //recursive check for who winning after that up to AI's next move?
     //other ideas
 
+
+    // creates a random setup board at the start
+    public void randomSetup() {
+        //creates a random setup
+        Random rand = new Random();
+
+        //random card from the available, goes into A...Z....9
+
+
+    }
 }
 

@@ -355,7 +355,7 @@ public class WarringStatesGame {
 
                     // update setup board with the new checked move
                     int p = 2;
-                    while (p != -1 && p < setup.length()) {
+                    while (p != -1&& p < setup.length()) {
                         // find the setup board location same with the current move location
                         if (board[p] == move[i]) {
                             // find the corresponding country for the card in current move location
