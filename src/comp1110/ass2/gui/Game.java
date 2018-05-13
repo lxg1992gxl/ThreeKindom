@@ -17,8 +17,6 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 
-import java.util.Random;
-
 import static comp1110.ass2.WarringStatesGame.*;
 import static comp1110.ass2.WarringStatesGame.getWinnerID;
 import static comp1110.ass2.WarringStatesGame.noMoreValidMove;
