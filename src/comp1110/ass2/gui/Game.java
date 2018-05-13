@@ -88,7 +88,10 @@ public class Game extends Application {
 
             setOnMousePressed(event -> {
                 System.out.println("current card: " + this.id + this.loc);
-                if (this.id != "z9" & WarringStatesGame.isMoveLegal(currentBoard, this.loc)) {
+                if(this.id.equals("z9")){
+                    System.out.println("not a valid move!");
+                }
+                else if (this.id != "z9" & WarringStatesGame.isMoveLegal(currentBoard, this.loc)) {
                     history = history + this.loc + "";
                     //  System.out.println("current history: " +history);
                     showCollectedCards();
@@ -180,9 +183,7 @@ public class Game extends Application {
         //don't allow to continue playing when finished- boolean playable?
     }
 
-    private void showCollectedCards() {
-        //FIXME clear current cards collected to avoid double up
-
+    private void showCollectedCards() { //TODO make card display location more stable
         //move the supporters to side
         String support = getSupporters(setup, history, players, currentPlayer);
 
@@ -209,9 +210,6 @@ public class Game extends Application {
                     break;
             }
         }
-
-        //give new setup string to show only remaining cards on the board
-        //collect flags
 
     }
 
