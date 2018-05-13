@@ -105,163 +105,163 @@ public class Viewer extends Application {
         //by using image directly, I leave codes that drawing rectangle in comments down here
         if (kingdom.equals("a")) {
             if (name.equals("0")) {
-                Image a0 = new Image("img/a0.png");
+                Image a0 = new Image("comp1110/ass2/gui/img/a0.png");
                 ImageView imga0 = new ImageView(a0);
                 textBox.getChildren().add(imga0);
             } else if (name.equals("1")) {
-                Image a1 = new Image("img/a1.png");
+                Image a1 = new Image("comp1110/ass2/gui/img/a1.png");
                 ImageView imga1 = new ImageView(a1);
                 textBox.getChildren().add(imga1);
             } else if (name.equals("2")) {
-                Image a2 = new Image("img/a2.png");
+                Image a2 = new Image("comp1110/ass2/gui/img/a2.png");
                 ImageView imga2 = new ImageView(a2);
                 textBox.getChildren().add(imga2);
             } else if (name.equals("3")) {
-                Image a3 = new Image("img/a3.png");
+                Image a3 = new Image("comp1110/ass2/gui/img/a3.png");
                 ImageView imga3 = new ImageView(a3);
                 textBox.getChildren().add(imga3);
             } else if (name.equals("4")) {
-                Image a4 = new Image("img/a4.png");
+                Image a4 = new Image("comp1110/ass2/gui/img/a4.png");
                 ImageView imga4 = new ImageView(a4);
                 textBox.getChildren().add(imga4);
             } else if (name.equals("5")) {
-                Image a5 = new Image("img/a5.png");
+                Image a5 = new Image("comp1110/ass2/gui/img/a5.png");
                 ImageView imga5 = new ImageView(a5);
                 textBox.getChildren().add(imga5);
             } else if (name.equals("6")) {
-                Image a6 = new Image("img/a6.png");
+                Image a6 = new Image("comp1110/ass2/gui/img/a6.png");
                 ImageView imga6 = new ImageView(a6);
                 textBox.getChildren().add(imga6);
             } else if (name.equals("7")) {
-                Image a7 = new Image("img/a7.png");
+                Image a7 = new Image("comp1110/ass2/gui/img/a7.png");
                 ImageView imga7 = new ImageView(a7);
                 textBox.getChildren().add(imga7);
             } else ;
         } else if (kingdom.equals("b")) {
             if (name.equals("0")) {
-                Image b0 = new Image("img/b0.png");
+                Image b0 = new Image("comp1110/ass2/gui/img/b0.png");
                 ImageView imgb0 = new ImageView(b0);
                 textBox.getChildren().add(imgb0);
             } else if (name.equals("1")) {
-                Image b1 = new Image("img/b1.png");
+                Image b1 = new Image("comp1110/ass2/gui/img/b1.png");
                 ImageView imgb1 = new ImageView(b1);
                 textBox.getChildren().add(imgb1);
             } else if (name.equals("2")) {
-                Image b2 = new Image("img/b2.png");
+                Image b2 = new Image("comp1110/ass2/gui/img/b2.png");
                 ImageView imgb2 = new ImageView(b2);
                 textBox.getChildren().add(imgb2);
             } else if (name.equals("3")) {
-                Image b3 = new Image("img/b3.png");
+                Image b3 = new Image("comp1110/ass2/gui/img/b3.png");
                 ImageView imgb3 = new ImageView(b3);
                 textBox.getChildren().add(imgb3);
             } else if (name.equals("4")) {
-                Image b4 = new Image("img/b4.png");
+                Image b4 = new Image("comp1110/ass2/gui/img/b4.png");
                 ImageView imgb4 = new ImageView(b4);
                 textBox.getChildren().add(imgb4);
             } else if (name.equals("5")) {
-                Image b5 = new Image("img/b5.png");
+                Image b5 = new Image("comp1110/ass2/gui/img/b5.png");
                 ImageView imgb5 = new ImageView(b5);
                 textBox.getChildren().add(imgb5);
             } else if (name.equals("6")) {
-                Image b6 = new Image("img/b6.png");
+                Image b6 = new Image("comp1110/ass2/gui/img/b6.png");
                 ImageView imgb6 = new ImageView(b6);
                 textBox.getChildren().add(imgb6);
             } else ;
         } else if (kingdom.equals("c")) {
             if (name.equals("0")) {
-                Image c0 = new Image("img/c0.png");
+                Image c0 = new Image("comp1110/ass2/gui/img/c0.png");
                 ImageView imgc0 = new ImageView(c0);
                 textBox.getChildren().add(imgc0);
             } else if (name.equals("1")) {
-                Image c1 = new Image("img/c1.png");
+                Image c1 = new Image("comp1110/ass2/gui/img/c1.png");
                 ImageView imgc1 = new ImageView(c1);
                 textBox.getChildren().add(imgc1);
             } else if (name.equals("2")) {
-                Image c2 = new Image("img/c2.png");
+                Image c2 = new Image("comp1110/ass2/gui/img/c2.png");
                 ImageView imgc2 = new ImageView(c2);
                 textBox.getChildren().add(imgc2);
             } else if (name.equals("3")) {
-                Image c3 = new Image("img/c3.png");
+                Image c3 = new Image("comp1110/ass2/gui/img/c3.png");
                 ImageView imgc3 = new ImageView(c3);
                 textBox.getChildren().add(imgc3);
             } else if (name.equals("4")) {
-                Image c4 = new Image("img/c4.png");
+                Image c4 = new Image("comp1110/ass2/gui/img/c4.png");
                 ImageView imgc4 = new ImageView(c4);
                 textBox.getChildren().add(imgc4);
             } else if (name.equals("5")) {
-                Image c5 = new Image("img/c5.png");
+                Image c5 = new Image("comp1110/ass2/gui/img/c5.png");
                 ImageView imgc5 = new ImageView(c5);
                 textBox.getChildren().add(imgc5);
             } else ;
         } else if (kingdom.equals("d")) {
             if (name.equals("0")) {
-                Image d0 = new Image("img/d0.png");
+                Image d0 = new Image("comp1110/ass2/gui/img/d0.png");
                 ImageView imgd0 = new ImageView(d0);
                 textBox.getChildren().add(imgd0);
             } else if (name.equals("1")) {
-                Image d1 = new Image("img/d1.png");
+                Image d1 = new Image("comp1110/ass2/gui/img/d1.png");
                 ImageView imgd1 = new ImageView(d1);
                 textBox.getChildren().add(imgd1);
             } else if (name.equals("2")) {
-                Image d2 = new Image("img/d2.png");
+                Image d2 = new Image("comp1110/ass2/gui/img/d2.png");
                 ImageView imgd2 = new ImageView(d2);
                 textBox.getChildren().add(imgd2);
             } else if (name.equals("3")) {
-                Image d3 = new Image("img/d3.png");
+                Image d3 = new Image("comp1110/ass2/gui/img/d3.png");
                 ImageView imgd3 = new ImageView(d3);
                 textBox.getChildren().add(imgd3);
             } else if (name.equals("4")) {
-                Image d4 = new Image("img/d4.png");
+                Image d4 = new Image("comp1110/ass2/gui/img/d4.png");
                 ImageView imgd4 = new ImageView(d4);
                 textBox.getChildren().add(imgd4);
             } else ;
         } else if (kingdom.equals("e")) {
             if (name.equals("0")) {
-                Image e0 = new Image("img/e0.png");
+                Image e0 = new Image("comp1110/ass2/gui/img/e0.png");
                 ImageView imge0 = new ImageView(e0);
                 textBox.getChildren().add(imge0);
             } else if (name.equals("1")) {
-                Image e1 = new Image("img/e1.png");
+                Image e1 = new Image("comp1110/ass2/gui/img/e1.png");
                 ImageView imge1 = new ImageView(e1);
                 textBox.getChildren().add(imge1);
             } else if (name.equals("2")) {
-                Image e2 = new Image("img/e2.png");
+                Image e2 = new Image("comp1110/ass2/gui/img/e2.png");
                 ImageView imge2 = new ImageView(e2);
                 textBox.getChildren().add(imge2);
             } else if (name.equals("3")) {
-                Image e3 = new Image("img/e3.png");
+                Image e3 = new Image("comp1110/ass2/gui/img/e3.png");
                 ImageView imge3 = new ImageView(e3);
                 textBox.getChildren().add(imge3);
             } else ;
 
         } else if (kingdom.equals("f")) {
             if (name.equals("0")) {
-                Image f0 = new Image("img/f0.png");
+                Image f0 = new Image("comp1110/ass2/gui/img/f0.png");
                 ImageView imgf0 = new ImageView(f0);
                 textBox.getChildren().add(imgf0);
             } else if (name.equals("1")) {
-                Image f1 = new Image("img/f1.png");
+                Image f1 = new Image("comp1110/ass2/gui/img/f1.png");
                 ImageView imgf1 = new ImageView(f1);
                 textBox.getChildren().add(imgf1);
             } else if (name.equals("2")) {
-                Image f2 = new Image("img/f2.png");
+                Image f2 = new Image("comp1110/ass2/gui/img/f2.png");
                 ImageView imgf2 = new ImageView(f2);
                 textBox.getChildren().add(imgf2);
             } else ;
 
         } else if (kingdom.equals("g")) {
             if (name.equals("0")) {
-                Image g0 = new Image("img/g0.png");
+                Image g0 = new Image("comp1110/ass2/gui/img/g0.png");
                 ImageView imgg0 = new ImageView(g0);
                 textBox.getChildren().add(imgg0);
             } else if (name.equals("1")) {
-                Image g1 = new Image("img/g1.png");
+                Image g1 = new Image("comp1110/ass2/gui/img/g1.png");
                 ImageView imgg1 = new ImageView(g1);
                 textBox.getChildren().add(imgg1);
             } else ;
         } else if (kingdom.equals("z")) {
             if (name.equals("9")) {
-                Image z9 = new Image("img/z9.png");
+                Image z9 = new Image("comp1110/ass2/gui/img/z9.png");
                 ImageView imgz9 = new ImageView(z9);
                 textBox.getChildren().add(imgz9);
             } else ;

@@ -1,9 +1,6 @@
 package comp1110.ass2;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * This class provides the text interface for the Warring States game
@@ -358,7 +355,7 @@ public class WarringStatesGame {
 
                     // update setup board with the new checked move
                     int p = 2;
-                    while (p != -1 && p < setup.length()) {
+                    while (p != -1&& p < setup.length()) {
                         // find the setup board location same with the current move location
                         if (board[p] == move[i]) {
                             // find the corresponding country for the card in current move location
@@ -837,7 +834,6 @@ public class WarringStatesGame {
      */
     public static char generateMove(String placement) {
         // Task 10: generate a legal move
-
         // find ZhangYi's location in the placement
         char zyloc = placement.charAt(placement.indexOf('z') + 2);
 
@@ -892,7 +888,7 @@ public class WarringStatesGame {
     }
 
 
-    // Used Since Task5
+    // Used Since Task 5
 
     /**
      * takes a locationChar and normalises it to use in row and column comparisons
@@ -1083,6 +1079,32 @@ public class WarringStatesGame {
         }
 
         return winnerID;
+    }
+
+
+    // Task 9
+    // creates a random setup board String at the start
+    public static String randomSetup() {
+        Random rand = new Random();
+        String[] cardsPool = new String[]{"a0", "a1", "a2", "a3", "a4", "a5", "a6", "a7", "b0", "b1", "b2", "b3", "b4", "b5", "b6", "c0", "c1", "c2", "c3", "c4", "c5", "d0", "d1", "d2", "d3", "d4", "e0", "e1", "e2", "e3", "f0", "f1", "f2", "g0", "g1", "z9"};
+        String[] cardsAndLocation = new String[]{"", "A", "", "B", "", "C", "", "D", "", "E", "", "F", "", "G", "", "H", "", "I", "", "J", "", "K", "", "L", "", "M", "", "N", "", "O", "", "P", "", "Q", "", "R", "", "S", "", "T", "", "U", "", "V", "", "W", "", "X", "", "Y", "", "Z", "", "0", "", "1", "", "2", "", "3", "", "4", "", "5", "", "6", "", "7", "", "8", "", "9"};
+
+        int i = 0;
+        while (i < cardsAndLocation.length) {
+            int a = rand.nextInt(cardsPool.length);
+            String chosen = cardsPool[a];
+            if (chosen != "/") {
+                cardsAndLocation[i] = chosen;
+                cardsPool[a] = "/";
+                i = i + 2;
+            }
+        }
+
+        String setupBoard = "";
+        for (String s : cardsAndLocation) {
+            setupBoard += s;
+        }
+        return (setupBoard);
     }
 
 
