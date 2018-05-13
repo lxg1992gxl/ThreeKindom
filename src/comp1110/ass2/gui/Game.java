@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
@@ -45,6 +46,7 @@ public class Game extends Application {
 
 
     private String setup = WarringStatesGame.randomSetup();
+//    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
     private String currentBoard = setup;
     private int players = 4;
     private int AIs = 1;
@@ -68,7 +70,7 @@ public class Game extends Application {
             int h = 100;
             int gap = 4;
             setLayoutX(BOARD_WIDTH - ((loc / 6 + 1) * w + (loc / 6 + 1) * gap)); //inverse because starts on right
-            setLayoutY(20 + loc % 6 * h + loc % 6 * gap);
+            setLayoutY(10 + loc % 6 * h + loc % 6 * gap);
 
             /*
             4 Y S M G A                             30 24 18 12 6 0
@@ -130,9 +132,11 @@ public class Game extends Application {
 
     //TODO create a method which will give instructions for when the game ends
     private void endGame() {
-
         System.out.println("end game");
         int winner = getWinnerID(getFlags(setup, history, players));
+//        Text endGame = new Text("Game ending! Player " + winner + " wins !!!");
+//        controls.getChildren().add(endGame);
+
         //don't allow to continue playing when finished- boolean playable?
     }
 
