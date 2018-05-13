@@ -14,6 +14,8 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 
+import java.util.Random;
+
 import static comp1110.ass2.WarringStatesGame.*;
 import static comp1110.ass2.iHelperMethods.getWinnerID;
 import static comp1110.ass2.iHelperMethods.noMoreValidMove;
@@ -23,15 +25,6 @@ public class Game extends Application {
     private static final int BOARD_HEIGHT = 700;
 
     // FIXME Task 9: Implement a basic playable Warring States game in JavaFX
-
-    // FIXME Task 11: Allow players of your Warring States game to play against your simple agent
-    //randomly generate move (task 10), make it
-
-
-    // FIXME Task 12: Integrate a more advanced opponent into your game
-    //check who winning after move?
-    //recursive check for who winning after that up to AI's next move?
-    //other ideas
 
     private static final int VIEWER_WIDTH = 933;
     private static final int VIEWER_HEIGHT = 700;
@@ -193,6 +186,29 @@ public class Game extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
+    }
+
+
+
+    // FIXME Task 11: Allow players of your Warring States game to play against your simple agent
+    //randomly generate move (task 10), make it
+
+
+    // FIXME Task 12: Integrate a more advanced opponent into your game
+    //check who winning after move?
+    //recursive check for who winning after that up to AI's next move?
+    //other ideas
+
+
+
+    // creates a random setup board at the start
+    public void randomSetup(){
+        //creates a random setup
+        Random rand = new Random();
+
+        //random card from the available, goes into A...Z....9
+
 
     }
 }
