@@ -2,7 +2,7 @@ We declare that the work toward our submission of Stage F was distributed among 
 
 * u6099927 33
 * u4671448 33
-* u0123456 33
+* u6464313 33
 
-Signed: Siying Qian (u6099927), Lenna Nicholson (u4671448), and Sue Black (u0123456)
+Signed: Siying Qian (u6099927), Lenna Nicholson (u4671448), and Lyu Xiaoguang (u6464313)
 

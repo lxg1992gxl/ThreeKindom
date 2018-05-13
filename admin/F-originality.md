@@ -6,4 +6,4 @@ We declare that the work we have submitted for Stage F of this assignment and al
 
 * ....
 
-Signed: Siying Qian (u6099927), Bob Smith (u3456789), and Sue Black (u0123456)
+Signed: Siying Qian (u6099927), Lyu, Xiaoguang (u6464313), and Lenna Nicholson (u4671448)

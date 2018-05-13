@@ -10,28 +10,21 @@ import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 
 import java.util.Random;
 
-import static comp1110.ass2.WarringStatesGame.getSupporters;
-import static comp1110.ass2.WarringStatesGame.normaliseLoc;
+import static comp1110.ass2.WarringStatesGame.*;
+import static comp1110.ass2.WarringStatesGame.getWinnerID;
+import static comp1110.ass2.WarringStatesGame.noMoreValidMove;
 
 public class Game extends Application {
     private static final int BOARD_WIDTH = 933;
     private static final int BOARD_HEIGHT = 700;
 
     // FIXME Task 9: Implement a basic playable Warring States game in JavaFX
-
-    // FIXME Task 11: Allow players of your Warring States game to play against your simple agent
-    //randomly generate move (task 10), make it
-
-
-    // FIXME Task 12: Integrate a more advanced opponent into your game
-    //check who winning after move?
-    //recursive check for who winning after that up to AI's next move?
-    //other ideas
 
     private static final int VIEWER_WIDTH = 933;
     private static final int VIEWER_HEIGHT = 700;
@@ -41,22 +34,24 @@ public class Game extends Application {
     private final Group root = new Group();
     private final Group controls = new Group();
     private final StackPane scores = new StackPane();
-    private final FlowPane flow = new FlowPane(7,7);    //to organize every card in grid
+    private final Group board = new Group();
 
     private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
-    private int players = 2;
+    private String currentBoard = setup;
+    private int players = 3;
     private int AIs = 1;
     private String history = "";
     private int currentPlayer = 0;
+    private FXpiece[][] cards = new FXpiece[players][35]; //number of players, number of character cards
 
-    class FXpiece extends ImageView{
+    class FXpiece extends ImageView {
         String id;
         char loc;
 
-        FXpiece (String placement){
-            this.id = placement.substring(0,2);
+        FXpiece(String placement) {
+            this.id = placement.substring(0, 2);
             this.loc = placement.charAt(2);
-            setImage(new Image (Game.class.getResource(URI_BASE+this.id+".png").toString()));
+            setImage(new Image(Game.class.getResource(URI_BASE + this.id + ".png").toString())); //problem?
             //add where placement?
 
             //determines location of the card based on the location char
@@ -64,8 +59,8 @@ public class Game extends Application {
             int w = 100;
             int h = 100;
             int gap = 10;
-            setLayoutX(BOARD_WIDTH-((loc/6+1)*w +(loc/6+1)*gap)); //inverse because starts on right
-            setLayoutY(loc%6*h+loc%6*gap);
+            setLayoutX(BOARD_WIDTH - ((loc / 6 + 1) * w + (loc / 6 + 1) * gap)); //inverse because starts on right
+            setLayoutY(loc % 6 * h + loc % 6 * gap);
 
             /*
             4 Y S M G A                             30 24 18 12 6 0
@@ -84,52 +79,96 @@ public class Game extends Application {
 //            this.toFront();
 
             setOnMousePressed(event -> {
-                System.out.println(this.id+this.loc);
-                if(WarringStatesGame.isMoveLegal(setup, this.loc)){
-                    System.out.println("yes"); //call make move method
-                    history.concat("hi");
-                    System.out.println(history); //Not adding to history appropriately
+                System.out.println("current card: " + this.id + this.loc);
+                if (this.id != "z9" & WarringStatesGame.isMoveLegal(currentBoard, this.loc)) {
+                    history = history + this.loc + "";
+                    //  System.out.println("current history: " +history);
+                    showCollectedCards();
+                    currentBoard = newBoard(setup, history);
+                    //System.out.println(currentBoard);
+                    makeBoard(); //problem?
+                    currentPlayer = (currentPlayer + 1) % players;
 
-                    //move the supporters to side
-                    FXpiece[] supporters = new FXpiece[35]; //length?
-                    getSupporters(setup, history, players, currentPlayer);
-                    for(int j=0;j<supporters.length; j++){
-                        supporters[j] = new FXpiece(setup.substring(j*3, j*3+3)); //take only relevant cards
-                        supporters[j].setLayoutX(20);
-                        supporters[j].setLayoutY(20*j);
-                        //include factor based on which player
-                        root.getChildren().add(supporters[j]);
+                    //TODO if current player = AI, make next move based on AIstrategies here
+
+                    //System.out.println(currentPlayer);
+                    if (noMoreValidMove(currentBoard)) {
+                        System.out.println("finished!"); //working
+                        endGame();
+
                     }
-                };
-
-
+                }
             });
-
             //width and height is currently 100
 
         }
+
+        @Override
+        public String toString() {
+            return this.id + this.loc;
+        }
     }
 
+    //TODO create a method which will display the flags currently controlled by each player
+    private void showFlags() {
+        //show the flags won by each player
+        getFlags(setup, history, players);
 
+        //images for flags in assets folder?
 
-    private void makeControls(){
-        Button start = new Button ("Restart game");
-        Slider players = new Slider (2, 4, 2);
+        //where should flags be shown
 
-        //difficulty
-
-        controls.getChildren().add(start);
-        controls.getChildren().add(players);
     }
 
+    //TODO create a method which will give instructions for when the game ends
+    private void endGame() {
 
-    private void makeScores(){
-        Label l [] = new Label[players];
-        for (int i= 0; i<players; i++){
-            l[i] = new Label ("Player "+ i+1);
+        System.out.println("end game");
+        int winner = getWinnerID(getFlags(setup, history, players));
+        //don't allow to continue playing when finished- boolean playable?
+    }
+
+    private void showCollectedCards() {
+        //FIXME clear current cards collected to avoid double up
+
+        //move the supporters to side
+        String support = getSupporters(setup, history, players, currentPlayer);
+
+        //System.out.println("supporters: "+ support);
+        for (int j = 0; j < support.length() / 2; j++) {
+            cards[currentPlayer][j] = new FXpiece(support.substring(j * 2, j * 2 + 2) + '/');
+            //System.out.println("current substring: "+cards[currentPlayer][j]);
+
+            cards[currentPlayer][j].setLayoutX(105 * currentPlayer); //if clearing at beginning of method, need to get supporters for all players
+            //if more than 2 players, show below instead?
+            cards[currentPlayer][j].setLayoutY(20 * j);
+            root.getChildren().add(cards[currentPlayer][j]);
+        }
+        //give new setup string to show only remaining cards on the board
+        //collect flags
+
+    }
+
+    private void makeScores() {
+        Label l[] = new Label[players];
+        for (int i = 0; i < players; i++) {
+            l[i] = new Label("Player " + i + 1);
             l[i].setLayoutX(200); //doesn't seem to be working?
-            l[i].setLayoutY(((BOARD_HEIGHT/players)*i)+10);
+            l[i].setLayoutY(((BOARD_HEIGHT / players) * i) + 10);
             scores.getChildren().add(l[i]);
+        }
+        root.getChildren().add(scores);
+    }
+
+    private void makeBoard() {
+        //clear to avoid double up
+        board.getChildren().removeAll(board.getChildren());
+
+        //create all board pieces
+        FXpiece[] b = new FXpiece[currentBoard.length() / 3];
+        for (int j = 0; j < currentBoard.length() / 3; j++) {
+            b[j] = new FXpiece(currentBoard.substring(j * 3, j * 3 + 3)); //problem?
+            board.getChildren().add(b[j]);
         }
     }
 
@@ -139,16 +178,34 @@ public class Game extends Application {
         primaryStage.setTitle("Seven Kingdoms Game");
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
-        FXpiece[] board = new FXpiece[setup.length()/3];
-        for(int j=0;j<setup.length()/3; j++){
-            board[j] = new FXpiece(setup.substring(j*3, j*3+3));
-            root.getChildren().add(board[j]);
-        }
-
+        makeBoard();
         makeScores();
-        root.getChildren().add(scores);
+        showCollectedCards();
+
+        root.getChildren().add(board);
+
         primaryStage.setScene(scene);
         primaryStage.show();
+
+    }
+
+
+    // FIXME Task 11: Allow players of your Warring States game to play against your simple agent
+    //randomly generate move (task 10), make it
+
+
+    // FIXME Task 12: Integrate a more advanced opponent into your game
+    //check who winning after move?
+    //recursive check for who winning after that up to AI's next move?
+    //other ideas
+
+
+    // creates a random setup board at the start
+    public void randomSetup() {
+        //creates a random setup
+        Random rand = new Random();
+
+        //random card from the available, goes into A...Z....9
 
 
     }
