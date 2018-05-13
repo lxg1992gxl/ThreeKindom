@@ -156,10 +156,20 @@ public class Game extends Application {
         int[] flags = getFlags(setup, history, players);
 
         Flag a = new Flag("a", flags[0]);
-        //images for flags in assets folder?
+        Flag b = new Flag("b", flags[1]);
+        Flag c = new Flag("c", flags[2]);
+        Flag d = new Flag("d", flags[3]);
+        Flag e = new Flag("e", flags[4]);
+        Flag f = new Flag("f", flags[5]);
+        Flag g = new Flag("g", flags[6]);
 
-        //where should flags be shown
-
+        root.getChildren().add(a);
+        root.getChildren().add(b);
+        root.getChildren().add(c);
+        root.getChildren().add(d);
+        root.getChildren().add(e);
+        root.getChildren().add(f);
+        root.getChildren().add(g);
     }
 
     //TODO create a method which will give instructions for when the game ends
