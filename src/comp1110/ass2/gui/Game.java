@@ -140,8 +140,6 @@ public class Game extends Application {
         //show the flags won by each player
         getFlags(setup, history, players);
 
-        //images for flags in assets folder?
-
         //where should flags be shown
 
     }
@@ -155,8 +153,6 @@ public class Game extends Application {
     }
 
     private void showCollectedCards() {
-        //FIXME clear current cards collected to avoid double up
-
         //move the supporters to side
         String support = getSupporters(setup, history, players, currentPlayer);
 
@@ -247,7 +243,7 @@ public class Game extends Application {
                 page2.setTitle("Add Robot");
                 page2.setScene(scene);
                 //create headline
-                Text headline = new Text("How many robot you wang to add?");
+                Text headline = new Text("How many robot you want to add?");
                 headline.setLayoutX(100);
                 headline.setLayoutY(120);
                 pane2.getChildren().add(headline);
@@ -354,7 +350,7 @@ public class Game extends Application {
         rb.selectedToggleProperty().addListener(
                 (ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) ->{
                 if (rb.getSelectedToggle() != null) {
-                    numberOfChairs = Integer.parseInt(rb.getSelectedToggle().getUserData().toString());
+                      numberOfChairs = Integer.parseInt(rb.getSelectedToggle().getUserData().toString());
                 }
 
         });
@@ -403,17 +399,6 @@ public class Game extends Application {
     //check who winning after move?
     //recursive check for who winning after that up to AI's next move?
     //other ideas
-
-
-    // creates a random setup board at the start
-    public void randomSetup() {
-        //creates a random setup
-        Random rand = new Random();
-
-        //random card from the available, goes into A...Z....9
-
-
-    }
 
 }
 
