@@ -44,7 +44,7 @@ public class Game extends Application {
     private final Group scrBD3 = new Group();
 
 
-    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
+    private String setup = WarringStatesGame.randomSetup();
     private String currentBoard = setup;
     private int players = 4;
     private int AIs = 1;

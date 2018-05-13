@@ -1086,14 +1086,18 @@ public class WarringStatesGame {
     // creates a random setup board String at the start
     public static String randomSetup() {
         Random rand = new Random();
-        List<String> cardsPool = Arrays.asList("a0", "a1", "a2", "a3", "a4", "a5", "a6", "a7", "b0", "b1", "b2", "b3", "b4", "b5", "b6", "c0", "c1", "c2", "c3", "c4", "c5", "d0", "d1", "d2", "d3", "d4", "e0", "e1", "e2", "e3", "f0", "f1", "f2", "g0", "g1", "z9");
+        String[] cardsPool = new String[]{"a0", "a1", "a2", "a3", "a4", "a5", "a6", "a7", "b0", "b1", "b2", "b3", "b4", "b5", "b6", "c0", "c1", "c2", "c3", "c4", "c5", "d0", "d1", "d2", "d3", "d4", "e0", "e1", "e2", "e3", "f0", "f1", "f2", "g0", "g1", "z9"};
         String[] cardsAndLocation = new String[]{"", "A", "", "B", "", "C", "", "D", "", "E", "", "F", "", "G", "", "H", "", "I", "", "J", "", "K", "", "L", "", "M", "", "N", "", "O", "", "P", "", "Q", "", "R", "", "S", "", "T", "", "U", "", "V", "", "W", "", "X", "", "Y", "", "Z", "", "0", "", "1", "", "2", "", "3", "", "4", "", "5", "", "6", "", "7", "", "8", "", "9"};
 
-        for (int i = 0; i < cardsAndLocation.length; i = i + 2) {
-            int a = rand.nextInt(cardsPool.size());
-            String chosen = cardsPool.get(a);
-            cardsAndLocation[i] = chosen;
-            cardsPool.remove(chosen);
+        int i = 0;
+        while (i < cardsAndLocation.length) {
+            int a = rand.nextInt(cardsPool.length);
+            String chosen = cardsPool[a];
+            if (chosen != "/") {
+                cardsAndLocation[i] = chosen;
+                cardsPool[a] = "/";
+                i = i + 2;
+            }
         }
 
         String setupBoard = "";
