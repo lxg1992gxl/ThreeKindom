@@ -22,7 +22,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.WindowEvent;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import static comp1110.ass2.WarringStatesGame.*;
 import static comp1110.ass2.WarringStatesGame.getWinnerID;
