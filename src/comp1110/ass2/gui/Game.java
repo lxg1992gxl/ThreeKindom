@@ -105,6 +105,9 @@ public class Game extends Application {
                     showFlags();
 
                     //TODO if current player = AI, make next move based on AIstrategies here
+                    if(currentPlayer==1){
+                        AIMove(currentBoard);
+                    }
 
                     //if difficulty 0, call task 10
                     //if difficult >0, task 12
@@ -142,6 +145,21 @@ public class Game extends Application {
         }
     }
 
+    private void AIMove(String placement){
+        char loc = generateMove(placement);
+        System.out.println(loc);
+        history = history + loc + "";
+        System.out.println("current history: " +history);
+        showCollectedCards();
+        currentBoard = newBoard(setup, history);
+        //System.out.println(currentBoard);
+        makeBoard();
+        currentPlayer = (currentPlayer + 1) % numberOfPlayers;
+        showFlags();
+        //check for next player computer?
+    }
+
+    //TODO if current player = AI, make next move based on AIstrategies here
 
     class Flag extends ImageView {
 
