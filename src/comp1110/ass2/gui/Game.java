@@ -15,7 +15,8 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
@@ -114,9 +115,11 @@ public class Game extends Application {
                         Text finish = new Text("Finished!");
                         finish.setLayoutX(800);
                         finish.setLayoutX(600);
+                        finish.setFont(Font.font("Arial", 20));
+                        finish.setFill(Color.BLACK);
                         toFront();
                         text.getChildren().add(finish);
-                        System.out.println("finished!"); //working
+//                        System.out.println("finished!"); //working
                         endGame();
 
                     }
@@ -163,8 +166,8 @@ public class Game extends Application {
                 setImage(f);
                 setFitWidth(25);
                 setFitHeight(25);
-                setLayoutX(50 + 15 * k);
-                setLayoutY(500 + 25 * playerID);
+                setLayoutX(50 + 25 * k);
+                setLayoutY(500 + 40 * playerID);
             }
         }
 
@@ -196,7 +199,6 @@ public class Game extends Application {
         flags.getChildren().add(e);
         flags.getChildren().add(f);
         flags.getChildren().add(g);
-
     }
 
     //TODO create a method which will give instructions for when the game ends
@@ -252,7 +254,6 @@ public class Game extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        //
         //setting window starts form here
         Stage page1 = new Stage(); //numberofplayers
         page1.setTitle("Choose the number of players!");
@@ -401,8 +402,8 @@ public class Game extends Application {
 //                        System.out.println(numberOfPlayers);
 //                        System.out.println(advAI);
                         players = numberOfPlayers;
-                        //System.out.println(players);
-                        //System.out.println(currentPlayer);
+//                        System.out.println(players);
+//                        System.out.println(currentPlayer);
                     }
                 });
 
@@ -431,7 +432,7 @@ public class Game extends Application {
         cardCollectBoard.getChildren().add(scrBD2);
         cardCollectBoard.getChildren().add(scrBD3);
 
-        root.getChildren().addAll(board, cardCollectBoard, flags);
+        root.getChildren().addAll(board, cardCollectBoard, flags, text);
 
         primaryStage.setScene(scene);
         //move "primaryStage.show" to setting window "GameStart Btn"
