@@ -55,7 +55,7 @@ public class Game extends Application {
     private String setup = WarringStatesGame.randomSetup();
     //    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
     private String currentBoard = setup;
-//    private int players; // replace with numberOfPlayers
+    //    private int players; // replace with numberOfPlayers
     private String history = "";
     private int currentPlayer = 0;
     private FXpiece[][] cards = new FXpiece[4][35]; //max number of players, number of character cards
@@ -113,10 +113,10 @@ public class Game extends Application {
                     //System.out.println(currentPlayer);
                     if (noMoreValidMove(currentBoard)) {
                         Text finish = new Text("Finished!");
-                        finish.setLayoutX(800);
-                        finish.setLayoutX(600);
                         finish.setFont(Font.font("Arial", 20));
                         finish.setFill(Color.BLACK);
+                        finish.setLayoutX(700);
+                        finish.setLayoutY(600);
                         toFront();
                         text.getChildren().add(finish);
                         System.out.println("finished!"); //working
@@ -204,6 +204,12 @@ public class Game extends Application {
 
     //TODO create a method which will give instructions for when the game ends
     private void endGame() {
+        Text endGame = new Text("Game Ending!");
+        endGame.setFont(Font.font("Arial", 20));
+        endGame.setFill(Color.BLACK);
+        endGame.setLayoutX(700);
+        endGame.setLayoutY(600);
+        text.getChildren().add(endGame);
 
         System.out.println("end game");
         int winner = getWinnerID(getFlags(setup, history, numberOfPlayers));
