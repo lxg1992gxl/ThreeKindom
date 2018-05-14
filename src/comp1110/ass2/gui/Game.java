@@ -34,9 +34,6 @@ public class Game extends Application {
 
     // FIXME Task 9: Implement a basic playable Warring States game in JavaFX
 
-    private static final int VIEWER_WIDTH = 933;
-    private static final int VIEWER_HEIGHT = 700;
-
     private static final String URI_BASE = "assets/";
 
     private final Group root = new Group();
@@ -54,7 +51,8 @@ public class Game extends Application {
     int numberOfPlayers;
     boolean advAI;
 
-    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
+    private String setup = WarringStatesGame.randomSetup();
+//    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
     private String currentBoard = setup;
     private int players = numberOfChairs;
     private int AIs = numberOfAI;
@@ -76,9 +74,9 @@ public class Game extends Application {
             int loc = normaliseLoc(placement.charAt(2));
             int w = 100;
             int h = 100;
-            int gap = 5;
+            int gap = 4;
             setLayoutX(BOARD_WIDTH - ((loc / 6 + 1) * w + (loc / 6 + 1) * gap)); //inverse because starts on right
-            setLayoutY(loc % 6 * h + loc % 6 * gap);
+            setLayoutY(10 + loc % 6 * h + loc % 6 * gap);
 
             /*
             4 Y S M G A                             30 24 18 12 6 0
@@ -128,12 +126,61 @@ public class Game extends Application {
         }
     }
 
+
+    class Flag extends ImageView {
+
+        Flag(String kingdom, int playerID) {
+            Image f = new Image(Game.class.getResource(URI_BASE + kingdom + "flag.png").toString());
+
+            int k = 0; // initialize to represent kingdom "a" (Qin)
+            if (kingdom == "b") {
+                k = 1;
+            } else if (kingdom == "c") {
+                k = 2;
+            } else if (kingdom == "d") {
+                k = 3;
+            } else if (kingdom == "e") {
+                k = 4;
+            } else if (kingdom == "f") {
+                k = 5;
+            } else if (kingdom == "g") {
+                k = 6;
+            }
+
+            if (playerID != -1) {
+                setImage(f);
+                setFitWidth(15);
+                setFitHeight(15);
+                setLayoutX(50 + 15 * k);
+                setLayoutY(500 + 25 * playerID);
+            }
+        }
+
+    }
+
+
     //TODO create a method which will display the flags currently controlled by each player
     private void showFlags() {
         //show the flags won by each player
-        getFlags(setup, history, players);
 
-        //where should flags be shown
+        int[] flags = getFlags(setup, history, players);
+
+        Flag a = new Flag("a", flags[0]);
+        Flag b = new Flag("b", flags[1]);
+        Flag c = new Flag("c", flags[2]);
+        Flag d = new Flag("d", flags[3]);
+        Flag e = new Flag("e", flags[4]);
+        Flag f = new Flag("f", flags[5]);
+        Flag g = new Flag("g", flags[6]);
+
+        root.getChildren().add(a);
+        root.getChildren().add(b);
+        root.getChildren().add(c);
+        root.getChildren().add(d);
+        root.getChildren().add(e);
+        root.getChildren().add(f);
+        root.getChildren().add(g);
+
 
     }
 
@@ -345,7 +392,7 @@ public class Game extends Application {
         });
 
         //create headline
-        Text headline = new Text("Game of Seven Kingdoms");
+        Text headline = new Text("Warring States");
         headline.setLayoutX(100);
         headline.setLayoutY(70);
         pane1.getChildren().add(headline);
@@ -354,8 +401,8 @@ public class Game extends Application {
         page1.setScene(settingScene);
         page1.show();
 
-        primaryStage.setTitle("Seven Kingdoms Game");
-        Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
+        primaryStage.setTitle("Warring States");
+        Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
         //
         //setting window ends here
 
