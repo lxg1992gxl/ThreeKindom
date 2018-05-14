@@ -55,7 +55,7 @@ public class Game extends Application {
     private String setup = WarringStatesGame.randomSetup();
     //    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
     private String currentBoard = setup;
-    private int players; // = numberOfChairs; //FIXME replace with numberofChairs
+//    private int players; // replace with numberOfPlayers
     private String history = "";
     private int currentPlayer = 0;
     private FXpiece[][] cards = new FXpiece[4][35]; //max number of players, number of character cards
@@ -101,7 +101,7 @@ public class Game extends Application {
                     currentBoard = newBoard(setup, history);
                     //System.out.println(currentBoard);
                     makeBoard(); //problem?
-                    currentPlayer = (currentPlayer + 1) % players;
+                    currentPlayer = (currentPlayer + 1) % numberOfPlayers;
                     showFlags();
 
                     //TODO if current player = AI, make next move based on AIstrategies here
@@ -119,7 +119,8 @@ public class Game extends Application {
                         finish.setFill(Color.BLACK);
                         toFront();
                         text.getChildren().add(finish);
-//                        System.out.println("finished!"); //working
+                        System.out.println("finished!"); //working
+
                         endGame();
 
                     }
@@ -181,7 +182,7 @@ public class Game extends Application {
 
         //show the flags won by each player
 
-        int[] flag = WarringStatesGame.getFlags(setup, history, players);
+        int[] flag = WarringStatesGame.getFlags(setup, history, numberOfPlayers);
 
         Flag a = new Flag("a", flag[0]);
         Flag b = new Flag("b", flag[1]);
@@ -205,13 +206,13 @@ public class Game extends Application {
     private void endGame() {
 
         System.out.println("end game");
-        int winner = getWinnerID(getFlags(setup, history, players));
+        int winner = getWinnerID(getFlags(setup, history, numberOfPlayers));
         //don't allow to continue playing when finished- boolean playable?
     }
 
     private void showCollectedCards() {
         //move the supporters to side
-        String support = getSupporters(setup, history, players, currentPlayer);
+        String support = getSupporters(setup, history, numberOfPlayers, currentPlayer);
 
         //System.out.println("supporters: "+ support);
         for (int j = 0; j < support.length() / 2; j++) {
@@ -401,8 +402,7 @@ public class Game extends Application {
 //                        System.out.println(numberOfAI);
 //                        System.out.println(numberOfPlayers);
 //                        System.out.println(advAI);
-                        players = numberOfPlayers;
-//                        System.out.println(players);
+//                        System.out.println(numberOfPlayers);
 //                        System.out.println(currentPlayer);
                     }
                 });

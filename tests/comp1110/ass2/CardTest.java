@@ -33,7 +33,7 @@ public class CardTest {
     @Test
     public void testBad() {
         Random r = new Random();
-        //from testUtility generate card FIXME so not copy pasted?
+        //from testUtility generate card
         char k = (char) ('h' + r.nextInt(19));
         char c = (char) ('0' + r.nextInt(8));
 
