@@ -49,7 +49,7 @@ public class Game extends Application {
     private final Group scrBD2 = new Group();
     private final Group scrBD3 = new Group();
 
-    int numberOfChairs;
+    int numberOfChairs = 2;
     int numberOfAI;
     int numberOfPlayers;
     boolean advAI;
