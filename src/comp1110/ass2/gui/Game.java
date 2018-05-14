@@ -47,7 +47,7 @@ public class Game extends Application {
     private final Group scrBD2 = new Group();
     private final Group scrBD3 = new Group();
 
-    int numberOfChairs = 2;
+    int numberOfChairs = 4;
     int numberOfAI;
     int numberOfPlayers;
     boolean advAI;
@@ -92,7 +92,11 @@ public class Game extends Application {
 
             setOnMousePressed(event -> {
                 System.out.println("current card: " + this.id + this.loc);
-                if (this.id != "z9" & WarringStatesGame.isMoveLegal(currentBoard, this.loc)) {
+                if(this.id.equals("z9")){
+                    System.out.println("error");
+
+                }
+                else if (this.id != "z9" & WarringStatesGame.isMoveLegal(currentBoard, this.loc)) {
                     history = history + this.loc + "";
                     //  System.out.println("current history: " +history);
                     showCollectedCards();
