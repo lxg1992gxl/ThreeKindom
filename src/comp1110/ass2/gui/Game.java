@@ -47,7 +47,7 @@ public class Game extends Application {
     private final Group scrBD2 = new Group();
     private final Group scrBD3 = new Group();
 
-    int numberOfChairs = 4;
+    int numberOfChairs;
     int numberOfAI;
     int numberOfPlayers;
     boolean advAI;
@@ -55,11 +55,11 @@ public class Game extends Application {
     private String setup = WarringStatesGame.randomSetup();
 //    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
     private String currentBoard = setup;
-    private int players = numberOfChairs;
+    private int players; // = numberOfChairs;
     private int AIs = numberOfAI;
     private String history = "";
     private int currentPlayer = 0;
-    private FXpiece[][] cards = new FXpiece[players][35]; //number of players, number of character cards
+    private FXpiece[][] cards = new FXpiece[4][35]; //max number of players, number of character cards
 
     class FXpiece extends ImageView {
         String id;
@@ -104,8 +104,13 @@ public class Game extends Application {
                     //System.out.println(currentBoard);
                     makeBoard(); //problem?
                     currentPlayer = (currentPlayer + 1) % players;
+                    showFlags();
 
                     //TODO if current player = AI, make next move based on AIstrategies here
+
+                    //if difficulty 0, call task 10
+                    //if difficult >0, task 12
+                    //time delay
 
                     //System.out.println(currentPlayer);
                     if (noMoreValidMove(currentBoard)) {
@@ -182,14 +187,6 @@ public class Game extends Application {
         Flag e = new Flag("e", flags[4]);
         Flag f = new Flag("f", flags[5]);
         Flag g = new Flag("g", flags[6]);
-
-        root.getChildren().add(a);
-        root.getChildren().add(b);
-        root.getChildren().add(c);
-        root.getChildren().add(d);
-        root.getChildren().add(e);
-        root.getChildren().add(f);
-        root.getChildren().add(g);
     }
 
     //TODO create a method which will give instructions for when the game ends
@@ -357,6 +354,9 @@ public class Game extends Application {
 //                        System.out.println(numberOfAI);
 //                        System.out.println(numberOfPlayers);
 //                        System.out.println(advAI);
+                        players = numberOfChairs;
+                        System.out.println(players);
+                        System.out.println(currentPlayer);
                     }
                 });
 
@@ -416,6 +416,7 @@ public class Game extends Application {
 
         makeBoard();
         makeScores();
+        showFlags();
         showCollectedCards();
 
         cardCollectBoard.setMaxWidth(250);
@@ -443,6 +444,9 @@ public class Game extends Application {
     //check who winning after move?
     //recursive check for who winning after that up to AI's next move?
     //other ideas
+
+    //slider? difficulty selection
+
 
 }
 
