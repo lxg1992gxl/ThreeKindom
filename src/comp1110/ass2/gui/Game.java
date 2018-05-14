@@ -466,13 +466,11 @@ public class Game extends Application {
 
 
     // FIXME Task 11: Allow players of your Warring States game to play against your simple agent
-    //randomly generate move (task 10), make it
+    //randomly generate move (calling from Task 10)!
 
 
     // FIXME Task 12: Integrate a more advanced opponent into your game
-    //check who winning after move?
-    //recursive check for who winning after that up to AI's next move?
-    //other ideas
+    //generate brilliant move (calling from AIstrategies Class)!
 
     //slider? difficulty selection
 

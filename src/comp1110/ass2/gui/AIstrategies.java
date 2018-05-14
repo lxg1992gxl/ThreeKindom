@@ -10,6 +10,7 @@ import static comp1110.ass2.WarringStatesGame.sameCol;
 import static comp1110.ass2.WarringStatesGame.sameRow;
 
 public class AIstrategies {
+    // Task 12: Integrate a more advanced opponent into your game
 
     // collect all valid-move cards
     public static List<String> allValidMoves(String currentBoard) {
