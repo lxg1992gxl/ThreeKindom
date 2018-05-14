@@ -38,6 +38,7 @@ public class Game extends Application {
 
     private final Group root = new Group();
     private final Group controls = new Group();
+    private final Group text = new Group();
     private final StackPane scores = new StackPane();
     private final Group board = new Group();
     private final FlowPane cardCollectBoard = new FlowPane(10,10);
@@ -104,6 +105,11 @@ public class Game extends Application {
 
                     //System.out.println(currentPlayer);
                     if (noMoreValidMove(currentBoard)) {
+                        Text finish = new Text("Finished!");
+                        finish.setLayoutX(800);
+                        finish.setLayoutX(600);
+                        toFront();
+                        text.getChildren().add(finish);
                         System.out.println("finished!"); //working
                         endGame();
 
@@ -163,7 +169,7 @@ public class Game extends Application {
     private void showFlags() {
         //show the flags won by each player
 
-        int[] flags = getFlags(setup, history, players);
+        int[] flags = WarringStatesGame.getFlags(setup, history, players);
 
         Flag a = new Flag("a", flags[0]);
         Flag b = new Flag("b", flags[1]);
@@ -180,8 +186,6 @@ public class Game extends Application {
         root.getChildren().add(e);
         root.getChildren().add(f);
         root.getChildren().add(g);
-
-
     }
 
     //TODO create a method which will give instructions for when the game ends
