@@ -44,7 +44,8 @@ public class Game extends Application {
     private static final String URI_BASE = "assets/";
 
     private final Group root = new Group();
-    private final Group text = new Group(); //notions
+    private final Group notion = new Group(); //notions at the bottom of the board
+    private final Group end = new Group(); //notions when it comes to the game end
 
     private final Group board = new Group();
     private final Group flags = new Group();
@@ -99,10 +100,16 @@ public class Game extends Application {
 
             setOnMousePressed(event -> {
                 //System.out.println("current card: " + this.id + this.loc);
-                if (this.id.equals("z9")) {
-                    System.out.println("error");
-
-                } else if (this.id != "z9" & WarringStatesGame.isMoveLegal(currentBoard, this.loc)) {
+                if (this.id.equals("z9") || !WarringStatesGame.isMoveLegal(currentBoard, this.loc)) {
+                    notion.getChildren().removeAll(notion.getChildren());
+                    Text invalid = new Text("Invalid move! Please choose a new position!");
+                    invalid.setFont(Font.font("Arial", 24));
+                    invalid.setFill(Color.BLACK);
+                    invalid.setLayoutX(400);
+                    invalid.setLayoutY(670);
+                    notion.getChildren().add(invalid);
+//                    System.out.println("error");
+                } else {
                     history = history + this.loc + "";
                     //  System.out.println("current history: " +history);
                     showCollectedCards();
@@ -123,17 +130,24 @@ public class Game extends Application {
 
                     //System.out.println(currentPlayer);
                     if (noMoreValidMove(currentBoard)) {
-//                        Text finish = new Text("Finished!");
-//                        finish.setFont(Font.font("Arial", 20));
-//                        finish.setFill(Color.BLACK);
-//                        finish.setLayoutX(700);
-//                        finish.setLayoutY(600);
-//                        toFront();
-//                        text.getChildren().add(finish);
-                        System.out.println("finished!"); //working
+                        notion.getChildren().removeAll(notion.getChildren());
+                        Text end = new Text("No more valid move for Player "+currentPlayer+". Game Ending!");
+                        end.setFont(Font.font("Arial", 24));
+                        end.setFill(Color.BLACK);
+                        end.setLayoutX(360);
+                        end.setLayoutY(670);
+                        notion.getChildren().add(end);
 
+//                        System.out.println("finished!"); //working
                         endGame();
-
+                    } else {
+                        notion.getChildren().removeAll(notion.getChildren());
+                        Text valid = new Text("Valid move. Next comes to Player "+currentPlayer+"'s turn!");
+                        valid.setFont(Font.font("Arial", 24));
+                        valid.setFill(Color.BLACK);
+                        valid.setLayoutX(400);
+                        valid.setLayoutY(670);
+                        notion.getChildren().add(valid);
                     }
                 }
             });
@@ -164,10 +178,11 @@ public class Game extends Application {
         makeBoard();
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         showFlags();
-        if (AI[currentPlayer]) {
+
+        if (AI[currentPlayer]) { //check whether next player is still computer?
             AIMove(currentBoard);
         }
-        //check for next player computer?
+
     }
 
     //TODO if current player = AI, make next move based on AIstrategies here
@@ -213,12 +228,11 @@ public class Game extends Application {
                 setFitWidth(25);
                 setFitHeight(25);
                 setLayoutX(50 + 25 * k);
-                setLayoutY(570 + 25 * playerID);
+                setLayoutY(580 + 25 * playerID);
             }
         }
 
     }
-
 
     //TODO create a method which will display the flags currently controlled by each player
     private void showFlags() {
@@ -249,14 +263,8 @@ public class Game extends Application {
 
     //TODO create a method which will give instructions for when the game ends
     private void endGame() {
-        Text endGame = new Text("Game Ending!");
-        endGame.setFont(Font.font("Arial", 20));
-        endGame.setFill(Color.BLACK);
-        endGame.setLayoutX(700);
-        endGame.setLayoutY(850);
-        text.getChildren().add(endGame);
-
 //        System.out.println("end game");
+
         //indicate the winner at the end of the game
         int winner = getWinnerID(getFlags(setup, history, numberOfPlayers));
         Text win = new Text("Player " + winner + " is the winner!!! ");
@@ -264,14 +272,14 @@ public class Game extends Application {
         win.setFill(Color.RED);
         win.setLayoutX(BOARD_WIDTH / 2 - 360);
         win.setLayoutY(BOARD_HEIGHT / 2 - 80);
-        text.getChildren().add(win);
+        end.getChildren().add(win);
 
         Text congratulation = new Text("Congratulations! Y(^o^)Y");
         congratulation.setFont(Font.font("American Typewriter", 56));
         congratulation.setFill(Color.MEDIUMVIOLETRED);
         congratulation.setLayoutX(BOARD_WIDTH / 2 - 330);
         congratulation.setLayoutY(BOARD_HEIGHT / 2 + 20);
-        text.getChildren().add(congratulation);
+        end.getChildren().add(congratulation);
 
     }
 
@@ -563,9 +571,9 @@ public class Game extends Application {
 
         cardCollectBoard.setMaxWidth(270);
         cardCollectBoard.setLayoutX(10);
-        cardCollectBoard.setLayoutY(10);
+        cardCollectBoard.setLayoutY(5);
 
-        root.getChildren().addAll(board, cardCollectBoard, flags, this.text);
+        root.getChildren().addAll(board, cardCollectBoard, flags, end, notion);
 
         primaryStage.setScene(scene);
         //move "primaryStage.show" to setting window "GameStart Btn"
