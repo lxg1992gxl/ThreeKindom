@@ -1108,6 +1108,7 @@ public class WarringStatesGame {
     }
 
 
+    // Task 9
     //FIXME write tests?, neaten up
     public static String newBoard(String placement, String moves) {
         char[] move = moves.toCharArray();
@@ -1193,11 +1194,11 @@ public class WarringStatesGame {
             }
         }
         // justify whether we check until the end of the moveSequence
-        if (i == -1) {
-            //return false;
-        } else {
-            //return true;
-        }
+//        if (i == -1) {
+//            //return false;
+//        } else {
+//            //return true;
+//        }
 
         return placement;
     }
