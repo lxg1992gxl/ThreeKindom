@@ -115,13 +115,13 @@ public class Game extends Application {
 
                     //System.out.println(currentPlayer);
                     if (noMoreValidMove(currentBoard)) {
-                        Text finish = new Text("Finished!");
-                        finish.setFont(Font.font("Arial", 20));
-                        finish.setFill(Color.BLACK);
-                        finish.setLayoutX(700);
-                        finish.setLayoutY(600);
-                        toFront();
-                        text.getChildren().add(finish);
+//                        Text finish = new Text("Finished!");
+//                        finish.setFont(Font.font("Arial", 20));
+//                        finish.setFill(Color.BLACK);
+//                        finish.setLayoutX(700);
+//                        finish.setLayoutY(600);
+//                        toFront();
+//                        text.getChildren().add(finish);
                         System.out.println("finished!"); //working
 
                         endGame();
@@ -244,12 +244,26 @@ public class Game extends Application {
         endGame.setFont(Font.font("Arial", 20));
         endGame.setFill(Color.BLACK);
         endGame.setLayoutX(700);
-        endGame.setLayoutY(600);
+        endGame.setLayoutY(850);
         text.getChildren().add(endGame);
 
-        System.out.println("end game");
+//        System.out.println("end game");
+        //indicate the winner at the end of the game
         int winner = getWinnerID(getFlags(setup, history, numberOfPlayers));
-        //don't allow to continue playing when finished- boolean playable?
+        Text win = new Text("Player "+winner+" is the winner!!! ");
+        win.setFont(Font.font("American Typewriter", 68));
+        win.setFill(Color.RED);
+        win.setLayoutX(BOARD_WIDTH/2 - 360);
+        win.setLayoutY(BOARD_HEIGHT/2 - 80);
+        text.getChildren().add(win);
+
+        Text congratulation = new Text("Congratulations! Y(^o^)Y");
+        congratulation.setFont(Font.font("American Typewriter", 56));
+        congratulation.setFill(Color.MEDIUMVIOLETRED);
+        congratulation.setLayoutX(BOARD_WIDTH/2 - 330);
+        congratulation.setLayoutY(BOARD_HEIGHT/2 + 20);
+        text.getChildren().add(congratulation);
+
     }
 
     private void showCollectedCards() {
