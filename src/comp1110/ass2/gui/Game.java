@@ -13,9 +13,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -41,11 +44,12 @@ public class Game extends Application {
 
     private final Group board = new Group();
     private final Group flags = new Group();
-    private final FlowPane cardCollectBoard = new FlowPane(10, 10);
+    private final FlowPane cardCollectBoard = new FlowPane(0, 10);
     private final Group scrBD0 = new Group();
     private final Group scrBD1 = new Group();
     private final Group scrBD2 = new Group();
     private final Group scrBD3 = new Group();
+
 
     private int numberOfPlayers;
     private int numberOfAI;
@@ -55,7 +59,7 @@ public class Game extends Application {
     private String setup = WarringStatesGame.randomSetup();
     //    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
     private String currentBoard = setup;
-    private boolean [] AI = new boolean[4]; //maximum number of players
+    private boolean[] AI = new boolean[4]; //maximum number of players
     private String history = "";
     private int currentPlayer = 0;
     private FXpiece[][] cards = new FXpiece[4][35]; //max number of players, number of character cards
@@ -105,7 +109,7 @@ public class Game extends Application {
                     showFlags();
 
                     //TODO if current player = AI, make next move based on AIstrategies here
-                    if(AI[currentPlayer]){
+                    if (AI[currentPlayer]) {
                         AIMove(currentBoard);
                     }
 
@@ -145,7 +149,7 @@ public class Game extends Application {
         }
     }
 
-    private void AIMove(String placement){
+    private void AIMove(String placement) {
         char loc = generateMove(placement);
         //System.out.println(loc);
         history = history + loc + "";
@@ -156,21 +160,22 @@ public class Game extends Application {
         makeBoard();
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         showFlags();
-        if(AI[currentPlayer]){
+        if (AI[currentPlayer]) {
             AIMove(currentBoard);
         }
         //check for next player computer?
     }
 
     //TODO if current player = AI, make next move based on AIstrategies here
-    private void AIPlayer (int numberOfPlayers, int numberOfHumans){
+    private void AIPlayer(int numberOfPlayers, int numberOfHumans) {
         //populate ai array with which playerIDs are AIs
-        for (int i = 0; i< numberOfPlayers; i++){
-            if (i<numberOfHumans){
+        for (int i = 0; i < numberOfPlayers; i++) {
+            if (i < numberOfHumans) {
                 AI[i] = false;
 
+            } else {
+                AI[i] = true;
             }
-            else {AI[i]=true;}
             //System.out.println(i + " is "+ AI[i]);
         }
 
@@ -204,7 +209,7 @@ public class Game extends Application {
                 setFitWidth(25);
                 setFitHeight(25);
                 setLayoutX(50 + 25 * k);
-                setLayoutY(500 + 40 * playerID);
+                setLayoutY(570 + 25 * playerID);
             }
         }
 
@@ -250,18 +255,18 @@ public class Game extends Application {
 //        System.out.println("end game");
         //indicate the winner at the end of the game
         int winner = getWinnerID(getFlags(setup, history, numberOfPlayers));
-        Text win = new Text("Player "+winner+" is the winner!!! ");
+        Text win = new Text("Player " + winner + " is the winner!!! ");
         win.setFont(Font.font("American Typewriter", 68));
         win.setFill(Color.RED);
-        win.setLayoutX(BOARD_WIDTH/2 - 360);
-        win.setLayoutY(BOARD_HEIGHT/2 - 80);
+        win.setLayoutX(BOARD_WIDTH / 2 - 360);
+        win.setLayoutY(BOARD_HEIGHT / 2 - 80);
         text.getChildren().add(win);
 
         Text congratulation = new Text("Congratulations! Y(^o^)Y");
         congratulation.setFont(Font.font("American Typewriter", 56));
         congratulation.setFill(Color.MEDIUMVIOLETRED);
-        congratulation.setLayoutX(BOARD_WIDTH/2 - 330);
-        congratulation.setLayoutY(BOARD_HEIGHT/2 + 20);
+        congratulation.setLayoutX(BOARD_WIDTH / 2 - 330);
+        congratulation.setLayoutY(BOARD_HEIGHT / 2 + 20);
         text.getChildren().add(congratulation);
 
     }
@@ -454,15 +459,39 @@ public class Game extends Application {
                         numberOfHumans = numberOfPlayers - numberOfAI;
                         page2.hide();
                         primaryStage.show();
-//                        System.out.println(numberOfChairs);
 //                        System.out.println(numberOfAI);
-//                        System.out.println(numberOfPlayers);
 //                        System.out.println(advAI);
 //                        System.out.println(numberOfPlayers);
 //                        System.out.println(currentPlayer);
 
                         //set up the AI players
                         AIPlayer(numberOfPlayers, numberOfHumans);
+
+                        //set and show card collect board
+                        if (numberOfPlayers == 2) {
+                            cardCollectBoard.getChildren().add(scrBD0);
+                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p1.png").toString()));
+                            cardCollectBoard.getChildren().add(scrBD1);
+                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p2.png").toString()));
+
+                        } else if (numberOfPlayers == 3) {
+                            cardCollectBoard.getChildren().add(scrBD0);
+                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p1.png").toString()));
+                            cardCollectBoard.getChildren().add(scrBD1);
+                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p2.png").toString()));
+                            cardCollectBoard.getChildren().add(scrBD2);
+                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p3.png").toString()));
+
+                        } else if (numberOfPlayers == 4) {
+                            cardCollectBoard.getChildren().add(scrBD0);
+                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p1.png").toString()));
+                            cardCollectBoard.getChildren().add(scrBD1);
+                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p2.png").toString()));
+                            cardCollectBoard.getChildren().add(scrBD2);
+                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p3.png").toString()));
+                            cardCollectBoard.getChildren().add(scrBD3);
+                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p4.png").toString()));
+                        }
 
                     }
                 });
@@ -483,13 +512,9 @@ public class Game extends Application {
         showFlags();
         showCollectedCards();
 
-        cardCollectBoard.setMaxWidth(250);
+        cardCollectBoard.setMaxWidth(270);
         cardCollectBoard.setLayoutX(10);
         cardCollectBoard.setLayoutY(10);
-        cardCollectBoard.getChildren().add(scrBD0);
-        cardCollectBoard.getChildren().add(scrBD1);
-        cardCollectBoard.getChildren().add(scrBD2);
-        cardCollectBoard.getChildren().add(scrBD3);
 
         root.getChildren().addAll(board, cardCollectBoard, flags, text);
 
