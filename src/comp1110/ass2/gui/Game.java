@@ -164,7 +164,7 @@ public class Game extends Application {
     private void AIPlayer (int numberOfPlayers, int numberOfAI, int numberOfHumans){
         //populate ai array with which playerIDs are AIs
         //extension --> turn this array into an int array and allow AIs to have differnt difficulty levels
-        
+
     }
 
 
