@@ -8,22 +8,21 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.stage.StageStyle;
@@ -50,6 +49,7 @@ public class Game extends Application {
     private final Group board = new Group();
     private final Group flags = new Group();
     private final FlowPane cardCollectBoard = new FlowPane(0, 10);
+
     private final Group scrBD0 = new Group();
     private final Group scrBD1 = new Group();
     private final Group scrBD2 = new Group();
@@ -84,7 +84,7 @@ public class Game extends Application {
             int w = 100;
             int h = 100;
             int gap = 4;
-            setLayoutX(BOARD_WIDTH - ((loc / 6 + 1) * w + (loc / 6 + 1) * gap)); //inverse because starts on right
+            setLayoutX(BOARD_WIDTH - ((loc / 6 + 1) * w + (loc / 6 + 1) * gap) - 4); //inverse because starts on right
             setLayoutY(10 + loc % 6 * h + loc % 6 * gap);
 
             /*
@@ -106,7 +106,7 @@ public class Game extends Application {
                     invalid.setFont(Font.font("Arial", 24));
                     invalid.setFill(Color.BLACK);
                     invalid.setLayoutX(400);
-                    invalid.setLayoutY(670);
+                    invalid.setLayoutY(680);
                     notion.getChildren().add(invalid);
 //                    System.out.println("error");
                 } else {
@@ -131,22 +131,22 @@ public class Game extends Application {
                     //System.out.println(currentPlayer);
                     if (noMoreValidMove(currentBoard)) {
                         notion.getChildren().removeAll(notion.getChildren());
-                        Text end = new Text("No more valid move for Player "+currentPlayer+". Game Ending!");
+                        Text end = new Text("No more valid move for Player " + currentPlayer + ". Game Ending!");
                         end.setFont(Font.font("Arial", 24));
                         end.setFill(Color.BLACK);
                         end.setLayoutX(360);
-                        end.setLayoutY(670);
+                        end.setLayoutY(680);
                         notion.getChildren().add(end);
 
 //                        System.out.println("finished!"); //working
                         endGame();
                     } else {
                         notion.getChildren().removeAll(notion.getChildren());
-                        Text valid = new Text("Valid move. Next comes to Player "+currentPlayer+"'s turn!");
+                        Text valid = new Text("Valid move. Next comes to Player " + currentPlayer + "'s turn!");
                         valid.setFont(Font.font("Arial", 24));
                         valid.setFill(Color.BLACK);
                         valid.setLayoutX(400);
-                        valid.setLayoutY(670);
+                        valid.setLayoutY(680);
                         notion.getChildren().add(valid);
                     }
                 }
@@ -324,6 +324,15 @@ public class Game extends Application {
         }
     }
 
+    private void makeRec(int x, int y, int width, int height, int arcw, int arch, Color fill, Color stroke) {
+        // draw a rec and add it into root
+        Rectangle rectangle = new Rectangle(x, y, width, height);
+        rectangle.setArcWidth(arcw);
+        rectangle.setArcHeight(arch);
+        rectangle.setFill(fill);
+        rectangle.setStroke(stroke);
+        root.getChildren().add(rectangle);
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -565,6 +574,12 @@ public class Game extends Application {
         //
         //setting window ends here
 
+        //draw rectangle
+        makeRec(5, 5, 285, 550, 10, 10, null, Color.BLACK); //card collect
+        makeRec(5, 570, 285, BOARD_HEIGHT-575, 10, 10, null, Color.BLACK); //flag
+        makeRec(300, 5, 633, 633, 10, 10, null, Color.BLACK); // board
+        makeRec(300, 650, 633, BOARD_HEIGHT-655, 10, 10, null, Color.BLACK); // notion
+
         makeBoard();
         showFlags();
         showCollectedCards();
@@ -572,6 +587,7 @@ public class Game extends Application {
         cardCollectBoard.setMaxWidth(270);
         cardCollectBoard.setLayoutX(10);
         cardCollectBoard.setLayoutY(5);
+        cardCollectBoard.setPadding(new Insets(5));
 
         root.getChildren().addAll(board, cardCollectBoard, flags, end, notion);
 
