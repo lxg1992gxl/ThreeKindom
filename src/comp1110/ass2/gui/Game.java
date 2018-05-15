@@ -293,7 +293,7 @@ public class Game extends Application {
 
         //indicate the winner at the end of the game
         int winner = getWinnerID(getFlags(setup, history, numberOfPlayers));
-        Text win = new Text("Player " + winner + " is the winner!!! ");
+        Text win = new Text("Player " + (winner+1) + " is the winner!!! ");
         win.setFont(Font.font("American Typewriter", FontWeight.EXTRA_BOLD, 68));
         win.setFill(Color.RED);
         win.setLayoutX(BOARD_WIDTH / 2 - 360);
@@ -310,6 +310,12 @@ public class Game extends Application {
     }
 
     private void showCollectedCards() {
+//        //FIXME remove all collected cards before start but don't remove when differnt player making move
+//        scrBD0.getChildren().removeAll(scrBD0.getChildren());
+//        scrBD1.getChildren().removeAll(scrBD0.getChildren());
+//        scrBD2.getChildren().removeAll(scrBD0.getChildren());
+//        scrBD3.getChildren().removeAll(scrBD0.getChildren());
+
         //move the supporters to side
         String support = getSupporters(setup, history, numberOfPlayers, currentPlayer);
 
@@ -360,6 +366,26 @@ public class Game extends Application {
         root.getChildren().add(rectangle);
     }
 
+
+    public void restartGame(){
+        setup = WarringStatesGame.randomSetup();
+        System.out.println(setup);
+        history = "";
+        System.out.println(history);
+        currentBoard = newBoard(setup, history);
+        currentPlayer = 0;
+        System.out.println(currentPlayer);
+
+        makeBoard(); //clears old board and creates new one
+        showCollectedCards();
+        showFlags();
+        System.out.println("done");
+
+        boolean[] AI = new boolean[4]; //maximum number of players
+
+        //fixme reset the scene
+
+    }
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -668,16 +694,10 @@ public class Game extends Application {
                 primaryStage.close();
                 page1.show();
                 cardCollectBoard.getChildren().clear();
-//                setup = WarringStatesGame.randomSetup();
-//                String currentBoard = setup;
-//                int currentPlayer = 0;
-//                FXpiece[][] cards = new FXpiece[4][35];
-//                boolean[] AI = new boolean[4]; //maximum number of players
-//                String history = "";
-                //fixme reset the scene
-
+                restartGame();
             }
         });
+
 
         root.getChildren().addAll(board, cardCollectBoard, flags, end, notion, text,restart);
 
