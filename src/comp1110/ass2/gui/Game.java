@@ -20,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
@@ -42,6 +43,7 @@ public class Game extends Application {
     private final Group root = new Group();
     private final Group notion = new Group(); //notions at the bottom of the board
     private final Group end = new Group(); //notions when it comes to the game end
+    private final Group text = new Group(); //fixed text that will never change in the whole game
 
     private final Group board = new Group();
     private final Group flags = new Group();
@@ -223,11 +225,50 @@ public class Game extends Application {
                 setImage(f);
                 setFitWidth(25);
                 setFitHeight(25);
-                setLayoutX(50 + 25 * k);
-                setLayoutY(580 + 25 * playerID);
+                setLayoutX(62 + 25 * k);
+                setLayoutY(550 + 30 * playerID);
             }
         }
 
+    }
+
+    private void playerIDForFlags() {
+        Text p0 = new Text("Player0:");
+        p0.setFont(Font.font("Arial", FontWeight.BOLD,12));
+        p0.setFill(Color.BLACK);
+        p0.setLayoutX(10);
+        p0.setLayoutY(567);
+        text.getChildren().add(p0);
+
+        Text p1 = new Text("Player1:");
+        p1.setFont(Font.font("Arial", FontWeight.BOLD,12));
+        p1.setFill(Color.BLACK);
+        p1.setLayoutX(10);
+        p1.setLayoutY(597);
+        text.getChildren().add(p1);
+
+        if (numberOfPlayers == 3) {
+            Text p2 = new Text("Player2:");
+            p2.setFont(Font.font("Arial", FontWeight.BOLD,12));
+            p2.setFill(Color.BLACK);
+            p2.setLayoutX(10);
+            p2.setLayoutY(627);
+            text.getChildren().add(p2);
+        } else if (numberOfPlayers == 4) {
+            Text p2 = new Text("Player2:");
+            p2.setFont(Font.font("Arial", FontWeight.BOLD,12));
+            p2.setFill(Color.BLACK);
+            p2.setLayoutX(10);
+            p2.setLayoutY(627);
+            text.getChildren().add(p2);
+
+            Text p3 = new Text("Player3:");
+            p3.setFont(Font.font("Arial", FontWeight.BOLD,12));
+            p3.setFill(Color.BLACK);
+            p3.setLayoutX(10);
+            p3.setLayoutY(657);
+            text.getChildren().add(p3);
+        }
     }
 
     //TODO create a method which will display the flags currently controlled by each player
@@ -264,14 +305,14 @@ public class Game extends Application {
         //indicate the winner at the end of the game
         int winner = getWinnerID(getFlags(setup, history, numberOfPlayers));
         Text win = new Text("Player " + winner + " is the winner!!! ");
-        win.setFont(Font.font("American Typewriter", 68));
+        win.setFont(Font.font("American Typewriter", FontWeight.EXTRA_BOLD,68));
         win.setFill(Color.RED);
         win.setLayoutX(BOARD_WIDTH / 2 - 360);
         win.setLayoutY(BOARD_HEIGHT / 2 - 80);
         end.getChildren().add(win);
 
         Text congratulation = new Text("Congratulations! Y(^o^)Y");
-        congratulation.setFont(Font.font("American Typewriter", 56));
+        congratulation.setFont(Font.font("American Typewriter", FontWeight.BOLD,56));
         congratulation.setFill(Color.MEDIUMVIOLETRED);
         congratulation.setLayoutX(BOARD_WIDTH / 2 - 330);
         congratulation.setLayoutY(BOARD_HEIGHT / 2 + 20);
@@ -379,7 +420,7 @@ public class Game extends Application {
 
         //create headline
         Text headline = new Text("Warring States");
-        headline.setFont(Font.font("American Typewriter", 40));
+        headline.setFont(Font.font("American Typewriter", FontWeight.EXTRA_BOLD, 40));
         headline.setLayoutX(35);
         headline.setLayoutY(80);
         pane1.getChildren().add(headline);
@@ -518,6 +559,7 @@ public class Game extends Application {
         //
         //setting window ends here
 
+        playerIDForFlags();
         makeBoard();
         showFlags();
         showCollectedCards();
@@ -526,11 +568,10 @@ public class Game extends Application {
         cardCollectBoard.setLayoutX(10);
         cardCollectBoard.setLayoutY(5);
 
-        root.getChildren().addAll(board, cardCollectBoard, flags, end, notion);
+        root.getChildren().addAll(board, cardCollectBoard, flags, end, notion, text);
 
         primaryStage.setScene(scene);
         //move "primaryStage.show" to setting window "GameStart Btn"
-
 
     }
 
