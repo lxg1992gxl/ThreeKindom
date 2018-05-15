@@ -44,7 +44,6 @@ public class Game extends Application {
     // FIXME Task 9: Implement a basic playable Warring States game in JavaFX
     // Task 11: Allow players of your Warring States game to play against your simple agent
 
-
     private static final String URI_BASE = "assets/";
 
     private final Group root = new Group();
@@ -664,6 +663,7 @@ public class Game extends Application {
 
         primaryStage.setScene(scene);
         //move "primaryStage.show" to setting window "GameStart Btn"
+
         
     }
 
