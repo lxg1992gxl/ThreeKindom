@@ -127,7 +127,7 @@ public class Game extends Application {
 
                     //TODO if current player = AI, make next move based on AIstrategies here
                     if(AI[currentPlayer]){
-                        AdvAIMove(currentBoard);
+                        AIMove(currentBoard);
                     }
 
                     //if difficulty 0, call task 10
@@ -137,7 +137,7 @@ public class Game extends Application {
                     //System.out.println(currentPlayer);
                     if (noMoreValidMove(currentBoard)) {
                         notion.getChildren().removeAll(notion.getChildren());
-                        Text end = new Text("No more valid move for Player " + currentPlayer + ". Game Ending!");
+                        Text end = new Text("No more valid move for Player " + (currentPlayer+1) + ". Game Ending!");
                         end.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
                         end.setFill(Color.BLACK);
                         end.setLayoutX(390);
@@ -148,7 +148,7 @@ public class Game extends Application {
                         endGame();
                     } else {
                         notion.getChildren().removeAll(notion.getChildren());
-                        Text valid = new Text("Valid move. Next comes to Player " + currentPlayer + "'s turn!");
+                        Text valid = new Text("Valid move. Next comes to Player " + (currentPlayer+1) + "'s turn!");
                         valid.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
                         valid.setFill(Color.BLACK);
                         valid.setLayoutX(410);
@@ -564,14 +564,14 @@ public class Game extends Application {
                 AIPlayer(numberOfPlayers, numberOfHumans);
 
                 //add playerID notions for flag area
-                Text p0 = new Text("Player0:");
+                Text p0 = new Text("Player 1:");
                 p0.setFont(Font.font("Arial", FontWeight.BOLD, 12));
                 p0.setFill(Color.BLACK);
                 p0.setLayoutX(25);
                 p0.setLayoutY(590);
                 text.getChildren().add(p0);
 
-                Text p1 = new Text("Player1:");
+                Text p1 = new Text("Player 2:");
                 p1.setFont(Font.font("Arial", FontWeight.BOLD, 12));
                 p1.setFill(Color.BLACK);
                 p1.setLayoutX(25);
@@ -593,7 +593,7 @@ public class Game extends Application {
                     cardCollectBoard.getChildren().add(scrBD2);
                     cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p3.png").toString()));
 
-                    Text p2 = new Text("Player2:");
+                    Text p2 = new Text("Player 3:");
                     p2.setFont(Font.font("Arial", FontWeight.BOLD, 12));
                     p2.setFill(Color.BLACK);
                     p2.setLayoutX(25);
@@ -610,14 +610,14 @@ public class Game extends Application {
                     cardCollectBoard.getChildren().add(scrBD3);
                     cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p4.png").toString()));
 
-                    Text p2 = new Text("Player2:");
+                    Text p2 = new Text("Player 3:");
                     p2.setFont(Font.font("Arial", FontWeight.BOLD, 12));
                     p2.setFill(Color.BLACK);
                     p2.setLayoutX(25);
                     p2.setLayoutY(650);
                     text.getChildren().add(p2);
 
-                    Text p3 = new Text("Player3:");
+                    Text p3 = new Text("Player 4:");
                     p3.setFont(Font.font("Arial", FontWeight.BOLD, 12));
                     p3.setFill(Color.BLACK);
                     p3.setLayoutX(25);
