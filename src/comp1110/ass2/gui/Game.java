@@ -19,7 +19,9 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -53,6 +55,7 @@ public class Game extends Application {
     private final Group board = new Group();
     private final Group flags = new Group();
     private final FlowPane cardCollectBoard = new FlowPane(0, 10);
+    private final Group restart = new Group();
 
     private final Group scrBD0 = new Group();
     private final Group scrBD1 = new Group();
@@ -601,8 +604,8 @@ public class Game extends Application {
                     p3.setLayoutX(25);
                     p3.setLayoutY(680);
                     text.getChildren().add(p3);
-                }
 
+                }
             }
         });
 
@@ -612,6 +615,8 @@ public class Game extends Application {
 
         primaryStage.setTitle("Warring States");
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
+
+
         //
         //setting window ends here
 
@@ -630,11 +635,35 @@ public class Game extends Application {
         cardCollectBoard.setLayoutY(5);
         cardCollectBoard.setPadding(new Insets(5));
 
-        root.getChildren().addAll(board, cardCollectBoard, flags, end, notion, text);
+        //set reset button
+        Button resetBtn = new Button("New game");
+        resetBtn.setLayoutX(310);
+        resetBtn.setLayoutY(660);
+
+        restart.getChildren().add(resetBtn);
+
+        //add reset event
+        resetBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                primaryStage.close();
+                page1.show();
+                cardCollectBoard.getChildren().clear();
+//                setup = WarringStatesGame.randomSetup();
+//                String currentBoard = setup;
+//                int currentPlayer = 0;
+//                FXpiece[][] cards = new FXpiece[4][35];
+//                boolean[] AI = new boolean[4]; //maximum number of players
+//                String history = "";
+                //fixme reset the scene
+
+            }
+        });
+
+        root.getChildren().addAll(board, cardCollectBoard, flags, end, notion, text,restart);
 
         primaryStage.setScene(scene);
         //move "primaryStage.show" to setting window "GameStart Btn"
-
         
     }
 
