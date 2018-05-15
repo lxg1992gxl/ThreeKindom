@@ -40,6 +40,8 @@ public class Game extends Application {
     private static final int BOARD_HEIGHT = 700;
 
     // FIXME Task 9: Implement a basic playable Warring States game in JavaFX
+    // Task 11: Allow players of your Warring States game to play against your simple agent
+
 
     private static final String URI_BASE = "assets/";
 
@@ -506,8 +508,8 @@ public class Game extends Application {
 
                 //create buttons
                 Button backBtn = new Button("Back");
-                backBtn.setLayoutX(250);
-                backBtn.setLayoutY(450);
+                backBtn.setLayoutX(305);
+                backBtn.setLayoutY(455);
                 pane2.getChildren().add(backBtn);
                 page2.show();
 
@@ -633,17 +635,13 @@ public class Game extends Application {
         primaryStage.setScene(scene);
         //move "primaryStage.show" to setting window "GameStart Btn"
 
-
+        
     }
-
-
-    // Task 11: Allow players of your Warring States game to play against your simple agent
 
     // FIXME Task 12: Integrate a more advanced opponent into your game
     //generate brilliant move (calling from AIstrategies Class)!
 
     //slider? difficulty selection
-
 
 }
 
