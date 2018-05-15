@@ -98,11 +98,11 @@ public class Game extends Application {
                 //System.out.println("current card: " + this.id + this.loc);
                 if (this.id.equals("z9") || !WarringStatesGame.isMoveLegal(currentBoard, this.loc)) {
                     notion.getChildren().removeAll(notion.getChildren());
-                    Text invalid = new Text("Invalid move! Please choose a new position.");
-                    invalid.setFont(Font.font("Arial", 22));
+                    Text invalid = new Text("Invalid move! Please choose a new position!");
+                    invalid.setFont(Font.font("Arial", 24));
                     invalid.setFill(Color.BLACK);
                     invalid.setLayoutX(400);
-                    invalid.setLayoutY(660);
+                    invalid.setLayoutY(670);
                     notion.getChildren().add(invalid);
 //                    System.out.println("error");
                 } else {
@@ -127,11 +127,11 @@ public class Game extends Application {
                     //System.out.println(currentPlayer);
                     if (noMoreValidMove(currentBoard)) {
                         notion.getChildren().removeAll(notion.getChildren());
-                        Text end = new Text("No more valid move.");
-                        end.setFont(Font.font("Arial", 22));
+                        Text end = new Text("No more valid move for Player "+currentPlayer+". Game Ending!");
+                        end.setFont(Font.font("Arial", 24));
                         end.setFill(Color.BLACK);
-                        end.setLayoutX(430);
-                        end.setLayoutY(660);
+                        end.setLayoutX(360);
+                        end.setLayoutY(670);
                         notion.getChildren().add(end);
 
 //                        System.out.println("finished!"); //working
@@ -139,10 +139,10 @@ public class Game extends Application {
                     } else {
                         notion.getChildren().removeAll(notion.getChildren());
                         Text valid = new Text("Valid move. Next comes to Player "+currentPlayer+"'s turn!");
-                        valid.setFont(Font.font("Arial", 22));
+                        valid.setFont(Font.font("Arial", 24));
                         valid.setFill(Color.BLACK);
-                        valid.setLayoutX(430);
-                        valid.setLayoutY(660);
+                        valid.setLayoutX(400);
+                        valid.setLayoutY(670);
                         notion.getChildren().add(valid);
                     }
                 }
@@ -334,32 +334,32 @@ public class Game extends Application {
 
         //create buttons
         Button exitBtn = new Button("Exit");
-        exitBtn.setLayoutX(50);
-        exitBtn.setLayoutY(258);
+        exitBtn.setLayoutX(70);
+        exitBtn.setLayoutY(240);
         Button nextBtn = new Button("Next");
-        nextBtn.setLayoutX(220);
-        nextBtn.setLayoutY(258);
+        nextBtn.setLayoutX(240);
+        nextBtn.setLayoutY(240);
         pane1.getChildren().addAll(exitBtn, nextBtn);
 
 
         //create radio buttons group
         ToggleGroup rb = new ToggleGroup();
         RadioButton twoPlayers = new RadioButton("2-Players");
-        twoPlayers.setLayoutX(115);
-        twoPlayers.setLayoutY(145);
+        twoPlayers.setLayoutX(135);
+        twoPlayers.setLayoutY(125);
         twoPlayers.setSelected(true);
         twoPlayers.setToggleGroup(rb);
         numberOfPlayers = 2;
 
 
         RadioButton threePlayers = new RadioButton("3-Players");
-        threePlayers.setLayoutX(115);
-        threePlayers.setLayoutY(180);
+        threePlayers.setLayoutX(135);
+        threePlayers.setLayoutY(160);
         threePlayers.setToggleGroup(rb);
 
         RadioButton fourPlayers = new RadioButton("4-Players");
-        fourPlayers.setLayoutX(115);
-        fourPlayers.setLayoutY(215);
+        fourPlayers.setLayoutX(135);
+        fourPlayers.setLayoutY(195);
         fourPlayers.setToggleGroup(rb);
 
         pane1.getChildren().addAll(twoPlayers, threePlayers, fourPlayers);
@@ -379,8 +379,9 @@ public class Game extends Application {
 
         //create headline
         Text headline = new Text("Warring States");
-        headline.setLayoutX(100);
-        headline.setLayoutY(70);
+        headline.setFont(Font.font("American Typewriter", 40));
+        headline.setLayoutX(35);
+        headline.setLayoutY(80);
         pane1.getChildren().add(headline);
 
         //event of buttons
@@ -402,7 +403,8 @@ public class Game extends Application {
                 page2.setScene(scene);
                 //create headline
                 Text headline = new Text("How many robots do you want to add?");
-                headline.setLayoutX(100);
+                headline.setFont(Font.font("American Typewriter", 18));
+                headline.setLayoutX(16);
                 headline.setLayoutY(120);
                 pane2.getChildren().add(headline);
 
@@ -444,10 +446,10 @@ public class Game extends Application {
                 //create buttons
                 Button backBtn = new Button("Back");
                 backBtn.setLayoutX(50);
-                backBtn.setLayoutY(258);
+                backBtn.setLayoutY(240);
                 Button gameStartBtn = new Button("Game Start!");
                 gameStartBtn.setLayoutX(220);
-                gameStartBtn.setLayoutY(258);
+                gameStartBtn.setLayoutY(240);
                 pane2.getChildren().addAll(backBtn, gameStartBtn);
 
                 page2.show();
