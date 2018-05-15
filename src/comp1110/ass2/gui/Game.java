@@ -105,9 +105,9 @@ public class Game extends Application {
                 if (this.id.equals("z9") || !WarringStatesGame.isMoveLegal(currentBoard, this.loc)) {
                     notion.getChildren().removeAll(notion.getChildren());
                     Text invalid = new Text("Invalid move! Please choose a new position!");
-                    invalid.setFont(Font.font("Arial", FontWeight.SEMI_BOLD,24));
+                    invalid.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
                     invalid.setFill(Color.BLACK);
-                    invalid.setLayoutX(400);
+                    invalid.setLayoutX(410);
                     invalid.setLayoutY(680);
                     notion.getChildren().add(invalid);
 //                    System.out.println("error");
@@ -134,10 +134,10 @@ public class Game extends Application {
                     if (noMoreValidMove(currentBoard)) {
                         notion.getChildren().removeAll(notion.getChildren());
                         Text end = new Text("No more valid move for Player " + currentPlayer + ". Game Ending!");
-                        end.setFont(Font.font("Arial", FontWeight.SEMI_BOLD,24));
+                        end.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
                         end.setFill(Color.BLACK);
-                        end.setLayoutX(360);
-                        end.setLayoutY(670);
+                        end.setLayoutX(390);
+                        end.setLayoutY(680);
                         notion.getChildren().add(end);
 
 //                        System.out.println("finished!"); //working
@@ -145,10 +145,10 @@ public class Game extends Application {
                     } else {
                         notion.getChildren().removeAll(notion.getChildren());
                         Text valid = new Text("Valid move. Next comes to Player " + currentPlayer + "'s turn!");
-                        valid.setFont(Font.font("Arial", FontWeight.SEMI_BOLD,24));
+                        valid.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
                         valid.setFill(Color.BLACK);
-                        valid.setLayoutX(400);
-                        valid.setLayoutY(670);
+                        valid.setLayoutX(410);
+                        valid.setLayoutY(680);
                         notion.getChildren().add(valid);
                     }
                 }
@@ -211,17 +211,17 @@ public class Game extends Application {
             Image f = new Image(Game.class.getResource(URI_BASE + kingdom + "flag.png").toString());
 
             int k = 0; // initialize to represent kingdom "a" (Qin)
-            if (kingdom == "b") {
+            if (kingdom.equals("b")) {
                 k = 1;
-            } else if (kingdom == "c") {
+            } else if (kingdom.equals("c")) {
                 k = 2;
-            } else if (kingdom == "d") {
+            } else if (kingdom.equals("d")) {
                 k = 3;
-            } else if (kingdom == "e") {
+            } else if (kingdom.equals("e")) {
                 k = 4;
-            } else if (kingdom == "f") {
+            } else if (kingdom.equals("f")) {
                 k = 5;
-            } else if (kingdom == "g") {
+            } else if (kingdom.equals("g")) {
                 k = 6;
             }
 
@@ -229,8 +229,8 @@ public class Game extends Application {
                 setImage(f);
                 setFitWidth(25);
                 setFitHeight(25);
-                setLayoutX(62 + 25 * k);
-                setLayoutY(550 + 30 * playerID);
+                setLayoutX(80 + 25 * k);
+                setLayoutY(574 + 30 * playerID);
             }
         }
 
@@ -417,9 +417,9 @@ public class Game extends Application {
 
         //create headline
         Text headline = new Text("Warring States");
-        headline.setLayoutX(90);
-        headline.setLayoutY(70);
-        headline.setFont(Font.font("verdana", 30));
+        headline.setLayoutX(45);
+        headline.setLayoutY(72);
+        headline.setFont(Font.font("verdana", FontWeight.EXTRA_BOLD, 38));
         headline.setFill(Color.RED);
         InnerShadow is = new InnerShadow();
         is.setOffsetX(4f);
@@ -539,27 +539,27 @@ public class Game extends Application {
                 //set up the AI players
                 AIPlayer(numberOfPlayers, numberOfHumans);
 
-                        //add playerID notions for flag area
-                        Text p0 = new Text("Player0:");
-                        p0.setFont(Font.font("Arial", FontWeight.BOLD, 12));
-                        p0.setFill(Color.BLACK);
-                        p0.setLayoutX(10);
-                        p0.setLayoutY(567);
-                        text.getChildren().add(p0);
+                //add playerID notions for flag area
+                Text p0 = new Text("Player0:");
+                p0.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+                p0.setFill(Color.BLACK);
+                p0.setLayoutX(25);
+                p0.setLayoutY(590);
+                text.getChildren().add(p0);
 
-                        Text p1 = new Text("Player1:");
-                        p1.setFont(Font.font("Arial", FontWeight.BOLD, 12));
-                        p1.setFill(Color.BLACK);
-                        p1.setLayoutX(10);
-                        p1.setLayoutY(597);
-                        text.getChildren().add(p1);
+                Text p1 = new Text("Player1:");
+                p1.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+                p1.setFill(Color.BLACK);
+                p1.setLayoutX(25);
+                p1.setLayoutY(620);
+                text.getChildren().add(p1);
 
-                        //set and show card collect board
-                        if (numberOfPlayers == 2) {
-                            cardCollectBoard.getChildren().add(scrBD0);
-                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p1.png").toString()));
-                            cardCollectBoard.getChildren().add(scrBD1);
-                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p2.png").toString()));
+                //set and show card collect board
+                if (numberOfPlayers == 2) {
+                    cardCollectBoard.getChildren().add(scrBD0);
+                    cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p1.png").toString()));
+                    cardCollectBoard.getChildren().add(scrBD1);
+                    cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p2.png").toString()));
 
                 } else if (numberOfPlayers == 3) {
                     cardCollectBoard.getChildren().add(scrBD0);
@@ -569,37 +569,37 @@ public class Game extends Application {
                     cardCollectBoard.getChildren().add(scrBD2);
                     cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p3.png").toString()));
 
-                            Text p2 = new Text("Player2:");
-                            p2.setFont(Font.font("Arial", FontWeight.BOLD, 12));
-                            p2.setFill(Color.BLACK);
-                            p2.setLayoutX(10);
-                            p2.setLayoutY(627);
-                            text.getChildren().add(p2);
+                    Text p2 = new Text("Player2:");
+                    p2.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+                    p2.setFill(Color.BLACK);
+                    p2.setLayoutX(25);
+                    p2.setLayoutY(650);
+                    text.getChildren().add(p2);
 
-                        } else if (numberOfPlayers == 4) {
-                            cardCollectBoard.getChildren().add(scrBD0);
-                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p1.png").toString()));
-                            cardCollectBoard.getChildren().add(scrBD1);
-                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p2.png").toString()));
-                            cardCollectBoard.getChildren().add(scrBD2);
-                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p3.png").toString()));
-                            cardCollectBoard.getChildren().add(scrBD3);
-                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p4.png").toString()));
+                } else if (numberOfPlayers == 4) {
+                    cardCollectBoard.getChildren().add(scrBD0);
+                    cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p1.png").toString()));
+                    cardCollectBoard.getChildren().add(scrBD1);
+                    cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p2.png").toString()));
+                    cardCollectBoard.getChildren().add(scrBD2);
+                    cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p3.png").toString()));
+                    cardCollectBoard.getChildren().add(scrBD3);
+                    cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p4.png").toString()));
 
-                            Text p2 = new Text("Player2:");
-                            p2.setFont(Font.font("Arial", FontWeight.BOLD, 12));
-                            p2.setFill(Color.BLACK);
-                            p2.setLayoutX(10);
-                            p2.setLayoutY(627);
-                            text.getChildren().add(p2);
+                    Text p2 = new Text("Player2:");
+                    p2.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+                    p2.setFill(Color.BLACK);
+                    p2.setLayoutX(25);
+                    p2.setLayoutY(650);
+                    text.getChildren().add(p2);
 
-                            Text p3 = new Text("Player3:");
-                            p3.setFont(Font.font("Arial", FontWeight.BOLD, 12));
-                            p3.setFill(Color.BLACK);
-                            p3.setLayoutX(10);
-                            p3.setLayoutY(657);
-                            text.getChildren().add(p3);
-                        }
+                    Text p3 = new Text("Player3:");
+                    p3.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+                    p3.setFill(Color.BLACK);
+                    p3.setLayoutX(25);
+                    p3.setLayoutY(680);
+                    text.getChildren().add(p3);
+                }
 
             }
         });
@@ -615,9 +615,9 @@ public class Game extends Application {
 
         //draw rectangle
         makeRec(5, 5, 285, 550, 10, 10, null, Color.BLACK); //card collect
-        makeRec(5, 570, 285, BOARD_HEIGHT-575, 10, 10, null, Color.BLACK); //flag
+        makeRec(5, 570, 285, BOARD_HEIGHT - 575, 10, 10, null, Color.BLACK); //flag
         makeRec(300, 5, 633, 633, 10, 10, null, Color.BLACK); // board
-        makeRec(300, 650, 633, BOARD_HEIGHT-655, 10, 10, null, Color.BLACK); // notion
+        makeRec(300, 650, 633, BOARD_HEIGHT - 655, 10, 10, null, Color.BLACK); // notion
 
         makeBoard();
         showFlags();
