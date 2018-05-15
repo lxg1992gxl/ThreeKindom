@@ -15,14 +15,14 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.stage.WindowEvent;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import static comp1110.ass2.WarringStatesGame.*;
 import static comp1110.ass2.WarringStatesGame.getWinnerID;
@@ -37,29 +37,28 @@ public class Game extends Application {
     private static final String URI_BASE = "assets/";
 
     private final Group root = new Group();
-    private final Group controls = new Group();
-    private final Group text = new Group();
-    private final StackPane scores = new StackPane();
+    private final Group text = new Group(); //notions
+
     private final Group board = new Group();
-    private final FlowPane cardCollectBoard = new FlowPane(10,10);
+    private final Group flags = new Group();
+    private final FlowPane cardCollectBoard = new FlowPane(10, 10);
     private final Group scrBD0 = new Group();
     private final Group scrBD1 = new Group();
     private final Group scrBD2 = new Group();
     private final Group scrBD3 = new Group();
 
-    int numberOfChairs;
-    int numberOfAI;
-    int numberOfPlayers;
-    boolean advAI;
+    private int numberOfPlayers;
+    private int numberOfAI;
+    private int numberOfHumans;
+    private boolean advAI;
 
     private String setup = WarringStatesGame.randomSetup();
-//    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
+    //    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
     private String currentBoard = setup;
-    private int players = numberOfChairs;
-    private int AIs = numberOfAI;
+    private boolean [] AI = new boolean[4]; //maximum number of players
     private String history = "";
     private int currentPlayer = 0;
-    private FXpiece[][] cards = new FXpiece[players][35]; //number of players, number of character cards
+    private FXpiece[][] cards = new FXpiece[4][35]; //max number of players, number of character cards
 
     class FXpiece extends ImageView {
         String id;
@@ -89,43 +88,54 @@ public class Game extends Application {
 
              */
 
-            //on mouse click, hover over acceptable
-//
-//            this.setScaleX(1.1);
-//            this.setScaleY(1.1);
-//            this.toFront();
 
             setOnMousePressed(event -> {
-                System.out.println("current card: " + this.id + this.loc);
-                if(this.id.equals("z9")){
+                //System.out.println("current card: " + this.id + this.loc);
+                if (this.id.equals("z9")) {
                     System.out.println("error");
 
-                }
-                else if (this.id != "z9" & WarringStatesGame.isMoveLegal(currentBoard, this.loc)) {
+                } else if (this.id != "z9" & WarringStatesGame.isMoveLegal(currentBoard, this.loc)) {
                     history = history + this.loc + "";
                     //  System.out.println("current history: " +history);
                     showCollectedCards();
                     currentBoard = newBoard(setup, history);
                     //System.out.println(currentBoard);
                     makeBoard(); //problem?
-                    currentPlayer = (currentPlayer + 1) % players;
+                    currentPlayer = (currentPlayer + 1) % numberOfPlayers;
+                    showFlags();
 
                     //TODO if current player = AI, make next move based on AIstrategies here
+                    if(AI[currentPlayer]){
+                        AIMove(currentBoard);
+                    }
+
+                    //if difficulty 0, call task 10
+                    //if difficult >0, task 12
+                    //time delay
 
                     //System.out.println(currentPlayer);
                     if (noMoreValidMove(currentBoard)) {
                         Text finish = new Text("Finished!");
-                        finish.setLayoutX(800);
-                        finish.setLayoutX(600);
+                        finish.setFont(Font.font("Arial", 20));
+                        finish.setFill(Color.BLACK);
+                        finish.setLayoutX(700);
+                        finish.setLayoutY(600);
                         toFront();
                         text.getChildren().add(finish);
                         System.out.println("finished!"); //working
+
                         endGame();
 
                     }
                 }
             });
-            //width and height is currently 100
+
+            //todo code to highlight valid move when hovered over
+            setOnMouseMoved(event -> {
+                        //System.out.println(getLayoutX());
+                        //System.out.println(getX());
+                    }
+            );
 
         }
 
@@ -133,6 +143,39 @@ public class Game extends Application {
         public String toString() {
             return this.id + this.loc;
         }
+    }
+
+    private void AIMove(String placement){
+        char loc = generateMove(placement);
+        //System.out.println(loc);
+        history = history + loc + "";
+        //System.out.println("current history: " +history);
+        showCollectedCards();
+        currentBoard = newBoard(setup, history);
+        //System.out.println(currentBoard);
+        makeBoard();
+        currentPlayer = (currentPlayer + 1) % numberOfPlayers;
+        showFlags();
+        if(AI[currentPlayer]){
+            AIMove(currentBoard);
+        }
+        //check for next player computer?
+    }
+
+    //TODO if current player = AI, make next move based on AIstrategies here
+    private void AIPlayer (int numberOfPlayers, int numberOfHumans){
+        //populate ai array with which playerIDs are AIs
+        for (int i = 0; i< numberOfPlayers; i++){
+            if (i<numberOfHumans){
+                AI[i] = false;
+
+            }
+            else {AI[i]=true;}
+            //System.out.println(i + " is "+ AI[i]);
+        }
+
+        //extension --> turn this array into an int array and allow AIs to have differnt difficulty levels
+
     }
 
 
@@ -158,10 +201,10 @@ public class Game extends Application {
 
             if (playerID != -1) {
                 setImage(f);
-                setFitWidth(15);
-                setFitHeight(15);
-                setLayoutX(50 + 15 * k);
-                setLayoutY(500 + 25 * playerID);
+                setFitWidth(25);
+                setFitHeight(25);
+                setLayoutX(50 + 25 * k);
+                setLayoutY(500 + 40 * playerID);
             }
         }
 
@@ -170,40 +213,48 @@ public class Game extends Application {
 
     //TODO create a method which will display the flags currently controlled by each player
     private void showFlags() {
+        //clear current flags
+        flags.getChildren().removeAll(flags.getChildren());
+
         //show the flags won by each player
 
-        int[] flags = WarringStatesGame.getFlags(setup, history, players);
+        int[] flag = WarringStatesGame.getFlags(setup, history, numberOfPlayers);
 
-        Flag a = new Flag("a", flags[0]);
-        Flag b = new Flag("b", flags[1]);
-        Flag c = new Flag("c", flags[2]);
-        Flag d = new Flag("d", flags[3]);
-        Flag e = new Flag("e", flags[4]);
-        Flag f = new Flag("f", flags[5]);
-        Flag g = new Flag("g", flags[6]);
+        Flag a = new Flag("a", flag[0]);
+        Flag b = new Flag("b", flag[1]);
+        Flag c = new Flag("c", flag[2]);
+        Flag d = new Flag("d", flag[3]);
+        Flag e = new Flag("e", flag[4]);
+        Flag f = new Flag("f", flag[5]);
+        Flag g = new Flag("g", flag[6]);
+        //System.out.println("flags!");
 
-        root.getChildren().add(a);
-        root.getChildren().add(b);
-        root.getChildren().add(c);
-        root.getChildren().add(d);
-        root.getChildren().add(e);
-        root.getChildren().add(f);
-        root.getChildren().add(g);
+        flags.getChildren().add(a);
+        flags.getChildren().add(b);
+        flags.getChildren().add(c);
+        flags.getChildren().add(d);
+        flags.getChildren().add(e);
+        flags.getChildren().add(f);
+        flags.getChildren().add(g);
     }
 
     //TODO create a method which will give instructions for when the game ends
     private void endGame() {
+        Text endGame = new Text("Game Ending!");
+        endGame.setFont(Font.font("Arial", 20));
+        endGame.setFill(Color.BLACK);
+        endGame.setLayoutX(700);
+        endGame.setLayoutY(600);
+        text.getChildren().add(endGame);
 
         System.out.println("end game");
-        int winner = getWinnerID(getFlags(setup, history, players));
+        int winner = getWinnerID(getFlags(setup, history, numberOfPlayers));
         //don't allow to continue playing when finished- boolean playable?
     }
 
     private void showCollectedCards() {
-        //FIXME clear current cards collected to avoid double up
-
         //move the supporters to side
-        String support = getSupporters(setup, history, players, currentPlayer);
+        String support = getSupporters(setup, history, numberOfPlayers, currentPlayer);
 
         //System.out.println("supporters: "+ support);
         for (int j = 0; j < support.length() / 2; j++) {
@@ -213,32 +264,21 @@ public class Game extends Application {
             cards[currentPlayer][j].setLayoutX(105 * currentPlayer); //if clearing at beginning of method, need to get supporters for all players
             //if more than 2 players, show below instead?
             cards[currentPlayer][j].setLayoutY(20 * j);
-            switch (currentPlayer){
-                case(0):scrBD0.getChildren().add(cards[currentPlayer][j]);
+            switch (currentPlayer) {
+                case (0):
+                    scrBD0.getChildren().add(cards[currentPlayer][j]);
                     break;
-                case(1):scrBD1.getChildren().add(cards[currentPlayer][j]);
+                case (1):
+                    scrBD1.getChildren().add(cards[currentPlayer][j]);
                     break;
-                case(2):scrBD2.getChildren().add(cards[currentPlayer][j]);
+                case (2):
+                    scrBD2.getChildren().add(cards[currentPlayer][j]);
                     break;
-                case(3):scrBD3.getChildren().add(cards[currentPlayer][j]);
+                case (3):
+                    scrBD3.getChildren().add(cards[currentPlayer][j]);
                     break;
             }
         }
-
-        //give new setup string to show only remaining cards on the board
-        //collect flags
-
-    }
-
-    private void makeScores() {
-        Label l[] = new Label[players];
-        for (int i = 0; i < players; i++) {
-            l[i] = new Label("Player " + i + 1);
-            l[i].setLayoutX(200); //doesn't seem to be working?
-            l[i].setLayoutY(((BOARD_HEIGHT / players) * i) + 10);
-            scores.getChildren().add(l[i]);
-        }
-        root.getChildren().add(scores);
     }
 
     private void makeBoard() {
@@ -257,10 +297,10 @@ public class Game extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        //
         //setting window starts form here
-        Stage page1 = new Stage();
+        Stage page1 = new Stage(); //numberofplayers
         page1.setTitle("Choose the number of players!");
+
         //build scene
         Pane pane1 = new Pane();
         Scene settingScene = new Scene(pane1, 350, 300);
@@ -273,6 +313,48 @@ public class Game extends Application {
         nextBtn.setLayoutX(220);
         nextBtn.setLayoutY(258);
         pane1.getChildren().addAll(exitBtn, nextBtn);
+
+
+        //create radio buttons group
+        ToggleGroup rb = new ToggleGroup();
+        RadioButton twoPlayers = new RadioButton("2-Players");
+        twoPlayers.setLayoutX(115);
+        twoPlayers.setLayoutY(145);
+        twoPlayers.setSelected(true);
+        twoPlayers.setToggleGroup(rb);
+        numberOfPlayers = 2;
+
+
+        RadioButton threePlayers = new RadioButton("3-Players");
+        threePlayers.setLayoutX(115);
+        threePlayers.setLayoutY(180);
+        threePlayers.setToggleGroup(rb);
+
+        RadioButton fourPlayers = new RadioButton("4-Players");
+        fourPlayers.setLayoutX(115);
+        fourPlayers.setLayoutY(215);
+        fourPlayers.setToggleGroup(rb);
+
+        pane1.getChildren().addAll(twoPlayers, threePlayers, fourPlayers);
+
+        //create an int for store players number
+        twoPlayers.setUserData(2);
+        threePlayers.setUserData(3);
+        fourPlayers.setUserData(4);
+
+        rb.selectedToggleProperty().addListener(
+                (ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) -> {
+                    if (rb.getSelectedToggle() != null) {
+                        numberOfPlayers = Integer.parseInt(rb.getSelectedToggle().getUserData().toString());
+                    }
+
+                });
+
+        //create headline
+        Text headline = new Text("Warring States");
+        headline.setLayoutX(100);
+        headline.setLayoutY(70);
+        pane1.getChildren().add(headline);
 
         //event of buttons
         exitBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -292,7 +374,7 @@ public class Game extends Application {
                 page2.setTitle("Add Robot");
                 page2.setScene(scene);
                 //create headline
-                Text headline = new Text("How many robot you wang to add?");
+                Text headline = new Text("How many robots do you want to add?");
                 headline.setLayoutX(100);
                 headline.setLayoutY(120);
                 pane2.getChildren().add(headline);
@@ -300,9 +382,10 @@ public class Game extends Application {
                 //choicebox
                 ArrayList chsb = new ArrayList();
                 String list = "012345";
+                numberOfAI = 0;
                 int i = 0;
-                while (i < numberOfChairs){
-                    chsb.add(list.substring(i, i+1));
+                while (i < numberOfPlayers) {
+                    chsb.add(list.substring(i, i + 1));
                     i++;
                 }
                 ChoiceBox choiceBox = new ChoiceBox();
@@ -311,8 +394,8 @@ public class Game extends Application {
                 choiceBox.setLayoutY(150);
                 pane2.getChildren().add(choiceBox);
 
-                choiceBox.getSelectionModel().selectedIndexProperty().addListener(((ov,oldv,newv)->{
-                    numberOfAI=newv.intValue();
+                choiceBox.getSelectionModel().selectedIndexProperty().addListener(((ov, oldv, newv) -> {
+                    numberOfAI = newv.intValue();
                 }));
 
                 //checkbox
@@ -323,9 +406,9 @@ public class Game extends Application {
                 checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
                     public void changed(ObservableValue<? extends Boolean> ov,
                                         Boolean old_val, Boolean new_val) {
-                        if (checkBox.isSelected()){
+                        if (checkBox.isSelected()) {
                             advAI = true;
-                        }else{
+                        } else {
                             advAI = false;
                         }
                     }
@@ -354,63 +437,24 @@ public class Game extends Application {
                 gameStartBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        numberOfPlayers = numberOfChairs - numberOfAI;
+                        numberOfHumans = numberOfPlayers - numberOfAI;
                         page2.hide();
                         primaryStage.show();
 //                        System.out.println(numberOfChairs);
 //                        System.out.println(numberOfAI);
 //                        System.out.println(numberOfPlayers);
 //                        System.out.println(advAI);
-                        players = numberOfChairs;
-                        System.out.println(players);
-                        System.out.println(currentPlayer);
+//                        System.out.println(numberOfPlayers);
+//                        System.out.println(currentPlayer);
+
+                        //set up the AI players
+                        AIPlayer(numberOfPlayers, numberOfHumans);
+
                     }
                 });
 
             }
         });
-
-
-        //create radio buttons group
-        ToggleGroup rb = new ToggleGroup();
-        RadioButton twoPlayers = new RadioButton("2-Players");
-        twoPlayers.setLayoutX(115);
-        twoPlayers.setLayoutY(145);
-        twoPlayers.setSelected(true);
-        twoPlayers.setToggleGroup(rb);
-        numberOfChairs = 2;
-
-
-        RadioButton threePlayers = new RadioButton("3-Players");
-        threePlayers.setLayoutX(115);
-        threePlayers.setLayoutY(180);
-        threePlayers.setToggleGroup(rb);
-
-        RadioButton fourPlayers = new RadioButton("4-Players");
-        fourPlayers.setLayoutX(115);
-        fourPlayers.setLayoutY(215);
-        fourPlayers.setToggleGroup(rb);
-
-        pane1.getChildren().addAll(twoPlayers, threePlayers, fourPlayers);
-
-        //create an int for store players number
-        twoPlayers.setUserData(2);
-        threePlayers.setUserData(3);
-        fourPlayers.setUserData(4);
-
-        rb.selectedToggleProperty().addListener(
-                (ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) ->{
-                if (rb.getSelectedToggle() != null) {
-                    numberOfChairs = Integer.parseInt(rb.getSelectedToggle().getUserData().toString());
-                }
-
-        });
-
-        //create headline
-        Text headline = new Text("Warring States");
-        headline.setLayoutX(100);
-        headline.setLayoutY(70);
-        pane1.getChildren().add(headline);
 
         //show scene
         page1.setScene(settingScene);
@@ -422,7 +466,7 @@ public class Game extends Application {
         //setting window ends here
 
         makeBoard();
-        makeScores();
+        showFlags();
         showCollectedCards();
 
         cardCollectBoard.setMaxWidth(250);
@@ -433,7 +477,7 @@ public class Game extends Application {
         cardCollectBoard.getChildren().add(scrBD2);
         cardCollectBoard.getChildren().add(scrBD3);
 
-        root.getChildren().addAll(board,cardCollectBoard);
+        root.getChildren().addAll(board, cardCollectBoard, flags, text);
 
         primaryStage.setScene(scene);
         //move "primaryStage.show" to setting window "GameStart Btn"
@@ -442,25 +486,13 @@ public class Game extends Application {
     }
 
 
-    // FIXME Task 11: Allow players of your Warring States game to play against your simple agent
-    //randomly generate move (task 10), make it
-
+    // Task 11: Allow players of your Warring States game to play against your simple agent
 
     // FIXME Task 12: Integrate a more advanced opponent into your game
-    //check who winning after move?
-    //recursive check for who winning after that up to AI's next move?
-    //other ideas
+    //generate brilliant move (calling from AIstrategies Class)!
 
+    //slider? difficulty selection
 
-    // creates a random setup board at the start
-    public void randomSetup() {
-        //creates a random setup
-        Random rand = new Random();
-
-        //random card from the available, goes into A...Z....9
-
-
-    }
 
 }
 
