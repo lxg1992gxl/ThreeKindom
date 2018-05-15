@@ -51,6 +51,7 @@ public class AIstrategies {
             String newMoveSequence = previousState.get(0) + move;
             possibleState.add(newMoveSequence);
 
+            System.out.println(previousState.get(2));
             int totalMark = Integer.valueOf(previousState.get(2));
 
             int newMark = 0;
@@ -172,7 +173,7 @@ public class AIstrategies {
         List<String> beginningStates = new ArrayList<>();
         beginningStates.add(null);
         beginningStates.add(placement);
-        beginningStates.add(null);
+        beginningStates.add(null); //FIXME null added here causes error, needs an integer value but as String
 
         for (int i = 1; i <= LookedLayers; i++) {
 
@@ -185,7 +186,7 @@ public class AIstrategies {
                 int checkedPlayer = (initialPlayer + i) % numPlayers;
 
                 List<String> previousState = new ArrayList<>();
-                previousState.add(beginningStates.get(p));
+                previousState.add(beginningStates.get(p)); //FIXME array out of bounds exception here
                 previousState.add(beginningStates.get(p + 1));
                 previousState.add(beginningStates.get(p + 2));
 
@@ -226,14 +227,14 @@ public class AIstrategies {
         return ((bestMoveSequence.toCharArray())[0]);
     }
 
-
-    public static void main(String[] args) {
-        int layers = 5;
-        int player = 0;
-        int numplayers = 2;
-        String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
-
-        System.out.println(bestMove(layers, setup, player, numplayers));
-
-    }
+//      For testing
+//    public static void main(String[] args) {
+//        int layers = 5;
+//        int player = 0;
+//        int numplayers = 2;
+//        String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
+//
+//        System.out.println(bestMove(layers, setup, player, numplayers));
+//
+//    }
 }
