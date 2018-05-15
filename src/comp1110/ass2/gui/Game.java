@@ -22,6 +22,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.WindowEvent;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static comp1110.ass2.WarringStatesGame.*;
 import static comp1110.ass2.WarringStatesGame.getWinnerID;
@@ -54,11 +55,11 @@ public class Game extends Application {
     private String setup = WarringStatesGame.randomSetup();
 //    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
     private String currentBoard = setup;
-    private int players; // = numberOfChairs;
+    private int players = numberOfChairs;
     private int AIs = numberOfAI;
     private String history = "";
     private int currentPlayer = 0;
-    private FXpiece[][] cards = new FXpiece[4][35]; //max number of players, number of character cards
+    private FXpiece[][] cards = new FXpiece[players][35]; //number of players, number of character cards
 
     class FXpiece extends ImageView {
         String id;
@@ -88,6 +89,11 @@ public class Game extends Application {
 
              */
 
+            //on mouse click, hover over acceptable
+//
+//            this.setScaleX(1.1);
+//            this.setScaleY(1.1);
+//            this.toFront();
 
             setOnMousePressed(event -> {
                 System.out.println("current card: " + this.id + this.loc);
@@ -103,13 +109,8 @@ public class Game extends Application {
                     //System.out.println(currentBoard);
                     makeBoard(); //problem?
                     currentPlayer = (currentPlayer + 1) % players;
-                    showFlags();
 
                     //TODO if current player = AI, make next move based on AIstrategies here
-
-                    //if difficulty 0, call task 10
-                    //if difficult >0, task 12
-                    //time delay
 
                     //System.out.println(currentPlayer);
                     if (noMoreValidMove(currentBoard)) {
@@ -124,13 +125,7 @@ public class Game extends Application {
                     }
                 }
             });
-
-            //todo code to highlight valid move when hovered over
-            setOnMouseMoved(event ->{
-                //System.out.println(getLayoutX());
-                //System.out.println(getX());
-                    }
-            );
+            //width and height is currently 100
 
         }
 
@@ -186,6 +181,14 @@ public class Game extends Application {
         Flag e = new Flag("e", flags[4]);
         Flag f = new Flag("f", flags[5]);
         Flag g = new Flag("g", flags[6]);
+
+        root.getChildren().add(a);
+        root.getChildren().add(b);
+        root.getChildren().add(c);
+        root.getChildren().add(d);
+        root.getChildren().add(e);
+        root.getChildren().add(f);
+        root.getChildren().add(g);
     }
 
     //TODO create a method which will give instructions for when the game ends
@@ -197,6 +200,8 @@ public class Game extends Application {
     }
 
     private void showCollectedCards() {
+        //FIXME clear current cards collected to avoid double up
+
         //move the supporters to side
         String support = getSupporters(setup, history, players, currentPlayer);
 
@@ -219,6 +224,10 @@ public class Game extends Application {
                     break;
             }
         }
+
+        //give new setup string to show only remaining cards on the board
+        //collect flags
+
     }
 
     private void makeScores() {
@@ -283,7 +292,7 @@ public class Game extends Application {
                 page2.setTitle("Add Robot");
                 page2.setScene(scene);
                 //create headline
-                Text headline = new Text("How many robots do you want to add?");
+                Text headline = new Text("How many robot you wang to add?");
                 headline.setLayoutX(100);
                 headline.setLayoutY(120);
                 pane2.getChildren().add(headline);
@@ -291,7 +300,6 @@ public class Game extends Application {
                 //choicebox
                 ArrayList chsb = new ArrayList();
                 String list = "012345";
-                numberOfAI = 0;
                 int i = 0;
                 while (i < numberOfChairs){
                     chsb.add(list.substring(i, i+1));
@@ -393,7 +401,7 @@ public class Game extends Application {
         rb.selectedToggleProperty().addListener(
                 (ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) ->{
                 if (rb.getSelectedToggle() != null) {
-                      numberOfChairs = Integer.parseInt(rb.getSelectedToggle().getUserData().toString());
+                    numberOfChairs = Integer.parseInt(rb.getSelectedToggle().getUserData().toString());
                 }
 
         });
@@ -415,7 +423,6 @@ public class Game extends Application {
 
         makeBoard();
         makeScores();
-        showFlags();
         showCollectedCards();
 
         cardCollectBoard.setMaxWidth(250);
@@ -444,8 +451,16 @@ public class Game extends Application {
     //recursive check for who winning after that up to AI's next move?
     //other ideas
 
-    //slider? difficulty selection
 
+    // creates a random setup board at the start
+    public void randomSetup() {
+        //creates a random setup
+        Random rand = new Random();
+
+        //random card from the available, goes into A...Z....9
+
+
+    }
 
 }
 
