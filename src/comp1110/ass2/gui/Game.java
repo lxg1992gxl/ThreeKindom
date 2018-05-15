@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -20,9 +21,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 import java.util.ArrayList;
@@ -318,62 +322,125 @@ public class Game extends Application {
 
         //setting window starts form here
         Stage page1 = new Stage(); //numberofplayers
-        page1.setTitle("Choose the number of players!");
+        page1.setTitle("Warring States");
 
         //build scene
         Pane pane1 = new Pane();
-        Scene settingScene = new Scene(pane1, 350, 300);
+        Scene settingScene = new Scene(pane1, 400, 300);
 
-        //create buttons
+        //add buttons
         Button exitBtn = new Button("Exit");
         exitBtn.setLayoutX(50);
         exitBtn.setLayoutY(258);
-        Button nextBtn = new Button("Next");
-        nextBtn.setLayoutX(220);
-        nextBtn.setLayoutY(258);
-        pane1.getChildren().addAll(exitBtn, nextBtn);
+        Button instrBtn = new Button("Instructions");
+        instrBtn.setLayoutX(150);
+        instrBtn.setLayoutY(258);
+        Button gameStartBtn = new Button("Game Start!");
+        gameStartBtn.setLayoutX(280);
+        gameStartBtn.setLayoutY(258);
+
+        pane1.getChildren().addAll(exitBtn, instrBtn, gameStartBtn);
 
 
         //create radio buttons group
         ToggleGroup rb = new ToggleGroup();
-        RadioButton twoPlayers = new RadioButton("2-Players");
-        twoPlayers.setLayoutX(115);
+        RadioButton twoPlayers = new RadioButton("2-Players game");
+        twoPlayers.setLayoutX(50);
         twoPlayers.setLayoutY(145);
         twoPlayers.setSelected(true);
         twoPlayers.setToggleGroup(rb);
         numberOfPlayers = 2;
 
-
-        RadioButton threePlayers = new RadioButton("3-Players");
-        threePlayers.setLayoutX(115);
+        RadioButton threePlayers = new RadioButton("3-Players game");
+        threePlayers.setLayoutX(50);
         threePlayers.setLayoutY(180);
         threePlayers.setToggleGroup(rb);
 
-        RadioButton fourPlayers = new RadioButton("4-Players");
-        fourPlayers.setLayoutX(115);
+        RadioButton fourPlayers = new RadioButton("4-Players game");
+        fourPlayers.setLayoutX(50);
         fourPlayers.setLayoutY(215);
         fourPlayers.setToggleGroup(rb);
 
         pane1.getChildren().addAll(twoPlayers, threePlayers, fourPlayers);
 
-        //create an int for store players number
         twoPlayers.setUserData(2);
         threePlayers.setUserData(3);
         fourPlayers.setUserData(4);
 
         rb.selectedToggleProperty().addListener(
-                (ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) -> {
+                (ObservableValue<? extends Toggle> ot, Toggle old_toggle, Toggle new_toggle) -> {
                     if (rb.getSelectedToggle() != null) {
                         numberOfPlayers = Integer.parseInt(rb.getSelectedToggle().getUserData().toString());
+
+                        //After change the number of player, renew the list of choice box
+                        ArrayList chsb = new ArrayList();
+                        String list = "012345";
+                        numberOfAI = 0;
+                        int i = 0;
+                        while (i < numberOfPlayers) {
+                            chsb.add(list.substring(i, i + 1));
+                            i++;
+                        }
+                        ChoiceBox choiceBox = new ChoiceBox();
+                        choiceBox.setItems(FXCollections.observableArrayList(chsb));
+                        choiceBox.setLayoutX(330);
+                        choiceBox.setLayoutY(145);
+                        choiceBox.getSelectionModel().select(0);
+                        pane1.getChildren().add(choiceBox);
+
+                        choiceBox.getSelectionModel().selectedIndexProperty().addListener(((ov, oldv, newv) -> {
+                            numberOfAI = newv.intValue();
+                        }));
                     }
 
                 });
 
         //create headline
         Text headline = new Text("Warring States");
-        headline.setLayoutX(100);
+        headline.setLayoutX(90);
         headline.setLayoutY(70);
+        headline.setFont(Font.font("verdana", 30));
+        headline.setFill(Color.RED);
+        InnerShadow is = new InnerShadow();
+        is.setOffsetX(4f);
+        is.setOffsetY(4f);
+        headline.setEffect(is);
         pane1.getChildren().add(headline);
+
+
+        //create "How many robots \ndo you want to add?"
+        Text text = new Text("How many robots \ndo you want to add?");
+        text.setLayoutX(200);
+        text.setLayoutY(150);
+        pane1.getChildren().add(text);
+
+        //add choicebox
+        ChoiceBox choiceBox = new ChoiceBox();
+        choiceBox.setItems(FXCollections.observableArrayList("0", "1"));
+        choiceBox.setLayoutX(330);
+        choiceBox.setLayoutY(145);
+        choiceBox.getSelectionModel().select(0);
+        pane1.getChildren().add(choiceBox);
+
+        choiceBox.getSelectionModel().selectedIndexProperty().addListener(((ov, oldv, newv) -> {
+            numberOfAI = newv.intValue();
+        }));
+
+        //add checkbox
+        CheckBox checkBox = new CheckBox("Advanced AI");
+        checkBox.setLayoutX(200);
+        checkBox.setLayoutY(200);
+        pane1.getChildren().add(checkBox);
+        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            public void changed(ObservableValue<? extends Boolean> ov,
+                                Boolean old_val, Boolean new_val) {
+                if (checkBox.isSelected()) {
+                    advAI = true;
+                } else {
+                    advAI = false;
+                }
+            }
+        });
 
         //event of buttons
         exitBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -383,65 +450,45 @@ public class Game extends Application {
             }
         });
 
-        nextBtn.setOnAction(new EventHandler<ActionEvent>() {
+        instrBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 page1.hide();
                 Stage page2 = new Stage();
                 Pane pane2 = new Pane();
-                Scene scene = new Scene(pane2, 350, 300);
-                page2.setTitle("Add Robot");
+                Scene scene = new Scene(pane2, 400, 500);
+                page2.setTitle("How to play");
+                page2.initStyle(StageStyle.UNDECORATED);
                 page2.setScene(scene);
-                //create headline
-                Text headline = new Text("How many robots do you want to add?");
-                headline.setLayoutX(100);
-                headline.setLayoutY(120);
-                pane2.getChildren().add(headline);
 
-                //choicebox
-                ArrayList chsb = new ArrayList();
-                String list = "012345";
-                numberOfAI = 0;
-                int i = 0;
-                while (i < numberOfPlayers) {
-                    chsb.add(list.substring(i, i + 1));
-                    i++;
-                }
-                ChoiceBox choiceBox = new ChoiceBox();
-                choiceBox.setItems(FXCollections.observableArrayList(chsb));
-                choiceBox.setLayoutX(100);
-                choiceBox.setLayoutY(150);
-                pane2.getChildren().add(choiceBox);
+                Label instruction = new Label(
+                        "Players take turns to collect characters to their side, by clicking the board and " +
+                                "moving Zhang Yi around the grid. On one's turn, a player chooses a direction " +
+                                "(North, East, South, or West) and a kingdom (Qin, Qi, Chu, Zhao, Han, Wei, or Yan)." +
+                                "Zhang Yi then moves in the chosen direction to the location of the furthest away character" +
+                                " from that kingdom, and collects that character card.If Zhang Yi passes other characters" +
+                                " from the same kingdom while moving, he collects those characters as well. Each player may" +
+                                " move Zhang Yi only once per turn. \n\nAt the end of one's turn, if the player holds an equal or" +
+                                " greater number of characters from a kingdom than any of her opponents, the player takes the" +
+                                " flag of that kingdom.(If another player already holds the flag, it will change the belonging " +
+                                "of this flag). The game ends when Zhang Yi cannot move, that is, when there are no cards in any" +
+                                " direction (North, East, South, or West) from Zhang Yi.The player who holds the greatest number " +
+                                "of flags at the end of the game wins.If two or more players hold the same number of flags, " +
+                                "the player who holds the flag of the kingdom with the greatest number of characters wins.\n\nEnjoy it!"
+                );
+                instruction.setFont(Font.font("calibri", 14));
+                instruction.setWrapText(true);
+                instruction.setMaxWidth(scene.getWidth() - 40);
+                instruction.setLayoutX(20);
+                instruction.setLayoutY(20);
 
-                choiceBox.getSelectionModel().selectedIndexProperty().addListener(((ov, oldv, newv) -> {
-                    numberOfAI = newv.intValue();
-                }));
-
-                //checkbox
-                CheckBox checkBox = new CheckBox("Advanced AI");
-                checkBox.setLayoutX(200);
-                checkBox.setLayoutY(150);
-                pane2.getChildren().add(checkBox);
-                checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-                    public void changed(ObservableValue<? extends Boolean> ov,
-                                        Boolean old_val, Boolean new_val) {
-                        if (checkBox.isSelected()) {
-                            advAI = true;
-                        } else {
-                            advAI = false;
-                        }
-                    }
-                });
+                pane2.getChildren().add(instruction);
 
                 //create buttons
                 Button backBtn = new Button("Back");
-                backBtn.setLayoutX(50);
-                backBtn.setLayoutY(258);
-                Button gameStartBtn = new Button("Game Start!");
-                gameStartBtn.setLayoutX(220);
-                gameStartBtn.setLayoutY(258);
-                pane2.getChildren().addAll(backBtn, gameStartBtn);
-
+                backBtn.setLayoutX(250);
+                backBtn.setLayoutY(450);
+                pane2.getChildren().add(backBtn);
                 page2.show();
 
                 //set back button event
@@ -452,49 +499,51 @@ public class Game extends Application {
                         page1.show();
                     }
                 });
-                //set start button event
-                gameStartBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        numberOfHumans = numberOfPlayers - numberOfAI;
-                        page2.hide();
-                        primaryStage.show();
+
+
+            }
+        });
+
+        //set start button event
+        gameStartBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                numberOfHumans = numberOfPlayers - numberOfAI;
+                page1.hide();
+                primaryStage.show();
 //                        System.out.println(numberOfAI);
 //                        System.out.println(advAI);
 //                        System.out.println(numberOfPlayers);
 //                        System.out.println(currentPlayer);
 
-                        //set up the AI players
-                        AIPlayer(numberOfPlayers, numberOfHumans);
+                //set up the AI players
+                AIPlayer(numberOfPlayers, numberOfHumans);
 
-                        //set and show card collect board
-                        if (numberOfPlayers == 2) {
-                            cardCollectBoard.getChildren().add(scrBD0);
-                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p1.png").toString()));
-                            cardCollectBoard.getChildren().add(scrBD1);
-                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p2.png").toString()));
+                //set and show card collect board
+                if (numberOfPlayers == 2) {
+                    cardCollectBoard.getChildren().add(scrBD0);
+                    cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p1.png").toString()));
+                    cardCollectBoard.getChildren().add(scrBD1);
+                    cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p2.png").toString()));
 
-                        } else if (numberOfPlayers == 3) {
-                            cardCollectBoard.getChildren().add(scrBD0);
-                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p1.png").toString()));
-                            cardCollectBoard.getChildren().add(scrBD1);
-                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p2.png").toString()));
-                            cardCollectBoard.getChildren().add(scrBD2);
-                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p3.png").toString()));
+                } else if (numberOfPlayers == 3) {
+                    cardCollectBoard.getChildren().add(scrBD0);
+                    cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p1.png").toString()));
+                    cardCollectBoard.getChildren().add(scrBD1);
+                    cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p2.png").toString()));
+                    cardCollectBoard.getChildren().add(scrBD2);
+                    cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p3.png").toString()));
 
-                        } else if (numberOfPlayers == 4) {
-                            cardCollectBoard.getChildren().add(scrBD0);
-                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p1.png").toString()));
-                            cardCollectBoard.getChildren().add(scrBD1);
-                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p2.png").toString()));
-                            cardCollectBoard.getChildren().add(scrBD2);
-                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p3.png").toString()));
-                            cardCollectBoard.getChildren().add(scrBD3);
-                            cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p4.png").toString()));
-                        }
-
-                    }
-                });
+                } else if (numberOfPlayers == 4) {
+                    cardCollectBoard.getChildren().add(scrBD0);
+                    cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p1.png").toString()));
+                    cardCollectBoard.getChildren().add(scrBD1);
+                    cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p2.png").toString()));
+                    cardCollectBoard.getChildren().add(scrBD2);
+                    cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p3.png").toString()));
+                    cardCollectBoard.getChildren().add(scrBD3);
+                    cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p4.png").toString()));
+                }
 
             }
         });
@@ -516,7 +565,7 @@ public class Game extends Application {
         cardCollectBoard.setLayoutX(10);
         cardCollectBoard.setLayoutY(10);
 
-        root.getChildren().addAll(board, cardCollectBoard, flags, text);
+        root.getChildren().addAll(board, cardCollectBoard, flags, this.text);
 
         primaryStage.setScene(scene);
         //move "primaryStage.show" to setting window "GameStart Btn"
