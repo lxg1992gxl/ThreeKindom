@@ -55,7 +55,7 @@ public class Game extends Application {
     private String setup = WarringStatesGame.randomSetup();
     //    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
     private String currentBoard = setup;
-    //    private int players; // replace with numberOfPlayers
+    private boolean [] AI = new boolean[4]; //maximum number of players
     private String history = "";
     private int currentPlayer = 0;
     private FXpiece[][] cards = new FXpiece[4][35]; //max number of players, number of character cards
@@ -90,7 +90,7 @@ public class Game extends Application {
 
 
             setOnMousePressed(event -> {
-                System.out.println("current card: " + this.id + this.loc);
+                //System.out.println("current card: " + this.id + this.loc);
                 if (this.id.equals("z9")) {
                     System.out.println("error");
 
@@ -105,7 +105,7 @@ public class Game extends Application {
                     showFlags();
 
                     //TODO if current player = AI, make next move based on AIstrategies here
-                    if(currentPlayer==1){
+                    if(AI[currentPlayer]){
                         AIMove(currentBoard);
                     }
 
@@ -147,19 +147,37 @@ public class Game extends Application {
 
     private void AIMove(String placement){
         char loc = generateMove(placement);
-        System.out.println(loc);
+        //System.out.println(loc);
         history = history + loc + "";
-        System.out.println("current history: " +history);
+        //System.out.println("current history: " +history);
         showCollectedCards();
         currentBoard = newBoard(setup, history);
         //System.out.println(currentBoard);
         makeBoard();
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         showFlags();
+        if(AI[currentPlayer]){
+            AIMove(currentBoard);
+        }
         //check for next player computer?
     }
 
     //TODO if current player = AI, make next move based on AIstrategies here
+    private void AIPlayer (int numberOfPlayers, int numberOfHumans){
+        //populate ai array with which playerIDs are AIs
+        for (int i = 0; i< numberOfPlayers; i++){
+            if (i<numberOfHumans){
+                AI[i] = false;
+
+            }
+            else {AI[i]=true;}
+            //System.out.println(i + " is "+ AI[i]);
+        }
+
+        //extension --> turn this array into an int array and allow AIs to have differnt difficulty levels
+
+    }
+
 
     class Flag extends ImageView {
 
@@ -442,12 +460,15 @@ public class Game extends Application {
 //                        System.out.println(advAI);
 //                        System.out.println(numberOfPlayers);
 //                        System.out.println(currentPlayer);
+
+                        //set up the AI players
+                        AIPlayer(numberOfPlayers, numberOfHumans);
+
                     }
                 });
 
             }
         });
-
 
         //show scene
         page1.setScene(settingScene);
@@ -479,9 +500,7 @@ public class Game extends Application {
     }
 
 
-    // FIXME Task 11: Allow players of your Warring States game to play against your simple agent
-    //randomly generate move (calling from Task 10)!
-
+    // Task 11: Allow players of your Warring States game to play against your simple agent
 
     // FIXME Task 12: Integrate a more advanced opponent into your game
     //generate brilliant move (calling from AIstrategies Class)!
