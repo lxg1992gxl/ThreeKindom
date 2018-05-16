@@ -253,6 +253,7 @@ public class AIstrategies {
         int layers = 3;
         int player = 0;
         int numPlayers = 2;
+        String history = "";
         String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
 
         System.out.println(allValidMoves(setup));
@@ -260,5 +261,7 @@ public class AIstrategies {
 //        System.out.println(allNextStepPossibilities(previousState, 0, 1, 2, setup, ""));
         System.out.println(bottomLookedLayerStates(layers, setup, player, numPlayers, setup, ""));
         System.out.println(bestMove(layers, setup, player, numPlayers, setup, ""));
+        System.out.println(bestMove(layers, setup, player, numPlayers, setup, history));
+
     }
 }

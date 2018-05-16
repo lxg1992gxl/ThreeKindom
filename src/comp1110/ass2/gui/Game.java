@@ -126,8 +126,8 @@ public class Game extends Application {
                     showFlags();
 
                     //TODO if current player = AI, make next move based on AIstrategies here
-                    if (AI[currentPlayer]) {
-                        AIMove(currentBoard);
+                    if(AI[currentPlayer]){
+                        AdvAIMove(currentBoard);
                     }
 
                     //if difficulty 0, call task 10
