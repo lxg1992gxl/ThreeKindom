@@ -49,7 +49,7 @@ public class Game extends Application {
     private final Group root = new Group();
     private final Group notion = new Group(); //notions at the bottom of the board
     private final Group end = new Group(); //notions when it comes to the game end
-    private final Group text = new Group(); //fixed text that will never change in the whole game
+    private final Group player = new Group(); //notions of playerID in the flag shown area (that will never change in the whole game)
 
     private final Group board = new Group();
     private final Group flags = new Group();
@@ -367,7 +367,7 @@ public class Game extends Application {
     }
 
 
-    public void restartGame(){
+    public void restartGame() {
         setup = WarringStatesGame.randomSetup();
         System.out.println(setup);
         history = "";
@@ -386,6 +386,7 @@ public class Game extends Application {
         //fixme reset the scene
 
     }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -595,14 +596,14 @@ public class Game extends Application {
                 p0.setFill(Color.BLACK);
                 p0.setLayoutX(25);
                 p0.setLayoutY(590);
-                text.getChildren().add(p0);
+                player.getChildren().add(p0);
 
                 Text p1 = new Text("Player 2:");
                 p1.setFont(Font.font("Arial", FontWeight.BOLD, 12));
                 p1.setFill(Color.BLACK);
                 p1.setLayoutX(25);
                 p1.setLayoutY(620);
-                text.getChildren().add(p1);
+                player.getChildren().add(p1);
 
                 //set and show card collect board
                 if (numberOfPlayers == 2) {
@@ -624,7 +625,7 @@ public class Game extends Application {
                     p2.setFill(Color.BLACK);
                     p2.setLayoutX(25);
                     p2.setLayoutY(650);
-                    text.getChildren().add(p2);
+                    player.getChildren().add(p2);
 
                 } else if (numberOfPlayers == 4) {
                     cardCollectBoard.getChildren().add(scrBD0);
@@ -641,14 +642,14 @@ public class Game extends Application {
                     p2.setFill(Color.BLACK);
                     p2.setLayoutX(25);
                     p2.setLayoutY(650);
-                    text.getChildren().add(p2);
+                    player.getChildren().add(p2);
 
                     Text p3 = new Text("Player 4:");
                     p3.setFont(Font.font("Arial", FontWeight.BOLD, 12));
                     p3.setFill(Color.BLACK);
                     p3.setLayoutX(25);
                     p3.setLayoutY(680);
-                    text.getChildren().add(p3);
+                    player.getChildren().add(p3);
 
                 }
             }
@@ -694,12 +695,13 @@ public class Game extends Application {
                 primaryStage.close();
                 page1.show();
                 cardCollectBoard.getChildren().clear();
+                player.getChildren().clear();
                 restartGame();
             }
         });
 
 
-        root.getChildren().addAll(board, cardCollectBoard, flags, end, notion, text, restart);
+        root.getChildren().addAll(board, cardCollectBoard, flags, end, notion, player, restart);
 
         primaryStage.setScene(scene);
         //move "primaryStage.show" to setting window "GameStart Btn"
