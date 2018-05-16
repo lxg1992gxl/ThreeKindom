@@ -126,8 +126,8 @@ public class Game extends Application {
                     showFlags();
 
                     //TODO if current player = AI, make next move based on AIstrategies here
-                    if(AI[currentPlayer]){
-                        AdvAIMove(currentBoard);
+                    if (AI[currentPlayer]) {
+                        AIMove(currentBoard);
                     }
 
                     //if difficulty 0, call task 10
@@ -195,21 +195,21 @@ public class Game extends Application {
     //check whether standard or adv AI
     //choose move based on this
     //type conversion problem when calling this method
-//    private void AdvAIMove(String placement) {
-//        char loc = AIstrategies.bestMove(2, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
-//        //System.out.println(loc);
-//        history = history + loc + "";
-//        //System.out.println("current history: " +history);
-//        showCollectedCards();
-//        currentBoard = newBoard(setup, history);
-//        //System.out.println(currentBoard);
-//        makeBoard();
-//        currentPlayer = (currentPlayer + 1) % numberOfPlayers;
-//        showFlags();
-//        if (AI[currentPlayer]) {
-//            AdvAIMove(currentBoard);
-//        }
-//    }
+    private void AdvAIMove(String placement) {
+        char loc = AIstrategies.bestMove(2, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
+        //System.out.println(loc);
+        history = history + loc + "";
+        //System.out.println("current history: " +history);
+        showCollectedCards();
+        currentBoard = newBoard(setup, history);
+        //System.out.println(currentBoard);
+        makeBoard();
+        currentPlayer = (currentPlayer + 1) % numberOfPlayers;
+        showFlags();
+        if (AI[currentPlayer]) {
+            AdvAIMove(currentBoard);
+        }
+    }
 
     //TODO if current player = AI, make next move based on AIstrategies here
     private void AIPlayer(int numberOfPlayers, int numberOfHumans) {
