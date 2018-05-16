@@ -126,7 +126,7 @@ public class Game extends Application {
                     showFlags();
 
                     //TODO if current player = AI, make next move based on AIstrategies here
-                    if(AI[currentPlayer]){
+                    if (AI[currentPlayer]) {
                         AIMove(currentBoard);
                     }
 
@@ -137,7 +137,7 @@ public class Game extends Application {
                     //System.out.println(currentPlayer);
                     if (noMoreValidMove(currentBoard)) {
                         notion.getChildren().removeAll(notion.getChildren());
-                        Text end = new Text("No more valid move for Player " + (currentPlayer+1) + ". Game Ending!");
+                        Text end = new Text("No more valid move for Player " + (currentPlayer + 1) + ". Game Ending!");
                         end.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
                         end.setFill(Color.BLACK);
                         end.setLayoutX(405);
@@ -148,7 +148,7 @@ public class Game extends Application {
                         endGame();
                     } else {
                         notion.getChildren().removeAll(notion.getChildren());
-                        Text valid = new Text("Valid move. Next comes to Player " + (currentPlayer+1) + "'s turn!");
+                        Text valid = new Text("Valid move. Next comes to Player " + (currentPlayer + 1) + "'s turn!");
                         valid.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
                         valid.setFill(Color.BLACK);
                         valid.setLayoutX(410);
@@ -195,7 +195,7 @@ public class Game extends Application {
     //check whether standard or adv AI
     //choose move based on this
     //type conversion problem when calling this method
-    private void AdvAIMove(String placement){
+    private void AdvAIMove(String placement) {
         char loc = AIstrategies.bestMove(5, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
         //System.out.println(loc);
         history = history + loc + "";
@@ -206,7 +206,7 @@ public class Game extends Application {
         makeBoard();
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         showFlags();
-        if(AI[currentPlayer]){
+        if (AI[currentPlayer]) {
             AdvAIMove(currentBoard);
         }
     }
@@ -679,11 +679,10 @@ public class Game extends Application {
             }
         });
 
-        root.getChildren().addAll(board, cardCollectBoard, flags, end, notion, text,restart);
+        root.getChildren().addAll(board, cardCollectBoard, flags, end, notion, text, restart);
 
         primaryStage.setScene(scene);
         //move "primaryStage.show" to setting window "GameStart Btn"
-
 
     }
 
