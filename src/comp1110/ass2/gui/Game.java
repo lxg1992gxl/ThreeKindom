@@ -699,6 +699,7 @@ public class Game extends Application {
                 page1.show();
                 cardCollectBoard.getChildren().clear();
                 player.getChildren().clear();
+                end.getChildren().clear();
                 restartGame();
             }
         });
