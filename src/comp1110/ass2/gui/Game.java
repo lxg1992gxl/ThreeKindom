@@ -49,7 +49,7 @@ public class Game extends Application {
     private final Group root = new Group();
     private final Group notion = new Group(); //notions at the bottom of the board
     private final Group end = new Group(); //notions when it comes to the game end
-    private final Group text = new Group(); //fixed text that will never change in the whole game
+    private final Group player = new Group(); //notions of playerID in the flag shown area (that will never change in the whole game)
 
     private final Group board = new Group();
     private final Group flags = new Group();
@@ -125,9 +125,8 @@ public class Game extends Application {
                     currentPlayer = (currentPlayer + 1) % numberOfPlayers;
                     showFlags();
 
-                    //TODO if current player = AI, make next move based on AIstrategies here
                     if (AI[currentPlayer]) {
-                        AIMove(currentBoard);
+                        autoMove(currentBoard);
                     }
 
                     //if difficulty 0, call task 10
@@ -137,10 +136,10 @@ public class Game extends Application {
                     //System.out.println(currentPlayer);
                     if (noMoreValidMove(currentBoard)) {
                         notion.getChildren().removeAll(notion.getChildren());
-                        Text end = new Text("No more valid move for Player " + currentPlayer + ". Game Ending!");
+                        Text end = new Text("No more valid move for Player " + (currentPlayer + 1) + ". Game Ending!");
                         end.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
                         end.setFill(Color.BLACK);
-                        end.setLayoutX(390);
+                        end.setLayoutX(405);
                         end.setLayoutY(680);
                         notion.getChildren().add(end);
 
@@ -148,7 +147,7 @@ public class Game extends Application {
                         endGame();
                     } else {
                         notion.getChildren().removeAll(notion.getChildren());
-                        Text valid = new Text("Valid move. Next comes to Player " + currentPlayer + "'s turn!");
+                        Text valid = new Text("Valid move. Next comes to Player " + (currentPlayer + 1) + "'s turn!");
                         valid.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
                         valid.setFill(Color.BLACK);
                         valid.setLayoutX(410);
@@ -173,6 +172,14 @@ public class Game extends Application {
         }
     }
 
+    private void autoMove(String placement){
+        if(advAI){
+            AdvAIMove(placement);
+        }
+        else {
+            AIMove(placement);
+        }
+    }
     private void AIMove(String placement) {
         char loc = generateMove(placement);
         //System.out.println(loc);
@@ -186,12 +193,27 @@ public class Game extends Application {
         showFlags();
 
         if (AI[currentPlayer]) { //check whether next player is still computer?
-            AIMove(currentBoard);
+            autoMove(currentBoard);
         }
 
     }
 
-    //TODO if current player = AI, make next move based on AIstrategies here
+    private void AdvAIMove(String placement) {
+        char loc = AIstrategies.bestMove(2, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
+        //System.out.println(loc);
+        history = history + loc + "";
+        //System.out.println("current history: " +history);
+        showCollectedCards();
+        currentBoard = newBoard(setup, history);
+        //System.out.println(currentBoard);
+        makeBoard();
+        currentPlayer = (currentPlayer + 1) % numberOfPlayers;
+        showFlags();
+        if (AI[currentPlayer]) {
+            autoMove(currentBoard);
+        }
+    }
+
     private void AIPlayer(int numberOfPlayers, int numberOfHumans) {
         //populate ai array with which playerIDs are AIs
         for (int i = 0; i < numberOfPlayers; i++) {
@@ -240,7 +262,6 @@ public class Game extends Application {
 
     }
 
-    //TODO create a method which will display the flags currently controlled by each player
     private void showFlags() {
         //clear current flags
         flags.getChildren().removeAll(flags.getChildren());
@@ -267,13 +288,12 @@ public class Game extends Application {
         flags.getChildren().add(g);
     }
 
-    //TODO create a method which will give instructions for when the game ends
     private void endGame() {
 //        System.out.println("end game");
 
         //indicate the winner at the end of the game
         int winner = getWinnerID(getFlags(setup, history, numberOfPlayers));
-        Text win = new Text("Player " + winner + " is the winner!!! ");
+        Text win = new Text("Player " + (winner + 1) + " is the winner!!! ");
         win.setFont(Font.font("American Typewriter", FontWeight.EXTRA_BOLD, 68));
         win.setFill(Color.RED);
         win.setLayoutX(BOARD_WIDTH / 2 - 360);
@@ -289,6 +309,13 @@ public class Game extends Application {
 
     }
 
+    private void clearCards(){
+        scrBD0.getChildren().removeAll(scrBD0.getChildren());
+        scrBD1.getChildren().removeAll(scrBD1.getChildren());
+        scrBD2.getChildren().removeAll(scrBD2.getChildren());
+        scrBD3.getChildren().removeAll(scrBD3.getChildren());
+    }
+    
     private void showCollectedCards() {
         //move the supporters to side
         String support = getSupporters(setup, history, numberOfPlayers, currentPlayer);
@@ -338,6 +365,29 @@ public class Game extends Application {
         rectangle.setFill(fill);
         rectangle.setStroke(stroke);
         root.getChildren().add(rectangle);
+    }
+
+
+    public void restartGame() {
+        setup = WarringStatesGame.randomSetup();
+        System.out.println(setup);
+        history = "";
+        System.out.println(history);
+        currentBoard = newBoard(setup, history);
+        currentPlayer = 0;
+        System.out.println(currentPlayer);
+
+        makeBoard(); //clears old board and creates new one
+        clearCards();
+        showCollectedCards();
+        showFlags();
+        System.out.println("done");
+
+        //fixme check ai assignment when restart
+        boolean[] AI = new boolean[4]; //maximum number of players
+
+        //fixme reset the scene
+
     }
 
     @Override
@@ -544,19 +594,19 @@ public class Game extends Application {
                 AIPlayer(numberOfPlayers, numberOfHumans);
 
                 //add playerID notions for flag area
-                Text p0 = new Text("Player0:");
+                Text p0 = new Text("Player 1:");
                 p0.setFont(Font.font("Arial", FontWeight.BOLD, 12));
                 p0.setFill(Color.BLACK);
                 p0.setLayoutX(25);
                 p0.setLayoutY(590);
-                text.getChildren().add(p0);
+                player.getChildren().add(p0);
 
-                Text p1 = new Text("Player1:");
+                Text p1 = new Text("Player 2:");
                 p1.setFont(Font.font("Arial", FontWeight.BOLD, 12));
                 p1.setFill(Color.BLACK);
                 p1.setLayoutX(25);
                 p1.setLayoutY(620);
-                text.getChildren().add(p1);
+                player.getChildren().add(p1);
 
                 //set and show card collect board
                 if (numberOfPlayers == 2) {
@@ -573,12 +623,12 @@ public class Game extends Application {
                     cardCollectBoard.getChildren().add(scrBD2);
                     cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p3.png").toString()));
 
-                    Text p2 = new Text("Player2:");
+                    Text p2 = new Text("Player 3:");
                     p2.setFont(Font.font("Arial", FontWeight.BOLD, 12));
                     p2.setFill(Color.BLACK);
                     p2.setLayoutX(25);
                     p2.setLayoutY(650);
-                    text.getChildren().add(p2);
+                    player.getChildren().add(p2);
 
                 } else if (numberOfPlayers == 4) {
                     cardCollectBoard.getChildren().add(scrBD0);
@@ -590,19 +640,19 @@ public class Game extends Application {
                     cardCollectBoard.getChildren().add(scrBD3);
                     cardCollectBoard.getChildren().add(new ImageView(Game.class.getResource(URI_BASE + "p4.png").toString()));
 
-                    Text p2 = new Text("Player2:");
+                    Text p2 = new Text("Player 3:");
                     p2.setFont(Font.font("Arial", FontWeight.BOLD, 12));
                     p2.setFill(Color.BLACK);
                     p2.setLayoutX(25);
                     p2.setLayoutY(650);
-                    text.getChildren().add(p2);
+                    player.getChildren().add(p2);
 
-                    Text p3 = new Text("Player3:");
+                    Text p3 = new Text("Player 4:");
                     p3.setFont(Font.font("Arial", FontWeight.BOLD, 12));
                     p3.setFill(Color.BLACK);
                     p3.setLayoutX(25);
                     p3.setLayoutY(680);
-                    text.getChildren().add(p3);
+                    player.getChildren().add(p3);
 
                 }
             }
@@ -648,23 +698,17 @@ public class Game extends Application {
                 primaryStage.close();
                 page1.show();
                 cardCollectBoard.getChildren().clear();
-//                setup = WarringStatesGame.randomSetup();
-//                String currentBoard = setup;
-//                int currentPlayer = 0;
-//                FXpiece[][] cards = new FXpiece[4][35];
-//                boolean[] AI = new boolean[4]; //maximum number of players
-//                String history = "";
-                //fixme reset the scene
-
+                player.getChildren().clear();
+                restartGame();
             }
         });
 
-        root.getChildren().addAll(board, cardCollectBoard, flags, end, notion, text,restart);
+
+        root.getChildren().addAll(board, cardCollectBoard, flags, end, notion, player, restart);
 
         primaryStage.setScene(scene);
         //move "primaryStage.show" to setting window "GameStart Btn"
 
-        
     }
 
     // FIXME Task 12: Integrate a more advanced opponent into your game

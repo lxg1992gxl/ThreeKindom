@@ -355,7 +355,7 @@ public class WarringStatesGame {
 
                     // update setup board with the new checked move
                     int p = 2;
-                    while (p != -1&& p < setup.length()) {
+                    while (p != -1 && p < setup.length()) {
                         // find the setup board location same with the current move location
                         if (board[p] == move[i]) {
                             // find the corresponding country for the card in current move location
@@ -1120,9 +1120,9 @@ public class WarringStatesGame {
                     count += 1;
                 }
             }
-            if (count > 1) {
-                //  return false;
-            }
+//            if (count > 1) {
+//                //  return false;
+//            }
         }
 
         // go through every move in moveSequence one by one
@@ -1182,7 +1182,6 @@ public class WarringStatesGame {
                         for (int n = 0; n < board.length; n++) {
                             if (board[n] != '/') {
                                 placement += board[n];
-                            } else {
                             }
                         }
                         p = -1;
