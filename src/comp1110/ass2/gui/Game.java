@@ -127,7 +127,7 @@ public class Game extends Application {
 
                     //TODO if current player = AI, make next move based on AIstrategies here
                     if (AI[currentPlayer]) {
-                        AIMove(currentBoard);
+                        autoMove(currentBoard);
                     }
 
                     //if difficulty 0, call task 10
@@ -173,6 +173,14 @@ public class Game extends Application {
         }
     }
 
+    private void autoMove(String placement){
+        if(advAI){
+            AdvAIMove(placement);
+        }
+        else {
+            AIMove(placement);
+        }
+    }
     private void AIMove(String placement) {
         char loc = generateMove(placement);
         //System.out.println(loc);
@@ -186,7 +194,7 @@ public class Game extends Application {
         showFlags();
 
         if (AI[currentPlayer]) { //check whether next player is still computer?
-            AIMove(currentBoard);
+            autoMove(currentBoard);
         }
 
     }
@@ -207,7 +215,7 @@ public class Game extends Application {
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         showFlags();
         if (AI[currentPlayer]) {
-            AdvAIMove(currentBoard);
+            autoMove(currentBoard);
         }
     }
 
