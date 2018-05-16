@@ -125,9 +125,8 @@ public class Game extends Application {
                     currentPlayer = (currentPlayer + 1) % numberOfPlayers;
                     showFlags();
 
-                    //TODO if current player = AI, make next move based on AIstrategies here
                     if (AI[currentPlayer]) {
-                        AIMove(currentBoard);
+                        autoMove(currentBoard);
                     }
 
                     //if difficulty 0, call task 10
@@ -173,6 +172,14 @@ public class Game extends Application {
         }
     }
 
+    private void autoMove(String placement){
+        if(advAI){
+            AdvAIMove(placement);
+        }
+        else {
+            AIMove(placement);
+        }
+    }
     private void AIMove(String placement) {
         char loc = generateMove(placement);
         //System.out.println(loc);
@@ -186,15 +193,11 @@ public class Game extends Application {
         showFlags();
 
         if (AI[currentPlayer]) { //check whether next player is still computer?
-            AIMove(currentBoard);
+            autoMove(currentBoard);
         }
 
     }
 
-    //TODo
-    //check whether standard or adv AI
-    //choose move based on this
-    //type conversion problem when calling this method
     private void AdvAIMove(String placement) {
         char loc = AIstrategies.bestMove(2, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
         //System.out.println(loc);
@@ -207,11 +210,10 @@ public class Game extends Application {
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         showFlags();
         if (AI[currentPlayer]) {
-            AdvAIMove(currentBoard);
+            autoMove(currentBoard);
         }
     }
 
-    //TODO if current player = AI, make next move based on AIstrategies here
     private void AIPlayer(int numberOfPlayers, int numberOfHumans) {
         //populate ai array with which playerIDs are AIs
         for (int i = 0; i < numberOfPlayers; i++) {
@@ -260,7 +262,6 @@ public class Game extends Application {
 
     }
 
-    //TODO create a method which will display the flags currently controlled by each player
     private void showFlags() {
         //clear current flags
         flags.getChildren().removeAll(flags.getChildren());
@@ -287,7 +288,6 @@ public class Game extends Application {
         flags.getChildren().add(g);
     }
 
-    //TODO create a method which will give instructions for when the game ends
     private void endGame() {
 //        System.out.println("end game");
 
