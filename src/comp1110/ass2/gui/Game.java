@@ -125,7 +125,6 @@ public class Game extends Application {
                     currentPlayer = (currentPlayer + 1) % numberOfPlayers;
                     showFlags();
 
-                    //TODO if current player = AI, make next move based on AIstrategies here
                     if (AI[currentPlayer]) {
                         autoMove(currentBoard);
                     }
@@ -199,10 +198,6 @@ public class Game extends Application {
 
     }
 
-    //TODo
-    //check whether standard or adv AI
-    //choose move based on this
-    //type conversion problem when calling this method
     private void AdvAIMove(String placement) {
         char loc = AIstrategies.bestMove(2, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
         //System.out.println(loc);
@@ -219,7 +214,6 @@ public class Game extends Application {
         }
     }
 
-    //TODO if current player = AI, make next move based on AIstrategies here
     private void AIPlayer(int numberOfPlayers, int numberOfHumans) {
         //populate ai array with which playerIDs are AIs
         for (int i = 0; i < numberOfPlayers; i++) {
@@ -268,7 +262,6 @@ public class Game extends Application {
 
     }
 
-    //TODO create a method which will display the flags currently controlled by each player
     private void showFlags() {
         //clear current flags
         flags.getChildren().removeAll(flags.getChildren());
@@ -295,7 +288,6 @@ public class Game extends Application {
         flags.getChildren().add(g);
     }
 
-    //TODO create a method which will give instructions for when the game ends
     private void endGame() {
 //        System.out.println("end game");
 
