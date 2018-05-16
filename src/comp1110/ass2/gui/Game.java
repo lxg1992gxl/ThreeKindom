@@ -140,7 +140,7 @@ public class Game extends Application {
                         Text end = new Text("No more valid move for Player " + (currentPlayer+1) + ". Game Ending!");
                         end.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
                         end.setFill(Color.BLACK);
-                        end.setLayoutX(390);
+                        end.setLayoutX(405);
                         end.setLayoutY(680);
                         notion.getChildren().add(end);
 
@@ -196,7 +196,7 @@ public class Game extends Application {
     //choose move based on this
     //type conversion problem when calling this method
     private void AdvAIMove(String placement){
-        char loc = AIstrategies.bestMove(5, currentBoard, currentPlayer, numberOfPlayers); //is current player the right parameter here?
+        char loc = AIstrategies.bestMove(5, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
         //System.out.println(loc);
         history = history + loc + "";
         //System.out.println("current history: " +history);
@@ -293,7 +293,7 @@ public class Game extends Application {
 
         //indicate the winner at the end of the game
         int winner = getWinnerID(getFlags(setup, history, numberOfPlayers));
-        Text win = new Text("Player " + (winner+1) + " is the winner!!! ");
+        Text win = new Text("Player " + (winner + 1) + " is the winner!!! ");
         win.setFont(Font.font("American Typewriter", FontWeight.EXTRA_BOLD, 68));
         win.setFill(Color.RED);
         win.setLayoutX(BOARD_WIDTH / 2 - 360);
