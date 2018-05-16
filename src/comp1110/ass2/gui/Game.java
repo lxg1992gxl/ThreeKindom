@@ -196,7 +196,7 @@ public class Game extends Application {
     //choose move based on this
     //type conversion problem when calling this method
     private void AdvAIMove(String placement){
-        char loc = AIstrategies.bestMove(5, currentBoard, currentPlayer, numberOfPlayers); //is current player the right parameter here?
+        char loc = AIstrategies.bestMove(5, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
         //System.out.println(loc);
         history = history + loc + "";
         //System.out.println("current history: " +history);
