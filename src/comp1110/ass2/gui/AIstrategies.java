@@ -21,10 +21,9 @@ public class AIstrategies {
         // find ZhangYi's location in the currentBoard
 //        char zyloc = currentBoard.charAt(currentBoard.indexOf('z') + 2);
         char zyloc = ' '; //initialize zy location
-        for (int p = 2; p != -1 && p < currentBoard.length(); p = p + 3) {
+        for (int p = 2; zyloc == ' ' && p < currentBoard.length(); p = p + 3) {
             if (place[p - 2] == 'z') {
                 zyloc = place[p];
-                p = -1;
             }
         }
 
@@ -52,11 +51,27 @@ public class AIstrategies {
         // (all marks are just previous marks)
         String previousBoard = previousState.get(1);
         List<String> allValidMoves = allValidMoves(previousBoard);
+        char[] bd = previousBoard.toCharArray();
+
+        // find ZhangYi's location for previous board
+//            char zyloc = previousBoard.charAt(previousBoard.indexOf('z') + 2);
+        char zyloc = ' '; //initialize zy location
+        int zy = 2;
+        while (zyloc == ' ' && zy < previousBoard.length()) {
+            if (bd[zy - 2] == 'z') {
+                zyloc = bd[zy];
+            }
+            zy = zy + 3;
+        }
+        if (zy != 2) {
+            zy = zy - 3;
+        }
+        int ZY = normaliseLoc(zyloc);
 
         for (String move : allValidMoves) {
 
             // add new move sequence for one possibleState
-            String newMoveSequence = previousState.get(0) + move;
+            String newMoveSequence = previousState.get(0) + ((move.toCharArray())[2]);
             possibleState.add(newMoveSequence);
 
 //            System.out.println(previousState.get(2));
@@ -64,15 +79,10 @@ public class AIstrategies {
 
             int newMark = 0;
 
-            char[] bd = previousBoard.toCharArray();
             char mov = (move.toCharArray())[0];
 
             // the normalised form for destination location
             int D = normaliseLoc(mov);
-
-            // find ZhangYi's location for previous board
-            char zyloc = previousBoard.charAt(previousBoard.indexOf('z') + 2);
-            int ZY = normaliseLoc(zyloc);
 
             // find the destination location on previousBoard board
             int m = 2;
@@ -97,7 +107,7 @@ public class AIstrategies {
                         // the card is between ZhangYi and the destination position
                         if ((D < K && K < ZY) || (ZY < K && K < D)) {
                             // whenever found a card between ZY and the destination position, "add mark" by 1
-                            newMark++;
+                            newMark = newMark + 1;
                             bd[k] = '/';
                             bd[k - 1] = '/';
                             bd[k - 2] = '/';
@@ -107,16 +117,16 @@ public class AIstrategies {
             }
 
             // set previous Zhang Yi's position to empty
-            bd[previousBoard.indexOf('z') + 2] = '/';
-            bd[previousBoard.indexOf('z') + 1] = '/';
-            bd[previousBoard.indexOf('z')] = '/';
+            bd[zy - 2] = '/';
+            bd[zy - 1] = '/';
+            bd[zy] = '/';
 
             // move ZY to his new position
             bd[m - 2] = 'z';
             bd[m - 1] = '9';
 
             // update our new board
-            String newBoard = null;
+            String newBoard = "";
             for (int i = 0; i < bd.length; i++) {
                 if (bd[i] != '/') {
                     char[] a = new char[]{bd[i]};
@@ -240,11 +250,15 @@ public class AIstrategies {
 
     // Basic Test
     public static void main(String[] args) {
-        int layers = 4;
+        int layers = 3;
         int player = 0;
         int numPlayers = 2;
         String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
 
+        System.out.println(allValidMoves(setup));
+//        List<String> previousState = new ArrayList<>();
+//        System.out.println(allNextStepPossibilities(previousState, 0, 1, 2, setup, ""));
+        System.out.println(bottomLookedLayerStates(layers, setup, player, numPlayers, setup, ""));
         System.out.println(bestMove(layers, setup, player, numPlayers, setup, ""));
     }
 }
