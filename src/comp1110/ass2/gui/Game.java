@@ -309,13 +309,14 @@ public class Game extends Application {
 
     }
 
+    private void clearCards(){
+        scrBD0.getChildren().removeAll(scrBD0.getChildren());
+        scrBD1.getChildren().removeAll(scrBD1.getChildren());
+        scrBD2.getChildren().removeAll(scrBD2.getChildren());
+        scrBD3.getChildren().removeAll(scrBD3.getChildren());
+    }
+    
     private void showCollectedCards() {
-//        //FIXME remove all collected cards before start but don't remove when different player making move
-//        scrBD0.getChildren().removeAll(scrBD0.getChildren());
-//        scrBD1.getChildren().removeAll(scrBD0.getChildren());
-//        scrBD2.getChildren().removeAll(scrBD0.getChildren());
-//        scrBD3.getChildren().removeAll(scrBD0.getChildren());
-
         //move the supporters to side
         String support = getSupporters(setup, history, numberOfPlayers, currentPlayer);
 
@@ -377,10 +378,12 @@ public class Game extends Application {
         System.out.println(currentPlayer);
 
         makeBoard(); //clears old board and creates new one
+        clearCards();
         showCollectedCards();
         showFlags();
         System.out.println("done");
 
+        //fixme check ai assignment when restart
         boolean[] AI = new boolean[4]; //maximum number of players
 
         //fixme reset the scene
