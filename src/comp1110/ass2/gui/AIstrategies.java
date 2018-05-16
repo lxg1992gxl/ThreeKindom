@@ -250,7 +250,7 @@ public class AIstrategies {
 
     // Basic Test
     public static void main(String[] args) {
-        int layers = 3;
+        int layers = 4;
         int player = 0;
         int numPlayers = 2;
         String history = "";
@@ -259,9 +259,8 @@ public class AIstrategies {
         System.out.println(allValidMoves(setup));
 //        List<String> previousState = new ArrayList<>();
 //        System.out.println(allNextStepPossibilities(previousState, 0, 1, 2, setup, ""));
-        System.out.println(bottomLookedLayerStates(layers, setup, player, numPlayers, setup, ""));
-        System.out.println(bestMove(layers, setup, player, numPlayers, setup, ""));
-        System.out.println(bestMove(layers, setup, player, numPlayers, setup, history));
+        System.out.println(bottomLookedLayerStates(layers, setup, player, numPlayers, setup, history));
+//        System.out.println(bestMove(layers, setup, player, numPlayers, setup, history));
 
     }
 }
