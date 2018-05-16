@@ -293,7 +293,7 @@ public class Game extends Application {
 
         //indicate the winner at the end of the game
         int winner = getWinnerID(getFlags(setup, history, numberOfPlayers));
-        Text win = new Text("Player " + winner + " is the winner!!! ");
+        Text win = new Text("Player " + (winner + 1) + " is the winner!!! ");
         win.setFont(Font.font("American Typewriter", FontWeight.EXTRA_BOLD, 68));
         win.setFill(Color.RED);
         win.setLayoutX(BOARD_WIDTH / 2 - 360);
