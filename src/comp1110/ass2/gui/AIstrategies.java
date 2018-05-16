@@ -19,6 +19,7 @@ public class AIstrategies {
         char[] place = currentBoard.toCharArray();
 
         // find ZhangYi's location in the currentBoard
+//        char zyloc = currentBoard.charAt(currentBoard.indexOf('z') + 2);
         char zyloc = ' '; //initialize zy location
         for (int p = 2; p != -1 && p < currentBoard.length(); p = p + 3) {
             if (place[p - 2] == 'z') {
@@ -181,8 +182,8 @@ public class AIstrategies {
         // initial state setting in String form (1st: moveSequence; 2nd: board; 3rd: mark)
         List<String> beginningStates = new ArrayList<>();
         beginningStates.add("");
-        beginningStates.add(currentBoard); //???
-        beginningStates.add("0"); //FIXME null added here causes error, needs an integer value but as String
+        beginningStates.add(currentBoard); //
+        beginningStates.add("0"); //
 
         for (int i = 1; i <= LookedLayers; i++) {
 
@@ -195,7 +196,7 @@ public class AIstrategies {
                 int checkedPlayer = (initialPlayer + i) % numPlayers;
 
                 List<String> previousState = new ArrayList<>();
-                previousState.add(beginningStates.get(p)); //FIXME array out of bounds exception here
+                previousState.add(beginningStates.get(p));
                 previousState.add(beginningStates.get(p + 1));
                 previousState.add(beginningStates.get(p + 2));
 
@@ -236,14 +237,15 @@ public class AIstrategies {
         return ((bestMoveSequence.toCharArray())[0]);
     }
 
-    //      For testing
+
+    // Basic Test
     public static void main(String[] args) {
         int layers = 4;
         int player = 0;
-        int numplayers = 2;
+        int numPlayers = 2;
         String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
 
-        System.out.println(bestMove(layers, setup, player, numplayers, setup, ""));
+        System.out.println(bestMove(layers, setup, player, numPlayers, setup, ""));
 
     }
 }
