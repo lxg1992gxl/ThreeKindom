@@ -140,7 +140,7 @@ public class Game extends Application {
                         Text end = new Text("No more valid move for Player " + (currentPlayer+1) + ". Game Ending!");
                         end.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
                         end.setFill(Color.BLACK);
-                        end.setLayoutX(390);
+                        end.setLayoutX(405);
                         end.setLayoutY(680);
                         notion.getChildren().add(end);
 
