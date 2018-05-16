@@ -66,6 +66,12 @@ public class AIstrategies {
         if (zy != 2) {
             zy = zy - 3;
         }
+
+        // set previous Zhang Yi's position to empty
+        bd[zy - 2] = '/';
+        bd[zy - 1] = '/';
+        bd[zy] = '/';
+
         int ZY = normaliseLoc(zyloc);
 
         for (String move : allValidMoves) {
@@ -115,11 +121,6 @@ public class AIstrategies {
                     }
                 }
             }
-
-            // set previous Zhang Yi's position to empty
-            bd[zy - 2] = '/';
-            bd[zy - 1] = '/';
-            bd[zy] = '/';
 
             // move ZY to his new position
             bd[m - 2] = 'z';
