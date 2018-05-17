@@ -17,7 +17,7 @@ public class WarringStatesGame {
      * @param cardPlacement A string describing a card placement
      * @return true if the card placement is well-formed
      */
-    static boolean isCardPlacementWellFormed(String cardPlacement) {
+    static boolean isCardPlacementWellFormed(String cardPlacement) { //Written by Lenna
         //Task 2: determine whether a card placement is well-formed
 
         char[] chunks = cardPlacement.toCharArray();
@@ -213,11 +213,9 @@ public class WarringStatesGame {
      * @return true if Zhang Yi may move to that location
      */
 
-    public static boolean isMoveLegal(String placement, char locationChar) {
+    public static boolean isMoveLegal(String placement, char locationChar) { //written by Lenna
         //Task 5: determine whether a given move is legal
 
-        //FIXME returns true for location char where ZY is
-        //check placement valid
         //check location char in range
         if ((locationChar >= 'A' & locationChar <= 'Z') | (locationChar >= '0' & locationChar <= '9')) {
             //get Zhang yi's current location
@@ -855,7 +853,7 @@ public class WarringStatesGame {
 
 
     // Used for Initially Check
-    public static boolean isValidLocation(char location) {
+    public static boolean isValidLocation(char location) { //written by Lenna
         if ((location >= 'A' & location <= 'Z') | (location >= '0' & location <= '9')) {
             return true;
         } else {
@@ -864,7 +862,7 @@ public class WarringStatesGame {
     }
 
     //return true if the String given represents a card within the game specifications, otherwise returns false
-    public static boolean isValidCard(String card) {
+    public static boolean isValidCard(String card) {//written by Lenna
         char[] chunks;
 
         if (card.length() == 2) {
@@ -898,7 +896,7 @@ public class WarringStatesGame {
      * @return the location char normalises to an int 0-35
      */
 
-    public static int normaliseLoc(char locationChar) {
+    public static int normaliseLoc(char locationChar) { //written by Lenna
         int result = -1;
         if (locationChar >= 'A' && locationChar <= 'Z') { //normalises letter locations
             result = (int) locationChar;
@@ -919,7 +917,7 @@ public class WarringStatesGame {
      * @return true if the locations are in the same row as each other
      */
 
-    public static boolean sameRow(char location1, char location2) {
+    public static boolean sameRow(char location1, char location2) { //written by Lenna
         int loc1 = normaliseLoc(location1);
         int loc2 = normaliseLoc(location2);
 
@@ -939,7 +937,7 @@ public class WarringStatesGame {
      * @return true if the locations are in the same column as each other
      */
 
-    public static boolean sameCol(char location1, char location2) {
+    public static boolean sameCol(char location1, char location2) { //written by Lenna
         int loc1 = normaliseLoc(location1);
         int loc2 = normaliseLoc(location2);
 
@@ -1109,7 +1107,7 @@ public class WarringStatesGame {
 
     // Task 9
     // creates a new updated board
-    public static String newBoard(String placement, String moves) {
+    public static String newBoard(String placement, String moves) { //written by Lenna based on code in task 6 written by Kathleen and Oliver
         char[] move = moves.toCharArray();
 
         for (int i = 0; i < 36; i++) {  //check duplication of moveSequence

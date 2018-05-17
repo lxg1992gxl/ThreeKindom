@@ -37,7 +37,11 @@ import static comp1110.ass2.WarringStatesGame.*;
 import static comp1110.ass2.WarringStatesGame.getWinnerID;
 import static comp1110.ass2.WarringStatesGame.noMoreValidMove;
 
+// This class was written by all team members, including collaboration of many parts
 // Kathleen mainly for: text and sound notions addition, flag collection area, background setting.
+// Lenna mainly for: FXPiece, AIsetup and automove methods, clearcards and showcards (with help from Oliver), showboard, restartgame, and slider
+// Oliver mainly for.. instruction page, starting page, layout of collected cards, highlight valid move
+
 public class Game extends Application {
     private static final int BOARD_WIDTH = 933;
     private static final int BOARD_HEIGHT = 700;
@@ -158,8 +162,8 @@ public class Game extends Application {
                         updateNotions();
 
                         //valid move notion sound for human player
-//                        MediaPlayer validSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "valid.wav").toString()));
-//                        validSound.play();
+                        MediaPlayer validSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "valid.wav").toString()));
+                        validSound.play(); //only plays sometimes?
                     }
                 }
             });
@@ -644,7 +648,7 @@ public class Game extends Application {
                 page2.setScene(scene);
 
                 MediaPlayer insSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "backMusic.mp3").toString()));
-                insSound.setAutoPlay(page2.isShowing()); //FIXME
+                insSound.play();
 
                 //pane2 background
                 ImageView ins = new ImageView();
@@ -693,6 +697,7 @@ public class Game extends Application {
                     public void handle(ActionEvent e) {
                         page2.hide();
                         page1.show();
+                        insSound.stop();
                     }
                 });
 
