@@ -43,6 +43,8 @@ public class Game extends Application {
 
     // Task 9: Implement a basic playable Warring States game in JavaFX
     // Task 11: Allow players of your Warring States game to play against your simple agent
+    // Task 12: Integrate a more advanced opponent into your game
+    // -- -- generating brilliant move (calling from AIstrategies Class) & using slider for difficulty selection
 
     private static final String URI_BASE = "assets/";
 
@@ -112,6 +114,7 @@ public class Game extends Application {
 
 
             setOnMousePressed(event -> {
+                highlight.getChildren().clear();
                 //System.out.println("current card: " + this.id + this.loc);
                 if (this.id.equals("z9") || !WarringStatesGame.isMoveLegal(currentBoard, this.loc)) {
                     notion.getChildren().removeAll(notion.getChildren());
@@ -122,6 +125,7 @@ public class Game extends Application {
                     invalid.setLayoutY(680);
                     notion.getChildren().add(invalid);
 
+                    //invalid move notion sound
                     MediaPlayer invalidSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "invalid.wav").toString()));
                     invalidSound.play();
 //                    System.out.println("error");
@@ -163,18 +167,12 @@ public class Game extends Application {
                         valid.setLayoutY(680);
                         notion.getChildren().add(valid);
 
+                        //valid move notion sound for human player
                         MediaPlayer validSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "valid.wav").toString()));
                         validSound.play();
                     }
                 }
             });
-
-            //todo code to highlight valid move when hovered over
-            setOnMouseMoved(event -> {
-                        //System.out.println(getLayoutX());
-                        //System.out.println(getX());
-                    }
-            );
 
         }
 
@@ -312,7 +310,9 @@ public class Game extends Application {
 
 
     private void endGame() {
+        highlight.getChildren().clear();
 
+        //notion sound for winner
         MediaPlayer winSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "gameEnd.mp3").toString()));
         winSound.play();
 
@@ -815,7 +815,7 @@ public class Game extends Application {
         showCollectedCards();
 
         cardCollectBoard.setMaxWidth(270);
-        cardCollectBoard.setLayoutX(10);
+        cardCollectBoard.setLayoutX(35);
         cardCollectBoard.setLayoutY(5);
         cardCollectBoard.setPadding(new Insets(5));
 
@@ -848,7 +848,7 @@ public class Game extends Application {
 
     }
 
-    //Task 12: Integrate a more advanced opponent into your game
+
 
 }
 
