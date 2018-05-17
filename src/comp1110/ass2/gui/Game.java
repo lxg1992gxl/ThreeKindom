@@ -359,8 +359,8 @@ public class Game extends Application {
             cards[currentPlayer][j].setLayoutY(12 * j);
 
             //shrink the cards so will fit in the board
-            cards[currentPlayer][j].setFitHeight(95);
-            cards[currentPlayer][j].setFitWidth(95);
+            cards[currentPlayer][j].setFitHeight(85);
+            cards[currentPlayer][j].setFitWidth(85);
             switch (currentPlayer) {
                 case (0):
                     scrBD0.getChildren().add(cards[currentPlayer][j]);
@@ -814,8 +814,8 @@ public class Game extends Application {
         showFlags();
         showCollectedCards();
 
-        cardCollectBoard.setMaxWidth(270);
-        cardCollectBoard.setLayoutX(25);
+        cardCollectBoard.setMaxWidth(320);
+        cardCollectBoard.setLayoutX(10);
         cardCollectBoard.setLayoutY(10);
         cardCollectBoard.setPadding(new Insets(5));
 
