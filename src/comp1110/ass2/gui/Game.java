@@ -403,11 +403,11 @@ public class Game extends Application {
         //reset difficulty
         difficulty = 5.0;
 
-        //reset ai assignment when restart
-        for(boolean b: AI){
-            b= false;
-        }
-        AIPlayer(numberOfPlayers, numberOfHumans);
+//        //reset ai assignment when restart
+//        for(boolean b: AI){
+//            b= false;
+//        }
+//        AIPlayer(numberOfPlayers, numberOfHumans);
 
 
     }
@@ -579,16 +579,8 @@ public class Game extends Application {
                 System.out.println(difficulty);
             }
         });
-        //slider.selectedProperty().addListener(new ChangeListener<Boolean>() {
-//            public void changed(ObservableValue<? extends Boolean> ov,
-//                                Boolean old_val, Boolean new_val) {
-//                if (checkBox.isSelected()) {
-//                    advAI = true;
-//                } else {
-//                    advAI = false;
-//                }
-
-
+        //listener code from: https://o7planning.org/en/11083/javafx-slider-tutorial
+        
         //event of buttons
         exitBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
