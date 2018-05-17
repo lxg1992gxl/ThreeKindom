@@ -30,7 +30,6 @@ public class WarringStatesGame {
                 //check for second character
                 if ((chunks[1] + chunks[0] <= 152) & (chunks[1] >= 48)) {
                     //check for third character
-                    //FIXME
                     if ((chunks[2] >= 'A' & chunks[2] <= 'Z') | (chunks[2] >= '0' & chunks[2] <= '9')) {
                         //check in right range and also number possibilities
                         return true;
@@ -1109,7 +1108,6 @@ public class WarringStatesGame {
 
 
     // Task 9
-    //FIXME write tests?, neaten up
     public static String newBoard(String placement, String moves) {
         char[] move = moves.toCharArray();
 

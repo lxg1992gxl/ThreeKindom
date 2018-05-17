@@ -31,6 +31,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
+import java.awt.font.ImageGraphicAttribute;
 import java.util.ArrayList;
 
 import static comp1110.ass2.WarringStatesGame.*;
@@ -41,7 +42,7 @@ public class Game extends Application {
     private static final int BOARD_WIDTH = 933;
     private static final int BOARD_HEIGHT = 700;
 
-    // FIXME Task 9: Implement a basic playable Warring States game in JavaFX
+    // Task 9: Implement a basic playable Warring States game in JavaFX
     // Task 11: Allow players of your Warring States game to play against your simple agent
 
     private static final String URI_BASE = "assets/";
@@ -401,6 +402,15 @@ public class Game extends Application {
         Pane pane1 = new Pane();
         Scene settingScene = new Scene(pane1, 400, 300);
 
+        ImageView start = new ImageView();
+        Image st = new Image(Game.class.getResource(URI_BASE + "stBackground.JPG").toString());
+        start.setImage(st);
+        start.setFitHeight(300);
+        start.setFitWidth(400);
+        start.setLayoutX(0);
+        start.setLayoutY(0);
+        pane1.getChildren().add(start);
+
         //add buttons
         Button exitBtn = new Button("Exit");
         exitBtn.setLayoutX(50);
@@ -418,20 +428,23 @@ public class Game extends Application {
         //create radio buttons group
         ToggleGroup rb = new ToggleGroup();
         RadioButton twoPlayers = new RadioButton("2-Players game");
-        twoPlayers.setLayoutX(50);
-        twoPlayers.setLayoutY(145);
+        twoPlayers.setFont(Font.font("Arial",FontWeight.EXTRA_BOLD, 14));
+        twoPlayers.setLayoutX(48);
+        twoPlayers.setLayoutY(150);
         twoPlayers.setSelected(true);
         twoPlayers.setToggleGroup(rb);
         numberOfPlayers = 2;
 
         RadioButton threePlayers = new RadioButton("3-Players game");
-        threePlayers.setLayoutX(50);
-        threePlayers.setLayoutY(180);
+        threePlayers.setFont(Font.font("Arial",FontWeight.EXTRA_BOLD, 14));
+        threePlayers.setLayoutX(48);
+        threePlayers.setLayoutY(185);
         threePlayers.setToggleGroup(rb);
 
         RadioButton fourPlayers = new RadioButton("4-Players game");
-        fourPlayers.setLayoutX(50);
-        fourPlayers.setLayoutY(215);
+        fourPlayers.setFont(Font.font("Arial",FontWeight.EXTRA_BOLD, 14));
+        fourPlayers.setLayoutX(48);
+        fourPlayers.setLayoutY(220);
         fourPlayers.setToggleGroup(rb);
 
         pane1.getChildren().addAll(twoPlayers, threePlayers, fourPlayers);
@@ -471,7 +484,7 @@ public class Game extends Application {
 
         //create headline
         Text headline = new Text("Warring States");
-        headline.setLayoutX(45);
+        headline.setLayoutX(58);
         headline.setLayoutY(72);
         headline.setFont(Font.font("verdana", FontWeight.EXTRA_BOLD, 38));
         headline.setFill(Color.RED);
@@ -484,6 +497,7 @@ public class Game extends Application {
 
         //create "How many robots \ndo you want to add?"
         Text tAddBot = new Text("How many robots \ndo you want to add?");
+        tAddBot.setFont(Font.font("Arial",FontWeight.EXTRA_BOLD, 13));
         tAddBot.setLayoutX(200);
         tAddBot.setLayoutY(150);
         pane1.getChildren().add(tAddBot);
@@ -502,6 +516,7 @@ public class Game extends Application {
 
         //add checkbox
         CheckBox checkBox = new CheckBox("Advanced AI");
+        checkBox.setFont(Font.font("Arial",FontWeight.EXTRA_BOLD, 14));
         checkBox.setLayoutX(200);
         checkBox.setLayoutY(200);
         pane1.getChildren().add(checkBox);
@@ -534,6 +549,15 @@ public class Game extends Application {
                 page2.setTitle("How to play");
                 page2.initStyle(StageStyle.UNDECORATED);
                 page2.setScene(scene);
+
+                ImageView ins = new ImageView();
+                Image insBack = new Image(Game.class.getResource(URI_BASE + "insBackground.JPG").toString());
+                ins.setImage(insBack);
+                ins.setFitHeight(500);
+                ins.setFitWidth(400);
+                ins.setLayoutX(0);
+                ins.setLayoutY(0);
+                pane2.getChildren().add(ins);
 
                 Label instruction = new Label(
                         "Players take turns to collect characters to their side, by clicking the board and " +
@@ -583,6 +607,17 @@ public class Game extends Application {
             @Override
             public void handle(MouseEvent event) {
                 numberOfHumans = numberOfPlayers - numberOfAI;
+
+                //FIXME Maybe add the whole game background at the wrong position of the game
+                ImageView gameBack = new ImageView();
+                Image mainBackground = new Image(Game.class.getResource(URI_BASE + "gameBackground.JPG").toString());
+                gameBack.setImage(mainBackground);
+                gameBack.setFitHeight(BOARD_HEIGHT);
+                gameBack.setFitWidth(BOARD_WIDTH);
+                gameBack.setLayoutX(0);
+                gameBack.setLayoutY(0);
+                restart.getChildren().add(gameBack);
+
                 page1.hide();
                 primaryStage.show();
 //                        System.out.println(numberOfAI);
@@ -664,7 +699,6 @@ public class Game extends Application {
 
         primaryStage.setTitle("Warring States");
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
-
 
         //
         //setting window ends here
