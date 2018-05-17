@@ -109,7 +109,7 @@ public class Game extends Application {
 
             setOnMouseEntered(event -> {
                 highlight.getChildren().clear();
-                highLightMouse(this.loc,loc);
+                highLightMouse(this.loc, loc);
             });
 
             setOnMousePressed(event -> {
@@ -181,7 +181,7 @@ public class Game extends Application {
         }
     }
 
-    private void updateNotions(){
+    private void updateNotions() {
         notion.getChildren().removeAll(notion.getChildren());
         Text valid = new Text("Valid move. Next comes to Player " + (currentPlayer + 1) + "'s turn!");
         valid.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
@@ -219,7 +219,7 @@ public class Game extends Application {
 
     //Generates a move based on the modified minimax tree
     private void AdvAIMove(String placement) {
-        char loc = AIstrategies.bestMove((int)difficulty, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
+        char loc = AIstrategies.bestMove((int) difficulty, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
         history = history + loc + "";
 
         showCollectedCards();
@@ -235,7 +235,7 @@ public class Game extends Application {
 
     //populates the array to show which players are AI
     private void AIPlayer(int numberOfPlayers, int numberOfHumans) {
-       for (int i = 0; i < numberOfPlayers; i++) {
+        for (int i = 0; i < numberOfPlayers; i++) {
             if (i < numberOfHumans) {
                 AI[i] = false;
 
@@ -243,7 +243,7 @@ public class Game extends Application {
                 AI[i] = true;
             }
 
-       }
+        }
 
         //extension --> turn this array into an int array and allow AIs to have differnt difficulty levels
 
@@ -352,11 +352,11 @@ public class Game extends Application {
             cards[currentPlayer][j] = new FXpiece(support.substring(j * 2, j * 2 + 2) + '/');
 
             cards[currentPlayer][j].setLayoutX(105 * currentPlayer);
-            cards[currentPlayer][j].setLayoutY(20 * j);
+            cards[currentPlayer][j].setLayoutY(12 * j);
 
             //shrink the cards so will fit in the board
-            cards[currentPlayer][j].setFitHeight(70);
-            cards[currentPlayer][j].setFitWidth(70);
+            cards[currentPlayer][j].setFitHeight(95);
+            cards[currentPlayer][j].setFitWidth(95);
             switch (currentPlayer) {
                 case (0):
                     scrBD0.getChildren().add(cards[currentPlayer][j]);
@@ -387,19 +387,19 @@ public class Game extends Application {
         }
     }
 
-    private void highLightMouse(char loc,int normalLoc) {
+    private void highLightMouse(char loc, int normalLoc) {
         //System.out.println(id+loc);
         int w = 100;
         int h = 100;
         int gap = 4;
-        if (isMoveLegal(currentBoard,loc)){
+        if (isMoveLegal(currentBoard, loc)) {
             ImageView greenRec = new ImageView(new Image(Game.class.getResource(URI_BASE + "right.png").toString()));
             greenRec.setLayoutX(BOARD_WIDTH - ((normalLoc / 6 + 1) * w + (normalLoc / 6 + 1) * gap) - 4);
             greenRec.setLayoutY(10 + normalLoc % 6 * h + normalLoc % 6 * gap);
             greenRec.setScaleX(1.05);
             greenRec.setScaleY(1.05);
             highlight.getChildren().add(greenRec);
-        }else{
+        } else {
             ImageView redRec = new ImageView(new Image(Game.class.getResource(URI_BASE + "wrong.png").toString()));
             redRec.setLayoutX(BOARD_WIDTH - ((normalLoc / 6 + 1) * w + (normalLoc / 6 + 1) * gap) - 4);
             redRec.setLayoutY(10 + normalLoc % 6 * h + normalLoc % 6 * gap);
@@ -448,7 +448,6 @@ public class Game extends Application {
 //            b= false;
 //        }
 //        AIPlayer(numberOfPlayers, numberOfHumans);
-
 
 
     }
@@ -811,8 +810,8 @@ public class Game extends Application {
         showCollectedCards();
 
         cardCollectBoard.setMaxWidth(270);
-        cardCollectBoard.setLayoutX(35);
-        cardCollectBoard.setLayoutY(5);
+        cardCollectBoard.setLayoutX(25);
+        cardCollectBoard.setLayoutY(10);
         cardCollectBoard.setPadding(new Insets(5));
 
         //set reset button
@@ -840,9 +839,7 @@ public class Game extends Application {
 
         primaryStage.setScene(scene);
         //move "primaryStage.show" to setting window "GameStart Btn"
-
     }
-
 
 
 }
