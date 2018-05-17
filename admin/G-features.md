@@ -13,7 +13,9 @@ of our project implements the following features:
 
 additional features:
  - Instructions at the start window for new game players
- - restart button to allow to play again
- - notion sounds for valid/invalid move and final winner
+ - Restart button to allow to play again
+ - Notion sounds for valid/invalid move and final winner
+ - Be able to have arbitrary number of robots in a 2-4 player game
+ - Have "robot difficulty" selection slider from 1-9 (from random move to advanced forward-looking AI)
 
 
