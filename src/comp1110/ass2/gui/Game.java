@@ -435,11 +435,6 @@ public class Game extends Application {
         start.setLayoutY(0);
         pane1.getChildren().add(start);
 
-//        // background music
-//        MediaPlayer backMusic = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "startMusic.mp3").toString()));
-//        backMusic.play();
-//        //pane1.getChildren().add(backMusic);
-
         //add buttons
         Button exitBtn = new Button("Exit");
         exitBtn.setLayoutX(50);
