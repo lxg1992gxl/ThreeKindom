@@ -66,6 +66,7 @@ public class Game extends Application {
     private int numberOfAI;
     private int numberOfHumans;
     private boolean advAI;
+    private double difficulty = 5.0;
 
     private String setup = WarringStatesGame.randomSetup();
     //    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
@@ -135,6 +136,7 @@ public class Game extends Application {
 
                     //System.out.println(currentPlayer);
                     if (noMoreValidMove(currentBoard)) {
+//                        System.out.println("finished!"); //working
                         notion.getChildren().removeAll(notion.getChildren());
                         Text end = new Text("No more valid move for Player " + (currentPlayer + 1) + ". Game Ending!");
                         end.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
@@ -143,8 +145,9 @@ public class Game extends Application {
                         end.setLayoutY(680);
                         notion.getChildren().add(end);
 
-//                        System.out.println("finished!"); //working
                         endGame();
+
+
                     } else {
                         notion.getChildren().removeAll(notion.getChildren());
                         Text valid = new Text("Valid move. Next comes to Player " + (currentPlayer + 1) + "'s turn!");
@@ -153,6 +156,11 @@ public class Game extends Application {
                         valid.setLayoutX(410);
                         valid.setLayoutY(680);
                         notion.getChildren().add(valid);
+
+                        if (AI[currentPlayer]) {
+                            autoMove(currentBoard);
+                            //System.out.println("called automove");
+                        }
                     }
                 }
             });
@@ -173,10 +181,10 @@ public class Game extends Application {
     }
 
     private void autoMove(String placement) {
-        if (advAI) {
-            AdvAIMove(placement);
-        } else {
+        if (difficulty ==1.0) {
             AIMove(placement);
+        } else {
+            AdvAIMove(placement);
         }
     }
 
@@ -192,14 +200,20 @@ public class Game extends Application {
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         showFlags();
 
-        if (AI[currentPlayer]) { //check whether next player is still computer?
+        if(noMoreValidMove(currentBoard)){
+
+            endGame();
+            System.out.println("AI finished");
+        }
+        else if (AI[currentPlayer]) { //check whether next player is still computer?
             autoMove(currentBoard);
         }
+
 
     }
 
     private void AdvAIMove(String placement) {
-        char loc = AIstrategies.bestMove(6, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
+        char loc = AIstrategies.bestMove((int)difficulty, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
         //System.out.println(loc);
         history = history + loc + "";
         //System.out.println("current history: " +history);
@@ -210,6 +224,13 @@ public class Game extends Application {
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         showFlags();
         if (AI[currentPlayer] && !noMoreValidMove(currentBoard)) {
+
+        if(noMoreValidMove(currentBoard)){
+            endGame();
+            System.out.println("AdvAI finished");
+        }
+
+        else if (AI[currentPlayer]) {
             autoMove(currentBoard);
         }
     }
@@ -383,10 +404,17 @@ public class Game extends Application {
         showFlags();
         //System.out.println("done");
 
-        //fixme check ai assignment when restart
-        boolean[] AI = new boolean[4]; //maximum number of players
+        notion.getChildren().removeAll(notion.getChildren());
 
-        //fixme reset the scene
+        //reset difficulty
+        difficulty = 5.0;
+
+//        //reset ai assignment when restart
+//        for(boolean b: AI){
+//            b= false;
+//        }
+//        AIPlayer(numberOfPlayers, numberOfHumans);
+
 
     }
 
@@ -520,21 +548,53 @@ public class Game extends Application {
         }));
 
         //add checkbox
-        CheckBox checkBox = new CheckBox("Advanced AI");
-        checkBox.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 14));
-        checkBox.setLayoutX(200);
-        checkBox.setLayoutY(200);
-        pane1.getChildren().add(checkBox);
-        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            public void changed(ObservableValue<? extends Boolean> ov,
-                                Boolean old_val, Boolean new_val) {
-                if (checkBox.isSelected()) {
-                    advAI = true;
-                } else {
-                    advAI = false;
-                }
+//        CheckBox checkBox = new CheckBox("Advanced AI");
+//        checkBox.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 14));
+//        checkBox.setLayoutX(200);
+//        checkBox.setLayoutY(200);
+//        pane1.getChildren().add(checkBox);
+//        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+//            public void changed(ObservableValue<? extends Boolean> ov,
+//                                Boolean old_val, Boolean new_val) {
+//                if (checkBox.isSelected()) {
+//                    advAI = true;
+//                } else {
+//                    advAI = false;
+//                }
+//            }
+//        });
+
+        //add slider
+        Slider slider = new Slider(1.0, 9.0, 5.0);
+        Label diff = new Label("Select difficulty");
+        diff.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 13));
+        diff.setLayoutY(190);
+        diff.setLayoutX(200);
+        slider.setLayoutX(200);
+        slider.setLayoutY(210);
+        slider.setShowTickMarks(true);
+        slider.setShowTickLabels(true);
+        slider.setMajorTickUnit(1f);
+        slider.setMinorTickCount(0);
+        slider.setSnapToTicks(true);
+        //max 9, min 1, snap to whole values
+
+        pane1.getChildren().addAll(slider, diff);
+        //get property and add to other stuff
+
+        difficulty = slider.getValue();
+        //System.out.println(difficulty);
+        // Adding Listener to value property.
+        slider.valueProperty().addListener(new ChangeListener<Number>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, //
+                                Number oldValue, Number newValue) {
+                difficulty = (double) newValue;
+                //System.out.println(difficulty);
             }
         });
+        //listener code from: https://o7planning.org/en/11083/javafx-slider-tutorial
 
         //event of buttons
         exitBtn.setOnAction(new EventHandler<ActionEvent>() {

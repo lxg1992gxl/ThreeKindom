@@ -2,7 +2,7 @@ We declare that the work we have submitted for Stage G of this assignment and al
 
 * The idea of using <...> to make the game run faster came from a discussion with <...> (noted in source code comments)
 
-* The code in class <...> is based on a solution we found when researching the problem (URL provided in source code comments)
+The code in Game class for the slider action listener is from: https://o7planning.org/en/11083/javafx-slider-tutorial
 
 * ....
 
