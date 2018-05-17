@@ -19,9 +19,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -30,8 +28,6 @@ import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
-
-import java.awt.font.ImageGraphicAttribute;
 import java.util.ArrayList;
 
 import static comp1110.ass2.WarringStatesGame.*;
@@ -173,14 +169,14 @@ public class Game extends Application {
         }
     }
 
-    private void autoMove(String placement){
-        if(advAI){
+    private void autoMove(String placement) {
+        if (advAI) {
             AdvAIMove(placement);
-        }
-        else {
+        } else {
             AIMove(placement);
         }
     }
+
     private void AIMove(String placement) {
         char loc = generateMove(placement);
         //System.out.println(loc);
@@ -310,13 +306,13 @@ public class Game extends Application {
 
     }
 
-    private void clearCards(){
+    private void clearCards() {
         scrBD0.getChildren().removeAll(scrBD0.getChildren());
         scrBD1.getChildren().removeAll(scrBD1.getChildren());
         scrBD2.getChildren().removeAll(scrBD2.getChildren());
         scrBD3.getChildren().removeAll(scrBD3.getChildren());
     }
-    
+
     private void showCollectedCards() {
         //move the supporters to side
         String support = getSupporters(setup, history, numberOfPlayers, currentPlayer);
@@ -371,18 +367,18 @@ public class Game extends Application {
 
     public void restartGame() {
         setup = WarringStatesGame.randomSetup();
-        System.out.println(setup);
+        //System.out.println(setup);
         history = "";
-        System.out.println(history);
+        //System.out.println(history);
         currentBoard = newBoard(setup, history);
         currentPlayer = 0;
-        System.out.println(currentPlayer);
+        //System.out.println(currentPlayer);
 
         makeBoard(); //clears old board and creates new one
         clearCards();
         showCollectedCards();
         showFlags();
-        System.out.println("done");
+        //System.out.println("done");
 
         //fixme check ai assignment when restart
         boolean[] AI = new boolean[4]; //maximum number of players
@@ -402,6 +398,7 @@ public class Game extends Application {
         Pane pane1 = new Pane();
         Scene settingScene = new Scene(pane1, 400, 300);
 
+        //pane1 background
         ImageView start = new ImageView();
         Image st = new Image(Game.class.getResource(URI_BASE + "stBackground.JPG").toString());
         start.setImage(st);
@@ -428,7 +425,7 @@ public class Game extends Application {
         //create radio buttons group
         ToggleGroup rb = new ToggleGroup();
         RadioButton twoPlayers = new RadioButton("2-Players game");
-        twoPlayers.setFont(Font.font("Arial",FontWeight.EXTRA_BOLD, 14));
+        twoPlayers.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 14));
         twoPlayers.setLayoutX(48);
         twoPlayers.setLayoutY(150);
         twoPlayers.setSelected(true);
@@ -436,13 +433,13 @@ public class Game extends Application {
         numberOfPlayers = 2;
 
         RadioButton threePlayers = new RadioButton("3-Players game");
-        threePlayers.setFont(Font.font("Arial",FontWeight.EXTRA_BOLD, 14));
+        threePlayers.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 14));
         threePlayers.setLayoutX(48);
         threePlayers.setLayoutY(185);
         threePlayers.setToggleGroup(rb);
 
         RadioButton fourPlayers = new RadioButton("4-Players game");
-        fourPlayers.setFont(Font.font("Arial",FontWeight.EXTRA_BOLD, 14));
+        fourPlayers.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 14));
         fourPlayers.setLayoutX(48);
         fourPlayers.setLayoutY(220);
         fourPlayers.setToggleGroup(rb);
@@ -497,7 +494,7 @@ public class Game extends Application {
 
         //create "How many robots \ndo you want to add?"
         Text tAddBot = new Text("How many robots \ndo you want to add?");
-        tAddBot.setFont(Font.font("Arial",FontWeight.EXTRA_BOLD, 13));
+        tAddBot.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 13));
         tAddBot.setLayoutX(200);
         tAddBot.setLayoutY(150);
         pane1.getChildren().add(tAddBot);
@@ -516,7 +513,7 @@ public class Game extends Application {
 
         //add checkbox
         CheckBox checkBox = new CheckBox("Advanced AI");
-        checkBox.setFont(Font.font("Arial",FontWeight.EXTRA_BOLD, 14));
+        checkBox.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 14));
         checkBox.setLayoutX(200);
         checkBox.setLayoutY(200);
         pane1.getChildren().add(checkBox);
@@ -550,6 +547,7 @@ public class Game extends Application {
                 page2.initStyle(StageStyle.UNDECORATED);
                 page2.setScene(scene);
 
+                //pane2 background
                 ImageView ins = new ImageView();
                 Image insBack = new Image(Game.class.getResource(URI_BASE + "insBackground.JPG").toString());
                 ins.setImage(insBack);
@@ -559,6 +557,7 @@ public class Game extends Application {
                 ins.setLayoutY(0);
                 pane2.getChildren().add(ins);
 
+                //
                 Label instruction = new Label(
                         "Players take turns to collect characters to their side, by clicking the board and " +
                                 "moving Zhang Yi around the grid. On one's turn, a player chooses a direction " +
@@ -607,16 +606,6 @@ public class Game extends Application {
             @Override
             public void handle(MouseEvent event) {
                 numberOfHumans = numberOfPlayers - numberOfAI;
-
-                //FIXME Maybe add the whole game background at the wrong position of the game
-                ImageView gameBack = new ImageView();
-                Image mainBackground = new Image(Game.class.getResource(URI_BASE + "gameBackground.JPG").toString());
-                gameBack.setImage(mainBackground);
-                gameBack.setFitHeight(BOARD_HEIGHT);
-                gameBack.setFitWidth(BOARD_WIDTH);
-                gameBack.setLayoutX(0);
-                gameBack.setLayoutY(0);
-                restart.getChildren().add(gameBack);
 
                 page1.hide();
                 primaryStage.show();
@@ -699,6 +688,15 @@ public class Game extends Application {
 
         primaryStage.setTitle("Warring States");
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
+        //main window background
+        ImageView gameBack = new ImageView();
+        Image mainBackground = new Image(Game.class.getResource(URI_BASE + "gameBackground.JPG").toString());
+        gameBack.setImage(mainBackground);
+        gameBack.setFitHeight(BOARD_HEIGHT);
+        gameBack.setFitWidth(BOARD_WIDTH);
+        gameBack.setLayoutX(0);
+        gameBack.setLayoutY(0);
+        root.getChildren().add(gameBack);
 
         //
         //setting window ends here
