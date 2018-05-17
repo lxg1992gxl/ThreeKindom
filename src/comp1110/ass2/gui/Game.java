@@ -144,10 +144,14 @@ public class Game extends Application {
 
                     //System.out.println(currentPlayer);
                     if (noMoreValidMove(currentBoard)) {
-                        updateNotions();
+                        notion.getChildren().removeAll(notion.getChildren());
+                        Text end = new Text("No more valid move for Player " + (currentPlayer + 1) + ". Game Ending!");
+                        end.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
+                        end.setFill(Color.BLACK);
+                        end.setLayoutX(405);
+                        end.setLayoutY(680);
                         notion.getChildren().add(end);
 
-//                        System.out.println("finished!"); //working
                         endGame();
                     } else {
                         notion.getChildren().removeAll(notion.getChildren());
@@ -157,6 +161,9 @@ public class Game extends Application {
                         valid.setLayoutX(410);
                         valid.setLayoutY(680);
                         notion.getChildren().add(valid);
+
+                        MediaPlayer validSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "valid.wav").toString()));
+                        validSound.play();
                     }
                 }
             });
@@ -312,6 +319,9 @@ public class Game extends Application {
 
     private void endGame() {
 //        System.out.println("end game");
+
+        MediaPlayer winSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "gameEnd.mp3").toString()));
+        winSound.play();
 
         //indicate the winner at the end of the game
         int winner = getWinnerID(getFlags(setup, history, numberOfPlayers));
