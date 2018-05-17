@@ -462,6 +462,11 @@ public class Game extends Application {
         Pane pane1 = new Pane();
         Scene settingScene = new Scene(pane1, 400, 300);
 
+        MediaPlayer stSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "backMusic.mp3").toString()));
+        stSound.setAutoPlay(page1.isShowing()); //FIXME
+//        stSound.setAutoPlay(pane1.isVisible());
+//        stSound.play();
+
         //pane1 background
         ImageView start = new ImageView();
         Image st = new Image(Game.class.getResource(URI_BASE + "stBackground.JPG").toString());
@@ -644,6 +649,9 @@ public class Game extends Application {
                 page2.initStyle(StageStyle.UNDECORATED);
                 page2.setScene(scene);
 
+                MediaPlayer insSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "backMusic.mp3").toString()));
+                insSound.setAutoPlay(page2.isShowing()); //FIXME
+
                 //pane2 background
                 ImageView ins = new ImageView();
                 Image insBack = new Image(Game.class.getResource(URI_BASE + "insBackground.JPG").toString());
@@ -704,12 +712,9 @@ public class Game extends Application {
             public void handle(MouseEvent event) {
                 numberOfHumans = numberOfPlayers - numberOfAI;
 
+//                stSound.pause(); //FIXME
                 page1.hide();
                 primaryStage.show();
-//                        System.out.println(numberOfAI);
-//                        System.out.println(advAI);
-//                        System.out.println(numberOfPlayers);
-//                        System.out.println(currentPlayer);
 
                 //set up the AI players
                 AIPlayer(numberOfPlayers, numberOfHumans);
