@@ -164,8 +164,8 @@ public class Game extends Application {
                         notion.getChildren().add(valid);
 
                         //valid move notion sound for human player
-                        MediaPlayer validSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "valid.wav").toString()));
-                        validSound.play();
+//                        MediaPlayer validSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "valid.wav").toString()));
+//                        validSound.play();
                     }
                 }
             });
@@ -307,8 +307,8 @@ public class Game extends Application {
         highlight.getChildren().clear();
 
         //notion sound for winner
-        MediaPlayer winSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "gameEnd.mp3").toString()));
-        winSound.play();
+//        MediaPlayer winSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "gameEnd.mp3").toString()));
+//        winSound.play();
 
         //indicate the winner at the end of the game
         int winner = getWinnerID(getFlags(setup, history, numberOfPlayers));
@@ -462,8 +462,8 @@ public class Game extends Application {
         Pane pane1 = new Pane();
         Scene settingScene = new Scene(pane1, 400, 300);
 
-        MediaPlayer stSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "backMusic.mp3").toString()));
-        stSound.setAutoPlay(page1.isShowing()); //FIXME
+//        MediaPlayer stSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "backMusic.mp3").toString()));
+//        stSound.setAutoPlay(page1.isShowing()); //FIXME
 //        stSound.setAutoPlay(pane1.isVisible());
 //        stSound.play();
 
@@ -792,7 +792,7 @@ public class Game extends Application {
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
         //main window background
         ImageView gameBack = new ImageView();
-        Image mainBackground = new Image(Game.class.getResource(URI_BASE + "gameBackground.JPG").toString());
+        Image mainBackground = new Image(Game.class.getResource(URI_BASE + "gameBackground.jpg").toString());
         gameBack.setImage(mainBackground);
         gameBack.setFitHeight(BOARD_HEIGHT);
         gameBack.setFitWidth(BOARD_WIDTH);
