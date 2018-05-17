@@ -112,6 +112,7 @@ public class Game extends Application {
                 highLightMouse(this.loc, loc);
             });
 
+
             setOnMousePressed(event -> {
                 highlight.getChildren().clear();
                 //System.out.println("current card: " + this.id + this.loc);
@@ -324,14 +325,17 @@ public class Game extends Application {
         win.setLayoutY(BOARD_HEIGHT / 2 - 80);
         end.getChildren().add(win);
 
+
+
         Text congratulation = new Text("Congratulations! Y(^o^)Y");
         congratulation.setFont(Font.font("American Typewriter", FontWeight.EXTRA_BOLD, 56));
         congratulation.setFill(Color.MEDIUMVIOLETRED);
         congratulation.setLayoutX(BOARD_WIDTH / 2 - 330);
         congratulation.setLayoutY(BOARD_HEIGHT / 2 + 20);
         end.getChildren().add(congratulation);
+        end.toFront();
+        root.getChildren().remove(highlight);
 
-        notion.getChildren().removeAll(notion.getChildren());
     }
 
     //clears cards from the collected cards pane
@@ -407,8 +411,9 @@ public class Game extends Application {
             redRec.setScaleY(1.05);
             highlight.getChildren().add(redRec);
         }
-
-        board.toFront();
+        if (!noMoreValidMove(currentBoard)) {
+            board.toFront();
+        }
     }
 
     private void makeRec(int x, int y, int width, int height, int arcw, int arch, Color fill, Color stroke) {
@@ -831,6 +836,7 @@ public class Game extends Application {
                 player.getChildren().clear();
                 end.getChildren().clear();
                 restartGame();
+                root.getChildren().add(highlight);
             }
         });
 
