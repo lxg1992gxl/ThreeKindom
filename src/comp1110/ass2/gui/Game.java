@@ -43,6 +43,8 @@ public class Game extends Application {
 
     // Task 9: Implement a basic playable Warring States game in JavaFX
     // Task 11: Allow players of your Warring States game to play against your simple agent
+    // Task 12: Integrate a more advanced opponent into your game
+    // -- -- generating brilliant move (calling from AIstrategies Class) & using slider for difficulty selection
 
     private static final String URI_BASE = "assets/";
 
@@ -121,6 +123,7 @@ public class Game extends Application {
                     invalid.setLayoutY(680);
                     notion.getChildren().add(invalid);
 
+                    //invalid move notion sound
                     MediaPlayer invalidSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "invalid.wav").toString()));
                     invalidSound.play();
 //                    System.out.println("error");
@@ -162,6 +165,7 @@ public class Game extends Application {
                         valid.setLayoutY(680);
                         notion.getChildren().add(valid);
 
+                        //valid move notion sound for human player
                         MediaPlayer validSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "valid.wav").toString()));
                         validSound.play();
                     }
@@ -320,6 +324,7 @@ public class Game extends Application {
     private void endGame() {
 //        System.out.println("end game");
 
+        //notion sound for winner
         MediaPlayer winSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "gameEnd.mp3").toString()));
         winSound.play();
 
@@ -846,10 +851,7 @@ public class Game extends Application {
 
     }
 
-    // FIXME Task 12: Integrate a more advanced opponent into your game
-    //generate brilliant move (calling from AIstrategies Class)!
 
-    //slider? difficulty selection
 
 }
 
