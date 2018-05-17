@@ -811,7 +811,7 @@ public class Game extends Application {
         showCollectedCards();
 
         cardCollectBoard.setMaxWidth(270);
-        cardCollectBoard.setLayoutX(10);
+        cardCollectBoard.setLayoutX(35);
         cardCollectBoard.setLayoutY(5);
         cardCollectBoard.setPadding(new Insets(5));
 
