@@ -1,1 +1,0 @@
-90X90 pix is well formed

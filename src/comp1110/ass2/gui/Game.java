@@ -457,7 +457,7 @@ public class Game extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         //setting window starts form here
-        Stage page1 = new Stage(); //numberofplayers
+        Stage page1 = new Stage();
         page1.setTitle("Warring States");
 
         //build scene
@@ -517,6 +517,7 @@ public class Game extends Application {
         threePlayers.setUserData(3);
         fourPlayers.setUserData(4);
 
+        //listener to update and change number of possible robots when number of players changed
         rb.selectedToggleProperty().addListener(
                 (ObservableValue<? extends Toggle> ot, Toggle old_toggle, Toggle new_toggle) -> {
                     if (rb.getSelectedToggle() != null) {
@@ -598,7 +599,8 @@ public class Game extends Application {
 //                }
 //            }
 //        });
-        //add slider
+
+        //add difficulty slider
         Slider slider = new Slider(1.0, 9.0, 5.0);
 
         slider.setLayoutX(200);
@@ -611,7 +613,6 @@ public class Game extends Application {
         //max 9, min 1, snap to whole values
 
         pane1.getChildren().add(slider);
-        //get property and add to other stuff
 
         difficulty = slider.getValue();
         System.out.println(difficulty);
@@ -624,7 +625,6 @@ public class Game extends Application {
             }
         });
         //listener code from: https://o7planning.org/en/11083/javafx-slider-tutorial
-
 
 
         //event of buttons
@@ -659,17 +659,17 @@ public class Game extends Application {
                 //
                 Label instruction = new Label(
                         "Players take turns to collect characters to their side, by clicking the board and " +
-                                "moving Zhang Yi around the grid. On one's turn, a player chooses a direction " +
+                                "moving Zhang Yi around the grid. On their turn, a player chooses a direction " +
                                 "(North, East, South, or West) and a kingdom (Qin, Qi, Chu, Zhao, Han, Wei, or Yan)." +
                                 "Zhang Yi then moves in the chosen direction to the location of the furthest away character" +
-                                " from that kingdom, and collects that character card.If Zhang Yi passes other characters" +
+                                " from that kingdom, and collects that character card. If Zhang Yi passes other characters" +
                                 " from the same kingdom while moving, he collects those characters as well. Each player may" +
-                                " move Zhang Yi only once per turn. \n\nAt the end of one's turn, if the player holds an equal or" +
-                                " greater number of characters from a kingdom than any of her opponents, the player takes the" +
-                                " flag of that kingdom.(If another player already holds the flag, it will change the belonging " +
+                                " move Zhang Yi only once per turn. \n\nAt the end of their turn, if the player holds an equal or" +
+                                " greater number of characters from a kingdom than any of their opponents, the player takes the" +
+                                " flag of that kingdom. (If another player already holds the flag, it will change the belonging " +
                                 "of this flag). The game ends when Zhang Yi cannot move, that is, when there are no cards in any" +
-                                " direction (North, East, South, or West) from Zhang Yi.The player who holds the greatest number " +
-                                "of flags at the end of the game wins.If two or more players hold the same number of flags, " +
+                                " direction (North, East, South, or West) from Zhang Yi. The player who holds the greatest number " +
+                                "of flags at the end of the game wins. If two or more players hold the same number of flags, " +
                                 "the player who holds the flag of the kingdom with the greatest number of characters wins.\n\nEnjoy it!"
                 );
                 instruction.setFont(Font.font("calibri", 14));
@@ -843,10 +843,7 @@ public class Game extends Application {
 
     }
 
-    // FIXME Task 12: Integrate a more advanced opponent into your game
-    //generate brilliant move (calling from AIstrategies Class)!
-
-    //slider? difficulty selection
+    //Task 12: Integrate a more advanced opponent into your game
 
 }
 
