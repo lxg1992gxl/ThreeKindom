@@ -19,6 +19,8 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -123,7 +125,7 @@ public class Game extends Application {
                     currentPlayer = (currentPlayer + 1) % numberOfPlayers;
                     showFlags();
 
-                    if (AI[currentPlayer]) {
+                    if (AI[currentPlayer] && !noMoreValidMove(currentBoard)) {
                         autoMove(currentBoard);
                     }
 
@@ -207,7 +209,7 @@ public class Game extends Application {
         makeBoard();
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         showFlags();
-        if (AI[currentPlayer]) {
+        if (AI[currentPlayer] && !noMoreValidMove(currentBoard)) {
             autoMove(currentBoard);
         }
     }
@@ -408,6 +410,11 @@ public class Game extends Application {
         start.setLayoutX(0);
         start.setLayoutY(0);
         pane1.getChildren().add(start);
+
+//        // background music
+//        MediaPlayer backMusic = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "startMusic.mp3").toString()));
+//        backMusic.play();
+//        //pane1.getChildren().add(backMusic);
 
         //add buttons
         Button exitBtn = new Button("Exit");
