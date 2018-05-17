@@ -383,7 +383,7 @@ public class Game extends Application {
         //create all board pieces
         FXpiece[] b = new FXpiece[currentBoard.length() / 3];
         for (int j = 0; j < currentBoard.length() / 3; j++) {
-            b[j] = new FXpiece(currentBoard.substring(j * 3, j * 3 + 3)); //problem?
+            b[j] = new FXpiece(currentBoard.substring(j * 3, j * 3 + 3)); 
             board.getChildren().add(b[j]);
         }
     }
@@ -684,7 +684,7 @@ public class Game extends Application {
                                 "of flags at the end of the game wins. If two or more players hold the same number of flags, " +
                                 "the player who holds the flag of the kingdom with the greatest number of characters wins.\n\nEnjoy it!"
                 );
-                instruction.setFont(Font.font("calibri", 14));
+                instruction.setFont(Font.font("calibri", 13));
                 instruction.setWrapText(true);
                 instruction.setMaxWidth(scene.getWidth() - 40);
                 instruction.setLayoutX(20);
