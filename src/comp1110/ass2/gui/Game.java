@@ -52,6 +52,7 @@ public class Game extends Application {
     private final Group player = new Group(); //notions of playerID in the flag shown area (that will never change in the whole game)
 
     private final Group board = new Group();
+    private final Group highlight = new Group();
     private final Group flags = new Group();
     private final FlowPane cardCollectBoard = new FlowPane(0, 10);
     private final Group restart = new Group();
@@ -104,6 +105,10 @@ public class Game extends Application {
 
              */
 
+            setOnMouseEntered(event -> {
+                highlight.getChildren().clear();
+                highLightMouse(this.loc,loc);
+            });
 
             setOnMousePressed(event -> {
                 //System.out.println("current card: " + this.id + this.loc);
@@ -115,6 +120,9 @@ public class Game extends Application {
                     invalid.setLayoutX(410);
                     invalid.setLayoutY(680);
                     notion.getChildren().add(invalid);
+
+                    MediaPlayer invalidSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "invalid.wav").toString()));
+                    invalidSound.play();
 //                    System.out.println("error");
                 } else {
                     history = history + this.loc + "";
@@ -136,6 +144,10 @@ public class Game extends Application {
 
                     //System.out.println(currentPlayer);
                     if (noMoreValidMove(currentBoard)) {
+                        updateNotions();
+                        notion.getChildren().add(end);
+
+//                        System.out.println("finished!"); //working
                         endGame();
                     } else {
                         updateNotions();
@@ -359,7 +371,30 @@ public class Game extends Application {
         }
     }
 
-    //Creates a rectangle around the board sections
+    private void highLightMouse(char loc,int normalLoc) {
+        //System.out.println(id+loc);
+        int w = 100;
+        int h = 100;
+        int gap = 4;
+        if (isMoveLegal(currentBoard,loc)){
+            ImageView greenRec = new ImageView(new Image(Game.class.getResource(URI_BASE + "right.png").toString()));
+            greenRec.setLayoutX(BOARD_WIDTH - ((normalLoc / 6 + 1) * w + (normalLoc / 6 + 1) * gap) - 4);
+            greenRec.setLayoutY(10 + normalLoc % 6 * h + normalLoc % 6 * gap);
+            greenRec.setScaleX(1.05);
+            greenRec.setScaleY(1.05);
+            highlight.getChildren().add(greenRec);
+        }else{
+            ImageView redRec = new ImageView(new Image(Game.class.getResource(URI_BASE + "wrong.png").toString()));
+            redRec.setLayoutX(BOARD_WIDTH - ((normalLoc / 6 + 1) * w + (normalLoc / 6 + 1) * gap) - 4);
+            redRec.setLayoutY(10 + normalLoc % 6 * h + normalLoc % 6 * gap);
+            redRec.setScaleX(1.05);
+            redRec.setScaleY(1.05);
+            highlight.getChildren().add(redRec);
+        }
+
+        board.toFront();
+    }
+
     private void makeRec(int x, int y, int width, int height, int arcw, int arch, Color fill, Color stroke) {
         // draw a rec and add it into root
         Rectangle rectangle = new Rectangle(x, y, width, height);
@@ -483,7 +518,7 @@ public class Game extends Application {
                         ChoiceBox choiceBox = new ChoiceBox();
                         choiceBox.setItems(FXCollections.observableArrayList(chsb));
                         choiceBox.setLayoutX(330);
-                        choiceBox.setLayoutY(145);
+                        choiceBox.setLayoutY(130);
                         choiceBox.getSelectionModel().select(0);
                         pane1.getChildren().add(choiceBox);
 
@@ -509,16 +544,21 @@ public class Game extends Application {
 
         //create "How many robots \ndo you want to add?"
         Text tAddBot = new Text("How many robots \ndo you want to add?");
-        tAddBot.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 13));
-        tAddBot.setLayoutX(200);
-        tAddBot.setLayoutY(150);
+        tAddBot.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 14));
+        tAddBot.setLayoutX(190);
+        tAddBot.setLayoutY(135);
         pane1.getChildren().add(tAddBot);
+        Text robotDifficulty = new Text("Robot Difficulty: ");
+        robotDifficulty.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 13));
+        robotDifficulty.setLayoutX(210);
+        robotDifficulty.setLayoutY(190);
+        pane1.getChildren().add(robotDifficulty);
 
         //add choicebox
         ChoiceBox choiceBox = new ChoiceBox();
         choiceBox.setItems(FXCollections.observableArrayList("0", "1"));
         choiceBox.setLayoutX(330);
-        choiceBox.setLayoutY(145);
+        choiceBox.setLayoutY(130);
         choiceBox.getSelectionModel().select(0);
         pane1.getChildren().add(choiceBox);
 
@@ -780,7 +820,7 @@ public class Game extends Application {
         });
 
 
-        root.getChildren().addAll(board, cardCollectBoard, flags, end, notion, player, restart);
+        root.getChildren().addAll(board, highlight, cardCollectBoard, flags, end, notion, player, restart);
 
         primaryStage.setScene(scene);
         //move "primaryStage.show" to setting window "GameStart Btn"
