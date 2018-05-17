@@ -19,8 +19,6 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -31,6 +29,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
+import javax.swing.text.Style;
 import java.util.ArrayList;
 
 import static comp1110.ass2.WarringStatesGame.*;
@@ -52,6 +51,7 @@ public class Game extends Application {
     private final Group player = new Group(); //notions of playerID in the flag shown area (that will never change in the whole game)
 
     private final Group board = new Group();
+    private final Group highlight = new Group();
     private final Group flags = new Group();
     private final FlowPane cardCollectBoard = new FlowPane(0, 10);
     private final Group restart = new Group();
@@ -66,7 +66,6 @@ public class Game extends Application {
     private int numberOfAI;
     private int numberOfHumans;
     private boolean advAI;
-    private double difficulty = 5.0;
 
     private String setup = WarringStatesGame.randomSetup();
     //    private String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
@@ -81,6 +80,7 @@ public class Game extends Application {
         char loc;
 
         FXpiece(String placement) {
+
             this.id = placement.substring(0, 2);
             this.loc = placement.charAt(2);
             setImage(new Image(Game.class.getResource(URI_BASE + this.id + ".png").toString())); //problem?
@@ -104,6 +104,10 @@ public class Game extends Application {
 
              */
 
+            setOnMouseEntered(event -> {
+                highlight.getChildren().clear();
+                highLightMouse(this.loc,loc);
+            });
 
             setOnMousePressed(event -> {
                 //System.out.println("current card: " + this.id + this.loc);
@@ -126,7 +130,7 @@ public class Game extends Application {
                     currentPlayer = (currentPlayer + 1) % numberOfPlayers;
                     showFlags();
 
-                    if (AI[currentPlayer] && !noMoreValidMove(currentBoard)) {
+                    if (AI[currentPlayer]) {
                         autoMove(currentBoard);
                     }
 
@@ -136,7 +140,12 @@ public class Game extends Application {
 
                     //System.out.println(currentPlayer);
                     if (noMoreValidMove(currentBoard)) {
-                        updateNotions();
+                        notion.getChildren().removeAll(notion.getChildren());
+                        Text end = new Text("No more valid move for Player " + (currentPlayer + 1) + ". Game Ending!");
+                        end.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
+                        end.setFill(Color.BLACK);
+                        end.setLayoutX(405);
+                        end.setLayoutY(680);
                         notion.getChildren().add(end);
 
 //                        System.out.println("finished!"); //working
@@ -168,27 +177,11 @@ public class Game extends Application {
         }
     }
 
-    private void updateNotions(){
-        notion.getChildren().removeAll(notion.getChildren());
-        Text valid = new Text("Valid move. Next comes to Player " + (currentPlayer + 1) + "'s turn!");
-        valid.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
-        valid.setFill(Color.BLACK);
-        valid.setLayoutX(410);
-        valid.setLayoutY(680);
-        notion.getChildren().add(valid);
-    }
-
-
-
     private void autoMove(String placement) {
         if (advAI) {
             AdvAIMove(placement);
         } else {
-            if (difficulty == 1.0) {
-                AIMove(placement);
-            } else {
-                AdvAIMove(placement);
-            }
+            AIMove(placement);
         }
     }
 
@@ -203,7 +196,7 @@ public class Game extends Application {
         makeBoard();
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         showFlags();
-        updateNotions();
+
         if (AI[currentPlayer]) { //check whether next player is still computer?
             autoMove(currentBoard);
         }
@@ -211,10 +204,9 @@ public class Game extends Application {
     }
 
     private void AdvAIMove(String placement) {
-        char loc = AIstrategies.bestMove((int)difficulty, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
+        char loc = AIstrategies.bestMove(2, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
         //System.out.println(loc);
         history = history + loc + "";
-
         //System.out.println("current history: " +history);
         showCollectedCards();
         currentBoard = newBoard(setup, history);
@@ -222,8 +214,7 @@ public class Game extends Application {
         makeBoard();
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         showFlags();
-        updateNotions();
-        if (AI[currentPlayer] && !noMoreValidMove(currentBoard)) {
+        if (AI[currentPlayer]) {
             autoMove(currentBoard);
         }
     }
@@ -371,6 +362,30 @@ public class Game extends Application {
         }
     }
 
+    private void highLightMouse(char loc,int normalLoc) {
+        //System.out.println(id+loc);
+        int w = 100;
+        int h = 100;
+        int gap = 4;
+        if (isMoveLegal(currentBoard,loc)){
+            ImageView greenRec = new ImageView(new Image(Game.class.getResource(URI_BASE + "right.png").toString()));
+            greenRec.setLayoutX(BOARD_WIDTH - ((normalLoc / 6 + 1) * w + (normalLoc / 6 + 1) * gap) - 4);
+            greenRec.setLayoutY(10 + normalLoc % 6 * h + normalLoc % 6 * gap);
+            greenRec.setScaleX(1.05);
+            greenRec.setScaleY(1.05);
+            highlight.getChildren().add(greenRec);
+        }else{
+            ImageView redRec = new ImageView(new Image(Game.class.getResource(URI_BASE + "wrong.png").toString()));
+            redRec.setLayoutX(BOARD_WIDTH - ((normalLoc / 6 + 1) * w + (normalLoc / 6 + 1) * gap) - 4);
+            redRec.setLayoutY(10 + normalLoc % 6 * h + normalLoc % 6 * gap);
+            redRec.setScaleX(1.05);
+            redRec.setScaleY(1.05);
+            highlight.getChildren().add(redRec);
+        }
+
+        board.toFront();
+    }
+
     private void makeRec(int x, int y, int width, int height, int arcw, int arch, Color fill, Color stroke) {
         // draw a rec and add it into root
         Rectangle rectangle = new Rectangle(x, y, width, height);
@@ -397,24 +412,15 @@ public class Game extends Application {
         showFlags();
         //System.out.println("done");
 
-        notion.getChildren().removeAll(notion.getChildren());
+        //fixme check ai assignment when restart
+        boolean[] AI = new boolean[4]; //maximum number of players
 
-        //reset difficulty
-        difficulty = 5.0;
-
-//        //reset ai assignment when restart
-//        for(boolean b: AI){
-//            b= false;
-//        }
-//        AIPlayer(numberOfPlayers, numberOfHumans);
-
-
+        //fixme reset the scene
 
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         //setting window starts form here
         Stage page1 = new Stage(); //numberofplayers
         page1.setTitle("Warring States");
@@ -537,49 +543,21 @@ public class Game extends Application {
         }));
 
         //add checkbox
-//        CheckBox checkBox = new CheckBox("Advanced AI");
-//        checkBox.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 14));
-//        checkBox.setLayoutX(200);
-//        checkBox.setLayoutY(200);
-//        pane1.getChildren().add(checkBox);
-//        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-//            public void changed(ObservableValue<? extends Boolean> ov,
-//                                Boolean old_val, Boolean new_val) {
-//                if (checkBox.isSelected()) {
-//                    advAI = true;
-//                } else {
-//                    advAI = false;
-//                }
-//            }
-//        });
-        //add slider
-        Slider slider = new Slider(1.0, 9.0, 5.0);
-
-        slider.setLayoutX(200);
-        slider.setLayoutY(200);
-        slider.setShowTickMarks(true);
-        slider.setShowTickLabels(true);
-        slider.setMajorTickUnit(1f);
-        slider.setMinorTickCount(0);
-        slider.setSnapToTicks(true);
-        //max 9, min 1, snap to whole values
-
-        pane1.getChildren().add(slider);
-        //get property and add to other stuff
-
-        difficulty = slider.getValue();
-        System.out.println(difficulty);
-        // Adding Listener to value property.
-        slider.valueProperty().addListener(new ChangeListener<Number>() {
-
-            public void changed(ObservableValue<? extends Number> observable, //
-                                Number oldValue, Number newValue) {
-                difficulty = (double) newValue;
+        CheckBox checkBox = new CheckBox("Advanced AI");
+        checkBox.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 14));
+        checkBox.setLayoutX(200);
+        checkBox.setLayoutY(200);
+        pane1.getChildren().add(checkBox);
+        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            public void changed(ObservableValue<? extends Boolean> ov,
+                                Boolean old_val, Boolean new_val) {
+                if (checkBox.isSelected()) {
+                    advAI = true;
+                } else {
+                    advAI = false;
+                }
             }
         });
-        //listener code from: https://o7planning.org/en/11083/javafx-slider-tutorial
-
-
 
         //event of buttons
         exitBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -790,7 +768,7 @@ public class Game extends Application {
         });
 
 
-        root.getChildren().addAll(board, cardCollectBoard, flags, end, notion, player, restart);
+        root.getChildren().addAll(board, highlight, cardCollectBoard, flags, end, notion, player, restart);
 
         primaryStage.setScene(scene);
         //move "primaryStage.show" to setting window "GameStart Btn"
