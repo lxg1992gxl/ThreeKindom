@@ -6,4 +6,4 @@ The code in Game class for the slider action listener is from: https://o7plannin
 
 * ....
 
-Signed: Siying Qian (u6099927), Bob Smith (u3456789), and Sue Black (u0123456)
+Signed: Siying Qian (u6099927), Lyu(Oliver) Xiaoguang(u6464313), and Sue Black (u0123456)
