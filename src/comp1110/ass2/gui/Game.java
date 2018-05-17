@@ -144,13 +144,7 @@ public class Game extends Application {
 
 
                     } else {
-                        notion.getChildren().removeAll(notion.getChildren());
-                        Text valid = new Text("Valid move. Next comes to Player " + (currentPlayer + 1) + "'s turn!");
-                        valid.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
-                        valid.setFill(Color.BLACK);
-                        valid.setLayoutX(410);
-                        valid.setLayoutY(680);
-                        notion.getChildren().add(valid);
+                        updateNotions();
 
                         if (AI[currentPlayer]) {
                             autoMove(currentBoard);
@@ -175,6 +169,16 @@ public class Game extends Application {
         }
     }
 
+    private void updateNotions(){
+        notion.getChildren().removeAll(notion.getChildren());
+        Text valid = new Text("Valid move. Next comes to Player " + (currentPlayer + 1) + "'s turn!");
+        valid.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
+        valid.setFill(Color.BLACK);
+        valid.setLayoutX(410);
+        valid.setLayoutY(680);
+        notion.getChildren().add(valid);
+    }
+    
     private void autoMove(String placement) {
         if (difficulty ==1.0) {
             AIMove(placement);
@@ -195,6 +199,7 @@ public class Game extends Application {
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         showFlags();
 
+        updateNotions();
         if(noMoreValidMove(currentBoard)){
 
             endGame();
@@ -218,6 +223,8 @@ public class Game extends Application {
         makeBoard();
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         showFlags();
+
+        updateNotions();
 
         if(noMoreValidMove(currentBoard)){
             endGame();
