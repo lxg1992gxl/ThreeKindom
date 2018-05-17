@@ -157,13 +157,18 @@ public class Game extends Application {
                         end.setLayoutY(680);
                         notion.getChildren().add(end);
 
+                        //notion sound for winner
+                        MediaPlayer winSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "gameEnd.wav").toString()));
+                        winSound.play();
                         endGame();
+
+                        //
                     } else {
                         updateNotions();
 
                         //valid move notion sound for human player
                         MediaPlayer validSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "valid.wav").toString()));
-                        validSound.play(); //only plays sometimes?
+                        validSound.play();
                     }
                 }
             });
@@ -302,11 +307,8 @@ public class Game extends Application {
 
 
     private void endGame() {
-        highlight.getChildren().clear();
 
-        //notion sound for winner
-//        MediaPlayer winSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "gameEnd.mp3").toString()));
-//        winSound.play();
+        highlight.getChildren().clear();
 
         //indicate the winner at the end of the game
         int winner = getWinnerID(getFlags(setup, history, numberOfPlayers));
@@ -327,6 +329,9 @@ public class Game extends Application {
         end.getChildren().add(congratulation);
         end.toFront();
         root.getChildren().remove(highlight);
+
+
+
 
     }
 
@@ -460,10 +465,10 @@ public class Game extends Application {
         Pane pane1 = new Pane();
         Scene settingScene = new Scene(pane1, 400, 300);
 
-//        MediaPlayer stSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "backMusic.mp3").toString()));
-//        stSound.setAutoPlay(page1.isShowing()); //FIXME
-//        stSound.setAutoPlay(pane1.isVisible());
-//        stSound.play();
+        MediaPlayer stSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "backMusic.wav").toString()));
+        stSound.setAutoPlay(page1.isShowing()); //FIXME
+        stSound.setAutoPlay(pane1.isVisible());
+        stSound.play();
 
         //pane1 background
         ImageView start = new ImageView();
@@ -647,7 +652,7 @@ public class Game extends Application {
                 page2.initStyle(StageStyle.UNDECORATED);
                 page2.setScene(scene);
 
-                MediaPlayer insSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "backMusic.mp3").toString()));
+                MediaPlayer insSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "backMusic.wav").toString()));
                 insSound.play();
 
                 //pane2 background
