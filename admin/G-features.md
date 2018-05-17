@@ -13,5 +13,6 @@ of our project implements the following features:
 
 additional features:
  - Instructions at the start window for new game players
+ - restart button to allow to play again
 
 

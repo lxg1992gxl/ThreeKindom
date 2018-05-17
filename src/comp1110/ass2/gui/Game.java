@@ -122,9 +122,6 @@ public class Game extends Application {
                     currentPlayer = (currentPlayer + 1) % numberOfPlayers;
                     showFlags();
 
-                    if (AI[currentPlayer]) {
-                        autoMove(currentBoard);
-                    }
 
                     //if difficulty 0, call task 10
                     //if difficult >0, task 12
@@ -132,6 +129,7 @@ public class Game extends Application {
 
                     //System.out.println(currentPlayer);
                     if (noMoreValidMove(currentBoard)) {
+//                        System.out.println("finished!"); //working
                         notion.getChildren().removeAll(notion.getChildren());
                         Text end = new Text("No more valid move for Player " + (currentPlayer + 1) + ". Game Ending!");
                         end.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
@@ -140,8 +138,9 @@ public class Game extends Application {
                         end.setLayoutY(680);
                         notion.getChildren().add(end);
 
-//                        System.out.println("finished!"); //working
                         endGame();
+
+
                     } else {
                         notion.getChildren().removeAll(notion.getChildren());
                         Text valid = new Text("Valid move. Next comes to Player " + (currentPlayer + 1) + "'s turn!");
@@ -150,6 +149,11 @@ public class Game extends Application {
                         valid.setLayoutX(410);
                         valid.setLayoutY(680);
                         notion.getChildren().add(valid);
+
+                        if (AI[currentPlayer]) {
+                            autoMove(currentBoard);
+                            System.out.println("called automove");
+                        }
                     }
                 }
             });
@@ -189,9 +193,15 @@ public class Game extends Application {
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         showFlags();
 
-        if (AI[currentPlayer]) { //check whether next player is still computer?
+        if(noMoreValidMove(currentBoard)){
+
+            endGame();
+            System.out.println("AI finished");
+        }
+        else if (AI[currentPlayer]) { //check whether next player is still computer?
             autoMove(currentBoard);
         }
+
 
     }
 
@@ -206,7 +216,13 @@ public class Game extends Application {
         makeBoard();
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         showFlags();
-        if (AI[currentPlayer]) {
+
+        if(noMoreValidMove(currentBoard)){
+            endGame();
+            System.out.println("AdvAI finished");
+        }
+
+        else if (AI[currentPlayer]) {
             autoMove(currentBoard);
         }
     }
@@ -380,10 +396,12 @@ public class Game extends Application {
         showFlags();
         //System.out.println("done");
 
-        //fixme check ai assignment when restart
-        boolean[] AI = new boolean[4]; //maximum number of players
+        notion.getChildren().removeAll(notion.getChildren());
 
-        //fixme reset the scene
+        //reset ai assignment when restart
+        for(boolean b: AI){
+            b= false;
+        }
 
     }
 
