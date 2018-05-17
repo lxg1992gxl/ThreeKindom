@@ -154,7 +154,7 @@ public class Game extends Application {
 
                         if (AI[currentPlayer]) {
                             autoMove(currentBoard);
-                            System.out.println("called automove");
+                            //System.out.println("called automove");
                         }
                     }
                 }
@@ -552,11 +552,15 @@ public class Game extends Application {
 //                }
 //            }
 //        });
+
         //add slider
         Slider slider = new Slider(1.0, 9.0, 5.0);
-
+        Label diff = new Label("Select difficulty");
+        diff.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 13));
+        diff.setLayoutY(190);
+        diff.setLayoutX(200);
         slider.setLayoutX(200);
-        slider.setLayoutY(200);
+        slider.setLayoutY(210);
         slider.setShowTickMarks(true);
         slider.setShowTickLabels(true);
         slider.setMajorTickUnit(1f);
@@ -564,11 +568,11 @@ public class Game extends Application {
         slider.setSnapToTicks(true);
         //max 9, min 1, snap to whole values
 
-        pane1.getChildren().add(slider);
+        pane1.getChildren().addAll(slider, diff);
         //get property and add to other stuff
 
         difficulty = slider.getValue();
-        System.out.println(difficulty);
+        //System.out.println(difficulty);
         // Adding Listener to value property.
         slider.valueProperty().addListener(new ChangeListener<Number>() {
 
@@ -576,11 +580,11 @@ public class Game extends Application {
             public void changed(ObservableValue<? extends Number> observable, //
                                 Number oldValue, Number newValue) {
                 difficulty = (double) newValue;
-                System.out.println(difficulty);
+                //System.out.println(difficulty);
             }
         });
         //listener code from: https://o7planning.org/en/11083/javafx-slider-tutorial
-        
+
         //event of buttons
         exitBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
