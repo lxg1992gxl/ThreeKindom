@@ -836,6 +836,7 @@ public class Game extends Application {
                 player.getChildren().clear();
                 end.getChildren().clear();
                 restartGame();
+                root.getChildren().remove(highlight); // if press reset by unfinished game, this line works
                 root.getChildren().add(highlight);
             }
         });
