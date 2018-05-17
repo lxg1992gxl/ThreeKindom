@@ -59,6 +59,7 @@ public class Game extends Application {
     private final FlowPane cardCollectBoard = new FlowPane(0, 10);
     private final Group restart = new Group();
 
+    //groups for showing collected cards
     private final Group scrBD0 = new Group();
     private final Group scrBD1 = new Group();
     private final Group scrBD2 = new Group();
@@ -68,7 +69,7 @@ public class Game extends Application {
     private int numberOfPlayers;
     private int numberOfAI;
     private int numberOfHumans;
-    private boolean advAI;
+    //private boolean advAI;
     private double difficulty = 5.0;
 
     private String setup = WarringStatesGame.randomSetup();
@@ -86,8 +87,7 @@ public class Game extends Application {
         FXpiece(String placement) {
             this.id = placement.substring(0, 2);
             this.loc = placement.charAt(2);
-            setImage(new Image(Game.class.getResource(URI_BASE + this.id + ".png").toString())); //problem?
-            //add where placement?
+            setImage(new Image(Game.class.getResource(URI_BASE + this.id + ".png").toString()));
 
             //determines location of the card based on the location char
             int loc = normaliseLoc(placement.charAt(2));
@@ -198,46 +198,38 @@ public class Game extends Application {
     }
 
 
-
+    //Generates an automatic move based on a placement string
     private void autoMove(String placement) {
-        if (advAI) {
-            AdvAIMove(placement);
+        if (difficulty == 1.0) {
+            AIMove(placement);
         } else {
-            if (difficulty == 1.0) {
-                AIMove(placement);
-            } else {
-                AdvAIMove(placement);
-            }
+            AdvAIMove(placement);
         }
     }
 
+    //generates a random move
     private void AIMove(String placement) {
         char loc = generateMove(placement);
-        //System.out.println(loc);
         history = history + loc + "";
-        //System.out.println("current history: " +history);
         showCollectedCards();
         currentBoard = newBoard(setup, history);
-        //System.out.println(currentBoard);
         makeBoard();
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         showFlags();
         updateNotions();
-        if (AI[currentPlayer]) { //check whether next player is still computer?
+        if (AI[currentPlayer]) { //check whether next player is still computer
             autoMove(currentBoard);
         }
 
     }
 
+    //Generates a move based on the modified minimax tree
     private void AdvAIMove(String placement) {
         char loc = AIstrategies.bestMove((int)difficulty, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
-        //System.out.println(loc);
         history = history + loc + "";
 
-        //System.out.println("current history: " +history);
         showCollectedCards();
         currentBoard = newBoard(setup, history);
-        //System.out.println(currentBoard);
         makeBoard();
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         showFlags();
@@ -247,17 +239,17 @@ public class Game extends Application {
         }
     }
 
+    //populates the array to show which players are AI
     private void AIPlayer(int numberOfPlayers, int numberOfHumans) {
-        //populate ai array with which playerIDs are AIs
-        for (int i = 0; i < numberOfPlayers; i++) {
+       for (int i = 0; i < numberOfPlayers; i++) {
             if (i < numberOfHumans) {
                 AI[i] = false;
 
             } else {
                 AI[i] = true;
             }
-            //System.out.println(i + " is "+ AI[i]);
-        }
+
+       }
 
         //extension --> turn this array into an int array and allow AIs to have differnt difficulty levels
 
@@ -295,6 +287,7 @@ public class Game extends Application {
 
     }
 
+    //shows the flags currently controled by each player
     private void showFlags() {
         //clear current flags
         flags.getChildren().removeAll(flags.getChildren());
@@ -310,7 +303,6 @@ public class Game extends Application {
         Flag e = new Flag("e", flag[4]);
         Flag f = new Flag("f", flag[5]);
         Flag g = new Flag("g", flag[6]);
-        //System.out.println("flags!");
 
         flags.getChildren().add(a);
         flags.getChildren().add(b);
@@ -321,8 +313,8 @@ public class Game extends Application {
         flags.getChildren().add(g);
     }
 
+
     private void endGame() {
-//        System.out.println("end game");
 
         //notion sound for winner
         MediaPlayer winSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "gameEnd.mp3").toString()));
@@ -344,8 +336,10 @@ public class Game extends Application {
         congratulation.setLayoutY(BOARD_HEIGHT / 2 + 20);
         end.getChildren().add(congratulation);
 
+        notion.getChildren().removeAll(notion.getChildren());
     }
 
+    //clears cards from the collected cards pane
     private void clearCards() {
         scrBD0.getChildren().removeAll(scrBD0.getChildren());
         scrBD1.getChildren().removeAll(scrBD1.getChildren());
@@ -353,18 +347,19 @@ public class Game extends Application {
         scrBD3.getChildren().removeAll(scrBD3.getChildren());
     }
 
+    //shows which cards have been collected in the game so far, organised by player
     private void showCollectedCards() {
         //move the supporters to side
         String support = getSupporters(setup, history, numberOfPlayers, currentPlayer);
 
-        //System.out.println("supporters: "+ support);
+        //loop through supporter cards to add to collected cards board
         for (int j = 0; j < support.length() / 2; j++) {
             cards[currentPlayer][j] = new FXpiece(support.substring(j * 2, j * 2 + 2) + '/');
-            //System.out.println("current substring: "+cards[currentPlayer][j]);
 
-            cards[currentPlayer][j].setLayoutX(105 * currentPlayer); //if clearing at beginning of method, need to get supporters for all players
-            //if more than 2 players, show below instead?
+            cards[currentPlayer][j].setLayoutX(105 * currentPlayer);
             cards[currentPlayer][j].setLayoutY(20 * j);
+
+            //shrink the cards so will fit in the board
             cards[currentPlayer][j].setFitHeight(70);
             cards[currentPlayer][j].setFitWidth(70);
             switch (currentPlayer) {
@@ -384,6 +379,7 @@ public class Game extends Application {
         }
     }
 
+    //creates the pieces of the currentboard
     private void makeBoard() {
         //clear to avoid double up
         board.getChildren().removeAll(board.getChildren());
@@ -431,26 +427,27 @@ public class Game extends Application {
     }
 
 
+    //resets all relevant variables and goes back to start screen
     public void restartGame() {
+        //new setup
         setup = WarringStatesGame.randomSetup();
-        //System.out.println(setup);
+
         history = "";
-        //System.out.println(history);
+
         currentBoard = newBoard(setup, history);
         currentPlayer = 0;
-        //System.out.println(currentPlayer);
 
         makeBoard(); //clears old board and creates new one
         clearCards();
         showCollectedCards();
         showFlags();
-        //System.out.println("done");
 
         notion.getChildren().removeAll(notion.getChildren());
 
         //reset difficulty
         difficulty = 5.0;
 
+        //lapsed code for AI check box
 //        //reset ai assignment when restart
 //        for(boolean b: AI){
 //            b= false;
@@ -465,7 +462,7 @@ public class Game extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         //setting window starts form here
-        Stage page1 = new Stage(); //numberofplayers
+        Stage page1 = new Stage();
         page1.setTitle("Warring States");
 
         //build scene
@@ -525,6 +522,7 @@ public class Game extends Application {
         threePlayers.setUserData(3);
         fourPlayers.setUserData(4);
 
+        //listener to update and change number of possible robots when number of players changed
         rb.selectedToggleProperty().addListener(
                 (ObservableValue<? extends Toggle> ot, Toggle old_toggle, Toggle new_toggle) -> {
                     if (rb.getSelectedToggle() != null) {
@@ -606,7 +604,8 @@ public class Game extends Application {
 //                }
 //            }
 //        });
-        //add slider
+
+        //add difficulty slider
         Slider slider = new Slider(1.0, 9.0, 5.0);
 
         slider.setLayoutX(200);
@@ -619,7 +618,6 @@ public class Game extends Application {
         //max 9, min 1, snap to whole values
 
         pane1.getChildren().add(slider);
-        //get property and add to other stuff
 
         difficulty = slider.getValue();
         System.out.println(difficulty);
@@ -632,7 +630,6 @@ public class Game extends Application {
             }
         });
         //listener code from: https://o7planning.org/en/11083/javafx-slider-tutorial
-
 
 
         //event of buttons
@@ -667,17 +664,17 @@ public class Game extends Application {
                 //
                 Label instruction = new Label(
                         "Players take turns to collect characters to their side, by clicking the board and " +
-                                "moving Zhang Yi around the grid. On one's turn, a player chooses a direction " +
+                                "moving Zhang Yi around the grid. On their turn, a player chooses a direction " +
                                 "(North, East, South, or West) and a kingdom (Qin, Qi, Chu, Zhao, Han, Wei, or Yan)." +
                                 "Zhang Yi then moves in the chosen direction to the location of the furthest away character" +
-                                " from that kingdom, and collects that character card.If Zhang Yi passes other characters" +
+                                " from that kingdom, and collects that character card. If Zhang Yi passes other characters" +
                                 " from the same kingdom while moving, he collects those characters as well. Each player may" +
-                                " move Zhang Yi only once per turn. \n\nAt the end of one's turn, if the player holds an equal or" +
-                                " greater number of characters from a kingdom than any of her opponents, the player takes the" +
-                                " flag of that kingdom.(If another player already holds the flag, it will change the belonging " +
+                                " move Zhang Yi only once per turn. \n\nAt the end of their turn, if the player holds an equal or" +
+                                " greater number of characters from a kingdom than any of their opponents, the player takes the" +
+                                " flag of that kingdom. (If another player already holds the flag, it will change the belonging " +
                                 "of this flag). The game ends when Zhang Yi cannot move, that is, when there are no cards in any" +
-                                " direction (North, East, South, or West) from Zhang Yi.The player who holds the greatest number " +
-                                "of flags at the end of the game wins.If two or more players hold the same number of flags, " +
+                                " direction (North, East, South, or West) from Zhang Yi. The player who holds the greatest number " +
+                                "of flags at the end of the game wins. If two or more players hold the same number of flags, " +
                                 "the player who holds the flag of the kingdom with the greatest number of characters wins.\n\nEnjoy it!"
                 );
                 instruction.setFont(Font.font("calibri", 14));
