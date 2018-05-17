@@ -11,6 +11,7 @@ of our project implements the following features:
  - Basic computer opponent (Task 11)
  - Advanced computer opponent (Task 12)
 
-additional features...
+additional features:
+ - Instructions at the start window for new game players
 
 
