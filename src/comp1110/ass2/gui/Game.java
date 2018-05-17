@@ -444,6 +444,7 @@ public class Game extends Application {
         //reset difficulty
         difficulty = 5.0;
 
+
         //lapsed code for AI check box
 //        //reset ai assignment when restart
 //        for(boolean b: AI){
@@ -467,7 +468,7 @@ public class Game extends Application {
 
         MediaPlayer stSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "backMusic.wav").toString()));
         stSound.setVolume(1.0);
-        stSound.setAutoPlay(page1.isShowing()); //FIXME
+        stSound.setAutoPlay(page1.isShowing()); //FIXME repeat?
         stSound.setAutoPlay(pane1.isVisible());
         stSound.play();
 
@@ -718,7 +719,7 @@ public class Game extends Application {
             public void handle(MouseEvent event) {
                 numberOfHumans = numberOfPlayers - numberOfAI;
 
-//                stSound.pause(); //FIXME
+                stSound.stop();
                 page1.hide();
                 primaryStage.show();
 
@@ -840,6 +841,7 @@ public class Game extends Application {
                 cardCollectBoard.getChildren().clear();
                 player.getChildren().clear();
                 end.getChildren().clear();
+                stSound.play(); //fixme and loop
                 restartGame();
                 root.getChildren().remove(highlight); // if press reset by unfinished game, this line works
                 root.getChildren().add(highlight);
