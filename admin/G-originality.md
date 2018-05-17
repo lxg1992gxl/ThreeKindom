@@ -6,4 +6,4 @@ We declare that the work we have submitted for Stage G of this assignment and al
 
 * ....
 
-Signed: Mary Jones (u2345678), Bob Smith (u3456789), and Sue Black (u0123456)
+Signed: Siying Qian (u6099927), Bob Smith (u3456789), and Sue Black (u0123456)
