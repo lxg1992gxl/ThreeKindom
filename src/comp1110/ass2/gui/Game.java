@@ -107,8 +107,9 @@ public class Game extends Application {
 
             setOnMouseEntered(event -> {
                 highlight.getChildren().clear();
-                highLightMouse(this.loc,loc);
+                highLightMouse(this.loc, loc);
             });
+
 
             setOnMousePressed(event -> {
                 //System.out.println("current card: " + this.id + this.loc);
@@ -183,7 +184,7 @@ public class Game extends Application {
         }
     }
 
-    private void updateNotions(){
+    private void updateNotions() {
         notion.getChildren().removeAll(notion.getChildren());
         Text valid = new Text("Valid move. Next comes to Player " + (currentPlayer + 1) + "'s turn!");
         valid.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
@@ -221,7 +222,7 @@ public class Game extends Application {
 
     //Generates a move based on the modified minimax tree
     private void AdvAIMove(String placement) {
-        char loc = AIstrategies.bestMove((int)difficulty, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
+        char loc = AIstrategies.bestMove((int) difficulty, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
         history = history + loc + "";
 
         showCollectedCards();
@@ -237,7 +238,7 @@ public class Game extends Application {
 
     //populates the array to show which players are AI
     private void AIPlayer(int numberOfPlayers, int numberOfHumans) {
-       for (int i = 0; i < numberOfPlayers; i++) {
+        for (int i = 0; i < numberOfPlayers; i++) {
             if (i < numberOfHumans) {
                 AI[i] = false;
 
@@ -245,7 +246,7 @@ public class Game extends Application {
                 AI[i] = true;
             }
 
-       }
+        }
 
         //extension --> turn this array into an int array and allow AIs to have differnt difficulty levels
 
@@ -324,14 +325,17 @@ public class Game extends Application {
         win.setLayoutY(BOARD_HEIGHT / 2 - 80);
         end.getChildren().add(win);
 
+
+
         Text congratulation = new Text("Congratulations! Y(^o^)Y");
         congratulation.setFont(Font.font("American Typewriter", FontWeight.EXTRA_BOLD, 56));
         congratulation.setFill(Color.MEDIUMVIOLETRED);
         congratulation.setLayoutX(BOARD_WIDTH / 2 - 330);
         congratulation.setLayoutY(BOARD_HEIGHT / 2 + 20);
         end.getChildren().add(congratulation);
+        end.toFront();
+        root.getChildren().remove(highlight);
 
-        notion.getChildren().removeAll(notion.getChildren());
     }
 
     //clears cards from the collected cards pane
@@ -387,19 +391,19 @@ public class Game extends Application {
         }
     }
 
-    private void highLightMouse(char loc,int normalLoc) {
+    private void highLightMouse(char loc, int normalLoc) {
         //System.out.println(id+loc);
         int w = 100;
         int h = 100;
         int gap = 4;
-        if (isMoveLegal(currentBoard,loc)){
+        if (isMoveLegal(currentBoard, loc)) {
             ImageView greenRec = new ImageView(new Image(Game.class.getResource(URI_BASE + "right.png").toString()));
             greenRec.setLayoutX(BOARD_WIDTH - ((normalLoc / 6 + 1) * w + (normalLoc / 6 + 1) * gap) - 4);
             greenRec.setLayoutY(10 + normalLoc % 6 * h + normalLoc % 6 * gap);
             greenRec.setScaleX(1.05);
             greenRec.setScaleY(1.05);
             highlight.getChildren().add(greenRec);
-        }else{
+        } else {
             ImageView redRec = new ImageView(new Image(Game.class.getResource(URI_BASE + "wrong.png").toString()));
             redRec.setLayoutX(BOARD_WIDTH - ((normalLoc / 6 + 1) * w + (normalLoc / 6 + 1) * gap) - 4);
             redRec.setLayoutY(10 + normalLoc % 6 * h + normalLoc % 6 * gap);
@@ -407,8 +411,9 @@ public class Game extends Application {
             redRec.setScaleY(1.05);
             highlight.getChildren().add(redRec);
         }
-
-        board.toFront();
+        if (!noMoreValidMove(currentBoard)) {
+            board.toFront();
+        }
     }
 
     private void makeRec(int x, int y, int width, int height, int arcw, int arch, Color fill, Color stroke) {
@@ -448,7 +453,6 @@ public class Game extends Application {
 //            b= false;
 //        }
 //        AIPlayer(numberOfPlayers, numberOfHumans);
-
 
 
     }
@@ -832,6 +836,7 @@ public class Game extends Application {
                 player.getChildren().clear();
                 end.getChildren().clear();
                 restartGame();
+                root.getChildren().add(highlight);
             }
         });
 
