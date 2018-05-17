@@ -37,7 +37,11 @@ import static comp1110.ass2.WarringStatesGame.*;
 import static comp1110.ass2.WarringStatesGame.getWinnerID;
 import static comp1110.ass2.WarringStatesGame.noMoreValidMove;
 
+// This class was written by all team members, including collaboration of many parts
 // Kathleen mainly for: text and sound notions addition, flag collection area, background setting.
+// Lenna mainly for: FXPiece, AIsetup and automove methods, clearcards and showcards (with help from Oliver), showboard, restartgame, and slider
+// Oliver mainly for.. instruction page, starting page, layout of collected cards, highlight valid move
+
 public class Game extends Application {
     private static final int BOARD_WIDTH = 933;
     private static final int BOARD_HEIGHT = 700;
@@ -120,7 +124,7 @@ public class Game extends Application {
                 if (this.id.equals("z9") || !WarringStatesGame.isMoveLegal(currentBoard, this.loc)) {
                     notion.getChildren().removeAll(notion.getChildren());
                     Text invalid = new Text("Invalid move! Please choose a new position!");
-                    invalid.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
+                    invalid.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 22));
                     invalid.setFill(Color.BLACK);
                     invalid.setLayoutX(410);
                     invalid.setLayoutY(680);
@@ -147,25 +151,24 @@ public class Game extends Application {
                     if (noMoreValidMove(currentBoard)) {
                         notion.getChildren().removeAll(notion.getChildren());
                         Text end = new Text("No more valid move for Player " + (currentPlayer + 1) + ". Game Ending!");
-                        end.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
+                        end.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 22));
                         end.setFill(Color.BLACK);
                         end.setLayoutX(405);
                         end.setLayoutY(680);
                         notion.getChildren().add(end);
 
+                        //notion sound for winner
+                        MediaPlayer winSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "gameEnd.wav").toString()));
+                        winSound.play();
                         endGame();
+
+                        //
                     } else {
-                        notion.getChildren().removeAll(notion.getChildren());
-                        Text valid = new Text("Valid move. Next comes to Player " + (currentPlayer + 1) + "'s turn!");
-                        valid.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
-                        valid.setFill(Color.BLACK);
-                        valid.setLayoutX(410);
-                        valid.setLayoutY(680);
-                        notion.getChildren().add(valid);
+                        updateNotions();
 
                         //valid move notion sound for human player
-//                        MediaPlayer validSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "valid.wav").toString()));
-//                        validSound.play();
+                        MediaPlayer validSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "valid.wav").toString()));
+                        validSound.play();
                     }
                 }
             });
@@ -181,7 +184,7 @@ public class Game extends Application {
     private void updateNotions() {
         notion.getChildren().removeAll(notion.getChildren());
         Text valid = new Text("Valid move. Next comes to Player " + (currentPlayer + 1) + "'s turn!");
-        valid.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 24));
+        valid.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 22));
         valid.setFill(Color.BLACK);
         valid.setLayoutX(410);
         valid.setLayoutY(680);
@@ -194,7 +197,7 @@ public class Game extends Application {
         if (difficulty == 1.0) {
             AIMove(placement);
         } else {
-            AdvAIMove(placement);
+            AdvAIMove();
         }
     }
 
@@ -215,8 +218,8 @@ public class Game extends Application {
     }
 
     //Generates a move based on the modified minimax tree
-    private void AdvAIMove(String placement) {
-        char loc = AIstrategies.bestMove((int) difficulty, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
+    private void AdvAIMove() {
+        char loc = AIstrategies.bestMove((int) difficulty, currentBoard, currentPlayer, numberOfPlayers, setup, history);
         history = history + loc + "";
 
         showCollectedCards();
@@ -269,7 +272,7 @@ public class Game extends Application {
                 setImage(f);
                 setFitWidth(25);
                 setFitHeight(25);
-                setLayoutX(80 + 25 * k);
+                setLayoutX(90 + 25 * k);
                 setLayoutY(574 + 30 * playerID);
             }
         }
@@ -304,18 +307,15 @@ public class Game extends Application {
 
 
     private void endGame() {
-        highlight.getChildren().clear();
 
-        //notion sound for winner
-//        MediaPlayer winSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "gameEnd.mp3").toString()));
-//        winSound.play();
+        highlight.getChildren().clear();
 
         //indicate the winner at the end of the game
         int winner = getWinnerID(getFlags(setup, history, numberOfPlayers));
         Text win = new Text("Player " + (winner + 1) + " is the winner!!! ");
         win.setFont(Font.font("American Typewriter", FontWeight.EXTRA_BOLD, 68));
         win.setFill(Color.RED);
-        win.setLayoutX(BOARD_WIDTH / 2 - 360);
+        win.setLayoutX(BOARD_WIDTH / 2 - 400);
         win.setLayoutY(BOARD_HEIGHT / 2 - 80);
         end.getChildren().add(win);
 
@@ -324,11 +324,14 @@ public class Game extends Application {
         Text congratulation = new Text("Congratulations! Y(^o^)Y");
         congratulation.setFont(Font.font("American Typewriter", FontWeight.EXTRA_BOLD, 56));
         congratulation.setFill(Color.MEDIUMVIOLETRED);
-        congratulation.setLayoutX(BOARD_WIDTH / 2 - 330);
+        congratulation.setLayoutX(BOARD_WIDTH / 2 - 380);
         congratulation.setLayoutY(BOARD_HEIGHT / 2 + 20);
         end.getChildren().add(congratulation);
         end.toFront();
         root.getChildren().remove(highlight);
+
+
+
 
     }
 
@@ -422,7 +425,7 @@ public class Game extends Application {
 
 
     //resets all relevant variables and goes back to start screen
-    public void restartGame() {
+    private void restartGame() {
         //new setup
         setup = WarringStatesGame.randomSetup();
 
@@ -440,6 +443,7 @@ public class Game extends Application {
 
         //reset difficulty
         difficulty = 5.0;
+
 
         //lapsed code for AI check box
 //        //reset ai assignment when restart
@@ -462,10 +466,11 @@ public class Game extends Application {
         Pane pane1 = new Pane();
         Scene settingScene = new Scene(pane1, 400, 300);
 
-//        MediaPlayer stSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "backMusic.mp3").toString()));
-//        stSound.setAutoPlay(page1.isShowing()); //FIXME
-//        stSound.setAutoPlay(pane1.isVisible());
-//        stSound.play();
+        MediaPlayer stSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "backMusic.wav").toString()));
+        stSound.setVolume(1.0);
+        stSound.setAutoPlay(page1.isShowing()); //FIXME repeat?
+        stSound.setAutoPlay(pane1.isVisible());
+        stSound.play();
 
         //pane1 background
         ImageView start = new ImageView();
@@ -564,12 +569,12 @@ public class Game extends Application {
 
         //create "How many robots \ndo you want to add?"
         Text tAddBot = new Text("How many robots \ndo you want to add?");
-        tAddBot.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 14));
+        tAddBot.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 12));
         tAddBot.setLayoutX(190);
         tAddBot.setLayoutY(135);
         pane1.getChildren().add(tAddBot);
         Text robotDifficulty = new Text("Robot Difficulty: ");
-        robotDifficulty.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 13));
+        robotDifficulty.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 12));
         robotDifficulty.setLayoutX(210);
         robotDifficulty.setLayoutY(190);
         pane1.getChildren().add(robotDifficulty);
@@ -649,8 +654,9 @@ public class Game extends Application {
                 page2.initStyle(StageStyle.UNDECORATED);
                 page2.setScene(scene);
 
-                MediaPlayer insSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "backMusic.mp3").toString()));
-                insSound.setAutoPlay(page2.isShowing()); //FIXME
+                MediaPlayer insSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "backMusic.wav").toString()));
+                insSound.setVolume(1.0);
+                insSound.play();
 
                 //pane2 background
                 ImageView ins = new ImageView();
@@ -699,6 +705,7 @@ public class Game extends Application {
                     public void handle(ActionEvent e) {
                         page2.hide();
                         page1.show();
+                        insSound.stop();
                     }
                 });
 
@@ -712,7 +719,7 @@ public class Game extends Application {
             public void handle(MouseEvent event) {
                 numberOfHumans = numberOfPlayers - numberOfAI;
 
-//                stSound.pause(); //FIXME
+                stSound.stop();
                 page1.hide();
                 primaryStage.show();
 
@@ -834,6 +841,7 @@ public class Game extends Application {
                 cardCollectBoard.getChildren().clear();
                 player.getChildren().clear();
                 end.getChildren().clear();
+                stSound.play(); //fixme and loop
                 restartGame();
                 root.getChildren().remove(highlight); // if press reset by unfinished game, this line works
                 root.getChildren().add(highlight);
