@@ -52,6 +52,7 @@ public class Game extends Application {
     private final Group player = new Group(); //notions of playerID in the flag shown area (that will never change in the whole game)
 
     private final Group board = new Group();
+    private final Group highlight = new Group();
     private final Group flags = new Group();
     private final FlowPane cardCollectBoard = new FlowPane(0, 10);
     private final Group restart = new Group();
@@ -104,6 +105,10 @@ public class Game extends Application {
 
              */
 
+            setOnMouseEntered(event -> {
+                highlight.getChildren().clear();
+                highLightMouse(this.loc,loc);
+            });
 
             setOnMousePressed(event -> {
                 //System.out.println("current card: " + this.id + this.loc);
@@ -345,6 +350,8 @@ public class Game extends Application {
             cards[currentPlayer][j].setLayoutX(105 * currentPlayer); //if clearing at beginning of method, need to get supporters for all players
             //if more than 2 players, show below instead?
             cards[currentPlayer][j].setLayoutY(20 * j);
+            cards[currentPlayer][j].setFitHeight(70);
+            cards[currentPlayer][j].setFitWidth(70);
             switch (currentPlayer) {
                 case (0):
                     scrBD0.getChildren().add(cards[currentPlayer][j]);
@@ -372,6 +379,30 @@ public class Game extends Application {
             b[j] = new FXpiece(currentBoard.substring(j * 3, j * 3 + 3)); //problem?
             board.getChildren().add(b[j]);
         }
+    }
+
+    private void highLightMouse(char loc,int normalLoc) {
+        //System.out.println(id+loc);
+        int w = 100;
+        int h = 100;
+        int gap = 4;
+        if (isMoveLegal(currentBoard,loc)){
+            ImageView greenRec = new ImageView(new Image(Game.class.getResource(URI_BASE + "right.png").toString()));
+            greenRec.setLayoutX(BOARD_WIDTH - ((normalLoc / 6 + 1) * w + (normalLoc / 6 + 1) * gap) - 4);
+            greenRec.setLayoutY(10 + normalLoc % 6 * h + normalLoc % 6 * gap);
+            greenRec.setScaleX(1.05);
+            greenRec.setScaleY(1.05);
+            highlight.getChildren().add(greenRec);
+        }else{
+            ImageView redRec = new ImageView(new Image(Game.class.getResource(URI_BASE + "wrong.png").toString()));
+            redRec.setLayoutX(BOARD_WIDTH - ((normalLoc / 6 + 1) * w + (normalLoc / 6 + 1) * gap) - 4);
+            redRec.setLayoutY(10 + normalLoc % 6 * h + normalLoc % 6 * gap);
+            redRec.setScaleX(1.05);
+            redRec.setScaleY(1.05);
+            highlight.getChildren().add(redRec);
+        }
+
+        board.toFront();
     }
 
     private void makeRec(int x, int y, int width, int height, int arcw, int arch, Color fill, Color stroke) {
@@ -798,7 +829,7 @@ public class Game extends Application {
         });
 
 
-        root.getChildren().addAll(board, cardCollectBoard, flags, end, notion, player, restart);
+        root.getChildren().addAll(board, highlight, cardCollectBoard, flags, end, notion, player, restart);
 
         primaryStage.setScene(scene);
         //move "primaryStage.show" to setting window "GameStart Btn"
