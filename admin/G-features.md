@@ -3,8 +3,8 @@ of our project implements the following features:
 
 *(Remove those that are unimplemented)*
 
- X A simple placement viewer (Task 4)
- X A basic playable Warring States game (Tasks 2-3, 5-7)
+ - A simple placement viewer (Task 4)
+ - A basic playable Warring States game (Tasks 2-3, 5-7)
  X A basic playable link Warring States game that allows legal moves and collects supporters (Task 8)
  X Compute scoring (Task 9)
  X Generate a valid move (Task 10)
