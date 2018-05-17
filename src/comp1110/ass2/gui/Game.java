@@ -660,7 +660,7 @@ public class Game extends Application {
 
                 //pane2 background
                 ImageView ins = new ImageView();
-                Image insBack = new Image(Game.class.getResource(URI_BASE + "insBackground.JPG").toString());
+                Image insBack = new Image(Game.class.getResource(URI_BASE + "insBackground.jpg").toString());
                 ins.setImage(insBack);
                 ins.setFitHeight(500);
                 ins.setFitWidth(400);
