@@ -113,6 +113,7 @@ public class Game extends Application {
             });
 
             setOnMousePressed(event -> {
+                highlight.getChildren().clear();
                 //System.out.println("current card: " + this.id + this.loc);
                 if (this.id.equals("z9") || !WarringStatesGame.isMoveLegal(currentBoard, this.loc)) {
                     notion.getChildren().removeAll(notion.getChildren());
@@ -171,13 +172,6 @@ public class Game extends Application {
                     }
                 }
             });
-
-            //todo code to highlight valid move when hovered over
-            setOnMouseMoved(event -> {
-                        //System.out.println(getLayoutX());
-                        //System.out.println(getX());
-                    }
-            );
 
         }
 
@@ -315,6 +309,7 @@ public class Game extends Application {
 
 
     private void endGame() {
+        highlight.getChildren().clear();
 
         //notion sound for winner
         MediaPlayer winSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "gameEnd.mp3").toString()));
