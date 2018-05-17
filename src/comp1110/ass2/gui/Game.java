@@ -37,6 +37,7 @@ import static comp1110.ass2.WarringStatesGame.*;
 import static comp1110.ass2.WarringStatesGame.getWinnerID;
 import static comp1110.ass2.WarringStatesGame.noMoreValidMove;
 
+// Kathleen mainly for: text and sound notions addition, flag collection area, background setting.
 public class Game extends Application {
     private static final int BOARD_WIDTH = 933;
     private static final int BOARD_HEIGHT = 700;
@@ -143,11 +144,6 @@ public class Game extends Application {
                         autoMove(currentBoard);
                     }
 
-                    //if difficulty 0, call task 10
-                    //if difficult >0, task 12
-                    //time delay
-
-                    //System.out.println(currentPlayer);
                     if (noMoreValidMove(currentBoard)) {
                         notion.getChildren().removeAll(notion.getChildren());
                         Text end = new Text("No more valid move for Player " + (currentPlayer + 1) + ". Game Ending!");
@@ -245,9 +241,7 @@ public class Game extends Application {
             }
 
         }
-
-        //extension --> turn this array into an int array and allow AIs to have differnt difficulty levels
-
+        //extension --> turn this array into an int array and allow AIs to have different difficulty levels
     }
 
 
@@ -619,7 +613,7 @@ public class Game extends Application {
         pane1.getChildren().add(slider);
 
         difficulty = slider.getValue();
-        System.out.println(difficulty);
+//        System.out.println(difficulty);
         // Adding Listener to value property.
         slider.valueProperty().addListener(new ChangeListener<Number>() {
 
@@ -847,7 +841,6 @@ public class Game extends Application {
         primaryStage.setScene(scene);
         //move "primaryStage.show" to setting window "GameStart Btn"
     }
-
 
 }
 

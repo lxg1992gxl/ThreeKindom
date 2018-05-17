@@ -7,7 +7,7 @@ import java.util.List;
 
 import static comp1110.ass2.WarringStatesGame.*;
 
-public class AIstrategies {
+public class AIstrategies { // Written by Kathleen
     // Task 12: Integrate a more advanced opponent into your game
 
     // collect all valid-move cards
@@ -253,22 +253,23 @@ public class AIstrategies {
     }
 
 
-    // Basic Test
-    public static void main(String[] args) {
-        int layers = 6;
-        int player = 0;
-        int numPlayers = 2;
-        String history = "";
-        String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
+    // Basic Test [-- Help tested by Lenna]
+//    public static void main(String[] args) {
+//        int layers = 6;
+//        int player = 0;
+//        int numPlayers = 2;
+//        String history = "";
+//        String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
 
 //        System.out.println(allValidMoves(setup));
-        List<String> previousState = new ArrayList<>();
-        previousState.add("");
-        previousState.add(setup);
-        previousState.add("0");
-        System.out.println(allNextStepPossibilities(previousState, 0, 1, 2, setup, ""));
-        System.out.println(bottomLookedLayerStates(layers, setup, player, numPlayers, setup, history));
+//        List<String> previousState = new ArrayList<>();
+//        previousState.add("");
+//        previousState.add(setup);
+//        previousState.add("0");
+//        System.out.println(allNextStepPossibilities(previousState, 0, 1, 2, setup, ""));
+//        System.out.println(bottomLookedLayerStates(layers, setup, player, numPlayers, setup, history));
 //        System.out.println(bestMove(layers, setup, player, numPlayers, setup, history));
 
-    }
+//    }
+
 }

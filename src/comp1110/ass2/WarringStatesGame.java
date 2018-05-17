@@ -70,7 +70,7 @@ public class WarringStatesGame {
      * @return true if the placement is well-formed
      */
 
-    static boolean isPlacementWellFormed(String placement) {
+    static boolean isPlacementWellFormed(String placement) { // Written by Kathleen
         // Task 3: determine whether a placement is well-formed
 
         //Construct the possible number index in each different country group
@@ -315,7 +315,7 @@ public class WarringStatesGame {
      * @param moveSequence a string of location characters representing moves
      * @return True if the placement sequence is valid
      */
-    static boolean isMoveSequenceValid(String setup, String moveSequence) {
+    static boolean isMoveSequenceValid(String setup, String moveSequence) { // Written by Kathleen and Oliver, helped debug by Lenna
         // Task 6: determine whether a placement sequence is valid
         // check whether has empty string or initial out of range
         if (moveSequence.length() > 36 || moveSequence == "" || setup == null || setup == "") {
@@ -427,7 +427,7 @@ public class WarringStatesGame {
      * @param playerId     the player number for which to get the list of supporters, [0..(numPlayers-1)]
      * @return the list of supporters for the given player
      */
-    public static String getSupporters(String setup, String moveSequence, int numPlayers, int playerId) {
+    public static String getSupporters(String setup, String moveSequence, int numPlayers, int playerId) { // Written by Kathleen
         // Task 7: get the list of supporters for a given player after a sequence of moves
 
         char[] mov = moveSequence.toCharArray();
@@ -576,7 +576,7 @@ public class WarringStatesGame {
      * - element 6 contains the player ID of the player who controls the flag of Yan
      * If no player controls a particular house, the element for that house will have the value -1.
      */
-    public static int[] getFlags(String setup, String moveSequence, int numPlayers) {
+    public static int[] getFlags(String setup, String moveSequence, int numPlayers) { // Written by Kathleen
         // Task 8: determine which player controls the flag of each kingdom after a given sequence of moves
 
         char[] mov = moveSequence.toCharArray();
@@ -831,7 +831,7 @@ public class WarringStatesGame {
      * @param placement the current placement string
      * @return a location character representing Zhang Yi's destination for the move
      */
-    public static char generateMove(String placement) {
+    public static char generateMove(String placement) { // Written by Kathleen
         // Task 10: generate a legal move
         // find ZhangYi's location in the placement
         char zyloc = placement.charAt(placement.indexOf('z') + 2);
@@ -953,7 +953,7 @@ public class WarringStatesGame {
 
     // Task 10 & Task 9
     // check whether for the current placement, there are no more valid move
-    public static boolean noMoreValidMove(String placement) {
+    public static boolean noMoreValidMove(String placement) { // Written by Kathleen
 
         // find ZhangYi's location in the placement
         char zyloc = placement.charAt(placement.indexOf('z') + 2);
@@ -986,7 +986,7 @@ public class WarringStatesGame {
 
     // Task 9
     // get an array of the final flags number of every player, player ID will work as array index
-    public static int[] playerFlagNumbers(int[] finalFlags) {
+    public static int[] playerFlagNumbers(int[] finalFlags) { // Written by Kathleen
         // here, "int[] finalFlags = getFlags(setup, moveSequence, numPlayers)" which we can get from Task 8 result
         int[] flagNumbers = new int[4];
         for (int i = 0; i < 7; i++) {
@@ -999,7 +999,7 @@ public class WarringStatesGame {
     }
 
     // get an array with player IDs of players who hold the maximum number of flags
-    public static int[] getMaximumFlagsIDs(int[] finalFlags) {
+    public static int[] getMaximumFlagsIDs(int[] finalFlags) { // Written by Kathleen
         // get No. of flags of every players
         int[] flagNumbers = playerFlagNumbers(finalFlags);
 
@@ -1026,7 +1026,7 @@ public class WarringStatesGame {
     }
 
     // get the final winner's ID
-    public static int getWinnerID(int[] finalFlags) {
+    public static int getWinnerID(int[] finalFlags) { // Written by Kathleen
         int[] maxFlagsPlayer = getMaximumFlagsIDs(finalFlags);
 
         int winnerID = -1;
@@ -1083,7 +1083,7 @@ public class WarringStatesGame {
 
     // Task 9
     // creates a random setup board String at the start
-    public static String randomSetup() {
+    public static String randomSetup() { // Written by Kathleen
         Random rand = new Random();
         String[] cardsPool = new String[]{"a0", "a1", "a2", "a3", "a4", "a5", "a6", "a7", "b0", "b1", "b2", "b3", "b4", "b5", "b6", "c0", "c1", "c2", "c3", "c4", "c5", "d0", "d1", "d2", "d3", "d4", "e0", "e1", "e2", "e3", "f0", "f1", "f2", "g0", "g1", "z9"};
         String[] cardsAndLocation = new String[]{"", "A", "", "B", "", "C", "", "D", "", "E", "", "F", "", "G", "", "H", "", "I", "", "J", "", "K", "", "L", "", "M", "", "N", "", "O", "", "P", "", "Q", "", "R", "", "S", "", "T", "", "U", "", "V", "", "W", "", "X", "", "Y", "", "Z", "", "0", "", "1", "", "2", "", "3", "", "4", "", "5", "", "6", "", "7", "", "8", "", "9"};
@@ -1108,6 +1108,7 @@ public class WarringStatesGame {
 
 
     // Task 9
+    // creates a new updated board
     public static String newBoard(String placement, String moves) {
         char[] move = moves.toCharArray();
 
@@ -1118,9 +1119,6 @@ public class WarringStatesGame {
                     count += 1;
                 }
             }
-//            if (count > 1) {
-//                //  return false;
-//            }
         }
 
         // go through every move in moveSequence one by one
@@ -1190,14 +1188,8 @@ public class WarringStatesGame {
                 i = i + 1;
             }
         }
-        // justify whether we check until the end of the moveSequence
-//        if (i == -1) {
-//            //return false;
-//        } else {
-//            //return true;
-//        }
-
         return placement;
     }
+
 
 }
