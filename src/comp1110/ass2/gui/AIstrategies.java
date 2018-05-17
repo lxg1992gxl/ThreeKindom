@@ -51,136 +51,140 @@ public class AIstrategies {
         List<String> allValidMoves = allValidMoves(previousBoard);
         char[] bd = previousBoard.toCharArray();
 
-        for (String move : allValidMoves) {
+        if (noMoreValidMove(previousBoard)) {
+            possibleState = previousState;
+        } else {
+            for (String move : allValidMoves) {
 
-            // find ZhangYi's location for previous board
+                // find ZhangYi's location for previous board
 //            char zyloc = previousBoard.charAt(previousBoard.indexOf('z') + 2);
-            char zyloc = ' '; //initialize zy location
-            int zy = 2;
-            while (zyloc == ' ' && zy < previousBoard.length()) {
-                if (bd[zy - 2] == 'z') {
-                    zyloc = bd[zy];
+                char zyloc = ' '; //initialize zy location
+                int zy = 2;
+                while (zyloc == ' ' && zy < previousBoard.length()) {
+                    if (bd[zy - 2] == 'z') {
+                        zyloc = bd[zy];
+                    }
+                    zy = zy + 3;
                 }
-                zy = zy + 3;
-            }
-            if (zy != 2) {
-                zy = zy - 3;
-            }
+                if (zy != 2) {
+                    zy = zy - 3;
+                }
 
-            int ZY = normaliseLoc(zyloc);
+                int ZY = normaliseLoc(zyloc);
 
-            // add new move sequence for one possibleState
-            char mov = (move.toCharArray())[2];
-            String newMoveSequence = previousState.get(0) + mov;
-            possibleState.add(newMoveSequence);
+                // add new move sequence for one possibleState
+                char mov = (move.toCharArray())[2];
+                String newMoveSequence = previousState.get(0) + mov;
+                possibleState.add(newMoveSequence);
 
 //            System.out.println(previousState.get(2));
-            int totalMark = Integer.parseInt(previousState.get(2));
+                int totalMark = Integer.parseInt(previousState.get(2));
 
-            int newMark = 0;
+                int newMark = 0;
 
-            // the normalised form for destination location
-            int D = normaliseLoc(mov);
+                // the normalised form for destination location
+                int D = normaliseLoc(mov);
 
-            // find the destination location on previousBoard board
-            int m = 2;
-            for (int p = 0; p != -1 && m < previousBoard.length(); m = m + 3) {
-                if (bd[m] == mov) {
-                    p = -1;
+                // find the destination location on previousBoard board
+                int m = 2;
+                for (int p = 0; p != -1 && m < previousBoard.length(); m = m + 3) {
+                    if (bd[m] == mov) {
+                        p = -1;
+                    }
                 }
-            }
-            if (m != 2) {
-                m = m - 3;
-            }
+                if (m != 2) {
+                    m = m - 3;
+                }
 
-            //find the corresponding card at destination position
-            char country = bd[m - 2];
+                //find the corresponding card at destination position
+                char country = bd[m - 2];
 
-            for (int k = 2; k < previousBoard.length(); k = k + 3) {
-                int K = normaliseLoc(bd[k]);
-                // first check whether the position is a valid move
-                // the card belongs to same country with the destination
-                if (isMoveLegal(previousBoard, bd[k])) {
-                    if (bd[k - 2] == country) {
-                        // the card is in the same row or column with ZhangYi and destination position
-                        if ((sameRow(mov, bd[k]) && sameRow(zyloc, bd[k])) || (sameCol(mov, bd[k]) && sameCol(zyloc, bd[k]))) {
-                            // the card is between ZhangYi and the destination position
-                            if ((D < K && K < ZY) || (ZY < K && K < D)) {
-                                // whenever found a card between ZY and the destination position, "add mark" by 1
-                                newMark = newMark + 1;
-                                bd[k] = '/';
-                                bd[k - 1] = '/';
-                                bd[k - 2] = '/';
+                for (int k = 2; k < previousBoard.length(); k = k + 3) {
+                    int K = normaliseLoc(bd[k]);
+                    // first check whether the position is a valid move
+                    // the card belongs to same country with the destination
+                    if (isMoveLegal(previousBoard, bd[k])) {
+                        if (bd[k - 2] == country) {
+                            // the card is in the same row or column with ZhangYi and destination position
+                            if ((sameRow(mov, bd[k]) && sameRow(zyloc, bd[k])) || (sameCol(mov, bd[k]) && sameCol(zyloc, bd[k]))) {
+                                // the card is between ZhangYi and the destination position
+                                if ((D < K && K < ZY) || (ZY < K && K < D)) {
+                                    // whenever found a card between ZY and the destination position, "add mark" by 1
+                                    newMark = newMark + 1;
+                                    bd[k] = '/';
+                                    bd[k - 1] = '/';
+                                    bd[k - 2] = '/';
+                                }
                             }
                         }
                     }
                 }
+
+                // move ZY to his new position
+                bd[m - 2] = 'z';
+                bd[m - 1] = '9';
+
+                // set previous Zhang Yi's position to empty
+                bd[zy - 2] = '/';
+                bd[zy - 1] = '/';
+                bd[zy] = '/';
+
+                // update our new board
+                String newBoard = "";
+                for (int i = 0; i < bd.length; i++) {
+                    if (bd[i] != '/') {
+                        char[] a = new char[]{bd[i]};
+                        String s = new String(a);
+                        newBoard = newBoard + s;
+                    }
+                }
+                possibleState.add(newBoard);
+
+                // get the updated flag String (using method from Task8)
+                String completedMoveSequence = historyMove + newMoveSequence;
+                int[] flags = WarringStatesGame.getFlags(setup, completedMoveSequence, numPlayers);
+
+                // if the current player owns the country's flag after this move, add the mark by 5
+                if (country == 'a') {
+                    if (flags[0] == checkedPlayer) {
+                        newMark = newMark + 5;
+                    }
+                } else if (country == 'b') {
+                    if (flags[1] == checkedPlayer) {
+                        newMark = newMark + 5;
+                    }
+                } else if (country == 'c') {
+                    if (flags[2] == checkedPlayer) {
+                        newMark = newMark + 5;
+                    }
+                } else if (country == 'd') {
+                    if (flags[3] == checkedPlayer) {
+                        newMark = newMark + 5;
+                    }
+                } else if (country == 'e') {
+                    if (flags[4] == checkedPlayer) {
+                        newMark = newMark + 5;
+                    }
+                } else if (country == 'f') {
+                    if (flags[5] == checkedPlayer) {
+                        newMark = newMark + 5;
+                    }
+                } else {
+                    if (flags[6] == checkedPlayer) {
+                        newMark = newMark + 5;
+                    }
+                }
+
+                // check whether the current checked player is our initial player (who wants to do the minimax)
+                // if yes, add the mark to the total mark; if no, then minus the mark
+                if (checkedPlayer == initialPlayer) {
+                    totalMark = totalMark + newMark;
+                } else {
+                    totalMark = totalMark - newMark;
+                }
+                possibleState.add(Integer.toString(totalMark));
+
             }
-
-            // move ZY to his new position
-            bd[m - 2] = 'z';
-            bd[m - 1] = '9';
-
-            // set previous Zhang Yi's position to empty
-            bd[zy - 2] = '/';
-            bd[zy - 1] = '/';
-            bd[zy] = '/';
-
-            // update our new board
-            String newBoard = "";
-            for (int i = 0; i < bd.length; i++) {
-                if (bd[i] != '/') {
-                    char[] a = new char[]{bd[i]};
-                    String s = new String(a);
-                    newBoard = newBoard + s;
-                }
-            }
-            possibleState.add(newBoard);
-
-            // get the updated flag String (using method from Task8)
-            String completedMoveSequence = historyMove + newMoveSequence;
-            int[] flags = WarringStatesGame.getFlags(setup, completedMoveSequence, numPlayers);
-
-            // if the current player owns the country's flag after this move, add the mark by 5
-            if (country == 'a') {
-                if (flags[0] == checkedPlayer) {
-                    newMark = newMark + 5;
-                }
-            } else if (country == 'b') {
-                if (flags[1] == checkedPlayer) {
-                    newMark = newMark + 5;
-                }
-            } else if (country == 'c') {
-                if (flags[2] == checkedPlayer) {
-                    newMark = newMark + 5;
-                }
-            } else if (country == 'd') {
-                if (flags[3] == checkedPlayer) {
-                    newMark = newMark + 5;
-                }
-            } else if (country == 'e') {
-                if (flags[4] == checkedPlayer) {
-                    newMark = newMark + 5;
-                }
-            } else if (country == 'f') {
-                if (flags[5] == checkedPlayer) {
-                    newMark = newMark + 5;
-                }
-            } else {
-                if (flags[6] == checkedPlayer) {
-                    newMark = newMark + 5;
-                }
-            }
-
-            // check whether the current checked player is our initial player (who wants to do the minimax)
-            // if yes, add the mark to the total mark; if no, then minus the mark
-            if (checkedPlayer == initialPlayer) {
-                totalMark = totalMark + newMark;
-            } else {
-                totalMark = totalMark - newMark;
-            }
-            possibleState.add(Integer.toString(totalMark));
-
         }
 
         return possibleState;
@@ -251,7 +255,7 @@ public class AIstrategies {
 
     // Basic Test
     public static void main(String[] args) {
-        int layers = 4;
+        int layers = 6;
         int player = 0;
         int numPlayers = 2;
         String history = "";

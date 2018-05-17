@@ -28,6 +28,7 @@ import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+
 import java.util.ArrayList;
 
 import static comp1110.ass2.WarringStatesGame.*;
@@ -206,7 +207,7 @@ public class Game extends Application {
     }
 
     private void AdvAIMove(String placement) {
-        char loc = AIstrategies.bestMove(2, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
+        char loc = AIstrategies.bestMove(6, currentBoard, currentPlayer, numberOfPlayers, setup, history); //is current player the right parameter here?
         //System.out.println(loc);
         history = history + loc + "";
         //System.out.println("current history: " +history);
