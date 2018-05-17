@@ -356,11 +356,11 @@ public class Game extends Application {
             cards[currentPlayer][j] = new FXpiece(support.substring(j * 2, j * 2 + 2) + '/');
 
             cards[currentPlayer][j].setLayoutX(105 * currentPlayer);
-            cards[currentPlayer][j].setLayoutY(20 * j);
+            cards[currentPlayer][j].setLayoutY(12 * j);
 
             //shrink the cards so will fit in the board
-            cards[currentPlayer][j].setFitHeight(70);
-            cards[currentPlayer][j].setFitWidth(70);
+            cards[currentPlayer][j].setFitHeight(95);
+            cards[currentPlayer][j].setFitWidth(95);
             switch (currentPlayer) {
                 case (0):
                     scrBD0.getChildren().add(cards[currentPlayer][j]);
@@ -815,8 +815,8 @@ public class Game extends Application {
         showCollectedCards();
 
         cardCollectBoard.setMaxWidth(270);
-        cardCollectBoard.setLayoutX(35);
-        cardCollectBoard.setLayoutY(5);
+        cardCollectBoard.setLayoutX(25);
+        cardCollectBoard.setLayoutY(10);
         cardCollectBoard.setPadding(new Insets(5));
 
         //set reset button
@@ -846,9 +846,7 @@ public class Game extends Application {
 
         primaryStage.setScene(scene);
         //move "primaryStage.show" to setting window "GameStart Btn"
-
     }
-
 
 
 }
