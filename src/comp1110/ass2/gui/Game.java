@@ -342,6 +342,8 @@ public class Game extends Application {
             cards[currentPlayer][j].setLayoutX(105 * currentPlayer); //if clearing at beginning of method, need to get supporters for all players
             //if more than 2 players, show below instead?
             cards[currentPlayer][j].setLayoutY(20 * j);
+            cards[currentPlayer][j].setFitHeight(70);
+            cards[currentPlayer][j].setFitWidth(70);
             switch (currentPlayer) {
                 case (0):
                     scrBD0.getChildren().add(cards[currentPlayer][j]);
