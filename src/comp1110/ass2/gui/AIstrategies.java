@@ -5,9 +5,7 @@ import comp1110.ass2.WarringStatesGame;
 import java.util.ArrayList;
 import java.util.List;
 
-import static comp1110.ass2.WarringStatesGame.normaliseLoc;
-import static comp1110.ass2.WarringStatesGame.sameCol;
-import static comp1110.ass2.WarringStatesGame.sameRow;
+import static comp1110.ass2.WarringStatesGame.*;
 
 public class AIstrategies {
     // Task 12: Integrate a more advanced opponent into your game
@@ -30,7 +28,7 @@ public class AIstrategies {
         // find all valid cards in the "currentBoard" sequence (collect a card in a 3-character form)
         for (int i = 2; i < currentBoard.length(); i = i + 3) {
             char loc = place[i];
-            if (loc != zyloc && (sameRow(loc, zyloc) || sameCol(loc, zyloc))) {
+            if (loc != zyloc && WarringStatesGame.isMoveLegal(currentBoard, loc)) {
                 char[] a = new char[3];
                 a[0] = place[i - 2];
                 a[1] = place[i - 1];
@@ -53,34 +51,33 @@ public class AIstrategies {
         List<String> allValidMoves = allValidMoves(previousBoard);
         char[] bd = previousBoard.toCharArray();
 
-        // find ZhangYi's location for previous board
-//            char zyloc = previousBoard.charAt(previousBoard.indexOf('z') + 2);
-        char zyloc = ' '; //initialize zy location
-        int zy = 2;
-        while (zyloc == ' ' && zy < previousBoard.length()) {
-            if (bd[zy - 2] == 'z') {
-                zyloc = bd[zy];
-            }
-            zy = zy + 3;
-        }
-        if (zy != 2) {
-            zy = zy - 3;
-        }
-
-        int ZY = normaliseLoc(zyloc);
-
         for (String move : allValidMoves) {
 
+            // find ZhangYi's location for previous board
+//            char zyloc = previousBoard.charAt(previousBoard.indexOf('z') + 2);
+            char zyloc = ' '; //initialize zy location
+            int zy = 2;
+            while (zyloc == ' ' && zy < previousBoard.length()) {
+                if (bd[zy - 2] == 'z') {
+                    zyloc = bd[zy];
+                }
+                zy = zy + 3;
+            }
+            if (zy != 2) {
+                zy = zy - 3;
+            }
+
+            int ZY = normaliseLoc(zyloc);
+
             // add new move sequence for one possibleState
-            String newMoveSequence = previousState.get(0) + ((move.toCharArray())[2]);
+            char mov = (move.toCharArray())[2];
+            String newMoveSequence = previousState.get(0) + mov;
             possibleState.add(newMoveSequence);
 
 //            System.out.println(previousState.get(2));
             int totalMark = Integer.parseInt(previousState.get(2));
 
             int newMark = 0;
-
-            char mov = (move.toCharArray())[0];
 
             // the normalised form for destination location
             int D = normaliseLoc(mov);
@@ -101,17 +98,20 @@ public class AIstrategies {
 
             for (int k = 2; k < previousBoard.length(); k = k + 3) {
                 int K = normaliseLoc(bd[k]);
+                // first check whether the position is a valid move
                 // the card belongs to same country with the destination
-                if (bd[k - 2] == country) {
-                    // the card is in the same row or column with ZhangYi and destination position
-                    if ((sameRow(mov, bd[k]) && sameRow(zyloc, bd[k])) || (sameCol(mov, bd[k]) && sameCol(zyloc, bd[k]))) {
-                        // the card is between ZhangYi and the destination position
-                        if ((D < K && K < ZY) || (ZY < K && K < D)) {
-                            // whenever found a card between ZY and the destination position, "add mark" by 1
-                            newMark = newMark + 1;
-                            bd[k] = '/';
-                            bd[k - 1] = '/';
-                            bd[k - 2] = '/';
+                if (isMoveLegal(previousBoard, bd[k])) {
+                    if (bd[k - 2] == country) {
+                        // the card is in the same row or column with ZhangYi and destination position
+                        if ((sameRow(mov, bd[k]) && sameRow(zyloc, bd[k])) || (sameCol(mov, bd[k]) && sameCol(zyloc, bd[k]))) {
+                            // the card is between ZhangYi and the destination position
+                            if ((D < K && K < ZY) || (ZY < K && K < D)) {
+                                // whenever found a card between ZY and the destination position, "add mark" by 1
+                                newMark = newMark + 1;
+                                bd[k] = '/';
+                                bd[k - 1] = '/';
+                                bd[k - 2] = '/';
+                            }
                         }
                     }
                 }
@@ -257,7 +257,7 @@ public class AIstrategies {
         String history = "";
         String setup = "g0Aa0Bf1Ca1Dc5Ee1Fa4Ge3He2Ia2Jc2Kd0Lf0Mb4Nd4Oa6Pc3Qe0Ra5Sc1Td1Uc4Vb5Wb0Xa7Yf2Zb10a31z92b33b64d35g16b27d28c09";
 
-        System.out.println(allValidMoves(setup));
+//        System.out.println(allValidMoves(setup));
         List<String> previousState = new ArrayList<>();
         previousState.add("");
         previousState.add(setup);
