@@ -115,6 +115,9 @@ public class Game extends Application {
                     invalid.setLayoutX(410);
                     invalid.setLayoutY(680);
                     notion.getChildren().add(invalid);
+
+                    MediaPlayer invalidSound = new MediaPlayer(new Media(Game.class.getResource(URI_BASE + "invalid.wav").toString()));
+                    invalidSound.play();
 //                    System.out.println("error");
                 } else {
                     history = history + this.loc + "";
@@ -493,7 +496,7 @@ public class Game extends Application {
                         ChoiceBox choiceBox = new ChoiceBox();
                         choiceBox.setItems(FXCollections.observableArrayList(chsb));
                         choiceBox.setLayoutX(330);
-                        choiceBox.setLayoutY(145);
+                        choiceBox.setLayoutY(130);
                         choiceBox.getSelectionModel().select(0);
                         pane1.getChildren().add(choiceBox);
 
@@ -519,16 +522,21 @@ public class Game extends Application {
 
         //create "How many robots \ndo you want to add?"
         Text tAddBot = new Text("How many robots \ndo you want to add?");
-        tAddBot.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 13));
-        tAddBot.setLayoutX(200);
-        tAddBot.setLayoutY(150);
+        tAddBot.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 14));
+        tAddBot.setLayoutX(190);
+        tAddBot.setLayoutY(135);
         pane1.getChildren().add(tAddBot);
+        Text robotDifficulty = new Text("Robot Difficulty: ");
+        robotDifficulty.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 13));
+        robotDifficulty.setLayoutX(210);
+        robotDifficulty.setLayoutY(190);
+        pane1.getChildren().add(robotDifficulty);
 
         //add choicebox
         ChoiceBox choiceBox = new ChoiceBox();
         choiceBox.setItems(FXCollections.observableArrayList("0", "1"));
         choiceBox.setLayoutX(330);
-        choiceBox.setLayoutY(145);
+        choiceBox.setLayoutY(130);
         choiceBox.getSelectionModel().select(0);
         pane1.getChildren().add(choiceBox);
 
